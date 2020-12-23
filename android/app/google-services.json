@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "594633478527",
+    "firebase_url": "https://fire-station-ebf9f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fire-station-ebf9f",
+    "storage_bucket": "fire-station-ebf9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594633478527:android:54a5522a3b60cad2354a4a",
+        "android_client_info": {
+          "package_name": "pl.kwec.fire_station_inz_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594633478527-g8iqiq2b9rgq966hnk69suo3klenrjnn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.kwec.fire_station_inz_app",
+            "certificate_hash": "9331e77d39e0a2cb74a45168b0a051196dab6ee7"
+          }
+        },
+        {
+          "client_id": "594633478527-p29dnkgrtfvtccij9si307akdtoh2ld1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlEE5H04poIArBYWHkKANxTqrEwpePlxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "594633478527-p29dnkgrtfvtccij9si307akdtoh2ld1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
