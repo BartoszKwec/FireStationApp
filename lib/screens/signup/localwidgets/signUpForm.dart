@@ -40,7 +40,7 @@ class _SignUpFormState extends State<SignUpForm> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             child: Text(
-              "Sign Up",
+              "Zarejestruj się",
               style: TextStyle(
                 color: Theme.of(context).secondaryHeaderColor,
                 fontSize: 25.0,
@@ -52,7 +52,7 @@ class _SignUpFormState extends State<SignUpForm> {
             controller: _fullNameController,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.person_outline),
-              hintText: "Full Name",
+              hintText: "Nazwa konta",
             ),
           ),
           SizedBox(
@@ -72,7 +72,7 @@ class _SignUpFormState extends State<SignUpForm> {
             controller: _passwordController,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_outline),
-              hintText: "Password",
+              hintText: "Hasło",
             ),
             obscureText: true,
           ),
@@ -83,7 +83,7 @@ class _SignUpFormState extends State<SignUpForm> {
             controller: _confirmPasswordController,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_open),
-              hintText: "Confirm Password",
+              hintText: "Potwierdź hasło",
             ),
             obscureText: true,
           ),
@@ -94,7 +94,7 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 100),
               child: Text(
-                "Sign Up",
+                "Zarejestruj się",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ class _SignUpFormState extends State<SignUpForm> {
               } else {
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Passwords do not match"),
+                    content: Text("Hasła nie pasują do siebie"),
                     duration: Duration(seconds: 2),
                   ),
                 );

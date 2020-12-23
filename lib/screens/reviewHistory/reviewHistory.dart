@@ -7,9 +7,9 @@ import 'local_widgets/eachReview.dart';
 
 class ReviewHistory extends StatefulWidget {
   final String groupId;
-  final String bookId;
+  final String eventId;
 
-  ReviewHistory({this.groupId, this.bookId});
+  ReviewHistory({this.groupId, this.eventId});
 
   @override
   _ReviewHistoryState createState() => _ReviewHistoryState();
@@ -21,7 +21,7 @@ class _ReviewHistoryState extends State<ReviewHistory> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    reviews = DBFuture().getReviewHistory(widget.groupId, widget.bookId);
+    reviews = DBFuture().getReviewHistory(widget.groupId, widget.eventId);
   }
 
   @override

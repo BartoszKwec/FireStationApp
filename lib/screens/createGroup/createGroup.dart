@@ -1,6 +1,6 @@
 
 import 'package:fire_station_inz_app/models/userModel.dart';
-import 'package:fire_station_inz_app/screens/addBook/addBook.dart';
+import 'package:fire_station_inz_app/screens/addEvent/addEvent.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
@@ -18,11 +18,11 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  void _goToAddBook(BuildContext context, String groupName) async {
+  void _goToAddEvent(BuildContext context, String groupName) async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OurAddBook(
+        builder: (context) => OurAddEvent(
           onGroupCreation: true,
           onError: false,
           groupName: groupName,
@@ -34,7 +34,7 @@ class _CreateGroupState extends State<CreateGroup> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OurAddBook(
+        builder: (context) => OurAddEvent(
           onGroupCreation: true,
           onError: false,
           groupName: groupName,
@@ -80,7 +80,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     controller: _groupNameController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.group),
-                      hintText: "Group Name",
+                      hintText: "Nazwa grupy:",
                     ),
                   ),
                   SizedBox(
@@ -90,7 +90,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 80),
                       child: Text(
-                        "Add Book",
+                        "Dodaj wydarzenie",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -99,13 +99,13 @@ class _CreateGroupState extends State<CreateGroup> {
                       ),
                     ),
                     onPressed: () =>
-                        _goToAddBook(context, _groupNameController.text, ),
+                        _goToAddEvent(context, _groupNameController.text, ),
                   ),
                   RaisedButton(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 80),
                       child: Text(
-                        "Create",
+                        "Stwórz",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

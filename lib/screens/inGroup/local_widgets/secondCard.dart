@@ -2,7 +2,7 @@
 import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
-import 'package:fire_station_inz_app/screens/addBook/addBook.dart';
+import 'package:fire_station_inz_app/screens/addEvent/addEvent.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _SecondCardState extends State<SecondCard> {
   GroupModel _groupModel;
   UserModel _currentUser;
   UserModel _pickingUser;
-  BookModel _nextBook;
+  EventModel _nextEvent;
 
   @override
   void didChangeDependencies() async {
@@ -26,10 +26,10 @@ class _SecondCardState extends State<SecondCard> {
     _currentUser = Provider.of<UserModel>(context);
     if (_groupModel != null) {
       _pickingUser = await DBFuture()
-          .getUser(_groupModel.members[_groupModel.indexPickingBook]);
-      if (_groupModel.nextBookId != "waiting") {
-        _nextBook = await DBFuture()
-            .getCurrentBook(_groupModel.id, _groupModel.nextBookId);
+          .getUser(_groupModel.members[_groupModel.indexPickingEvent]);
+      if (_groupModel.nextEventId != "waiting") {
+        _nextEvent = await DBFuture()
+            .getCurrentEvent(_groupModel.id, _groupModel.nextEventId);
       }
 
       if (this.mounted) {
@@ -38,11 +38,11 @@ class _SecondCardState extends State<SecondCard> {
     }
   }
 
-  void _goToAddBook(BuildContext context) {
+  void _goToAddEvent(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OurAddBook(
+        builder: (context) => OurAddEvent(
           onGroupCreation: false,
           onError: false,
           currentUser: _currentUser,
@@ -55,17 +55,17 @@ class _SecondCardState extends State<SecondCard> {
     Widget retVal;
 
     if (_pickingUser != null) {
-      if (_groupModel.nextBookId == "waiting") {
+      if (_groupModel.nextEventId == "waiting") {
         if (_pickingUser.uid == _currentUser.uid) {
           retVal = RaisedButton(
-            child: Text("Select Next Book"),
+            child: Text("Wybierz następne wydarzenie"),
             onPressed: () {
-              _goToAddBook(context);
+              _goToAddEvent(context);
             },
           );
         } else {
           retVal = Text(
-            "Waiting for " + _pickingUser.fullName + " to pick",
+            "Czekąjąc aż " + _pickingUser.fullName + " utworzy wydarzenie.",
             style: TextStyle(
               fontSize: 30,
               color: Colors.grey[600],
@@ -76,7 +76,7 @@ class _SecondCardState extends State<SecondCard> {
         retVal = Column(
           children: [
             Text(
-              "Next Book Is:",
+              "Nastepne wydarzenie jest:",
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -86,14 +86,14 @@ class _SecondCardState extends State<SecondCard> {
               height: 20,
             ),
             Text(
-              (_nextBook != null) ? _nextBook.name : "loading..",
+              (_nextEvent != null) ? _nextEvent.name : "ładowanie..",
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.grey[600],
               ),
             ),
             Text(
-              (_nextBook != null) ? _nextBook.author : "loading..",
+              (_nextEvent != null) ? _nextEvent.author : "ładowanie..",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey[600],
@@ -104,7 +104,7 @@ class _SecondCardState extends State<SecondCard> {
       }
     } else {
       retVal = Text(
-        "Loading...",
+        "ładowanie...",
         style: TextStyle(
           fontSize: 30,
           color: Colors.grey[600],

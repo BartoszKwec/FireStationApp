@@ -48,8 +48,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'members': members,
         'tokens': tokens,
         'groupCreated': Timestamp.now(),
-        'nextBookId': "waiting",
-        'indexPickingBook': 0
+        'nextEventId': "waiting",
+        'indexPickingEvent': 0
       });
     } else {
       _docRef = await _firestore.collection("groups").add({
@@ -57,8 +57,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'leader': user2.uid,
         'members': members,
         'groupCreated': Timestamp.now(),
-        'nextBookId': "waiting",
-        'indexPickingBook': 0
+        'nextEventId': "waiting",
+        'indexPickingEvent': 0
       });
     }
 
@@ -67,7 +67,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
       'groupId': _docRef.documentID,
     });
-    addBookEmpty(_docRef.documentID);
+    addEventEmpty(_docRef.documentID);
     retVal = "success";
   } catch (e) {
     print(e);
@@ -80,7 +80,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
   Future<String> createGroup(
       //FirebaseUser user
-      String groupName, FirebaseUser user, BookModel initialBook) async {
+      String groupName, FirebaseUser user, EventModel initialEvent) async {
     // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
 
     //print(user.uid);
@@ -113,8 +113,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           'members': members,
           'tokens': tokens,
           'groupCreated': Timestamp.now(),
-          'nextBookId': "waiting",
-          'indexPickingBook': 0
+          'nextEventId': "waiting",
+          'indexPickingEvent': 0
         });
       } else {
         _docRef = await _firestore.collection("groups").add({
@@ -122,8 +122,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           'leader': user.uid,
           'members': members,
           'groupCreated': Timestamp.now(),
-          'nextBookId': "waiting",
-          'indexPickingBook': 0
+          'nextEventId': "waiting",
+          'indexPickingEvent': 0
         });
       }
 
@@ -133,9 +133,9 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'groupId': _docRef.documentID,
       });
 
-      //add a book
+      //add a event
 
-      addBook(_docRef.documentID, initialBook);
+      addEvent(_docRef.documentID, initialEvent);
 
       retVal = "success";
     } catch (e) {
@@ -198,7 +198,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<String> addBook(String groupId, BookModel book) async {
+  Future<String> addEvent(String groupId, EventModel event) async {
     String retVal = "error";
 
     try {
@@ -206,20 +206,20 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
           .add({
-        'name': book.name.trim(),
-        'author': book.author.trim(),
-        'length': book.length,
-        'dateCompleted': book.dateCompleted,
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
       });
 
-      //add current book to group schedule
+      //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
 
-        "currentBookId": _docRef.documentID,
-        "currentBookDue": book.dateCompleted,
+        "currentEventId": _docRef.documentID,
+        "currentEventDue": event.dateCompleted,
       });
 
       retVal = "success";
@@ -229,7 +229,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<String> addBookEmpty(String groupId) async {
+  Future<String> addEventEmpty(String groupId) async {
     String retVal = "error";
 
     try {
@@ -237,7 +237,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
           .add({
         'name': "...",
         'author': "...",
@@ -245,12 +245,12 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'dateCompleted': null,
       });
 
-      //add current book to group schedule
+      //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
 
-        "currentBookId": null,
-        "currentBookDue": null,
+        "currentEventId": null,
+        "currentEventDue": null,
       });
 
       retVal = "success";
@@ -261,7 +261,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<String> addNextBook(String groupId, BookModel book) async {
+  Future<String> addNextEvent(String groupId, EventModel event) async {
     String retVal = "error";
 
     try {
@@ -269,27 +269,27 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
           .add({
-        'name': book.name.trim(),
-        'author': book.author.trim(),
-        'length': book.length,
-        'dateCompleted': book.dateCompleted,
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
       });
 
-      //add current book to group schedule
+      //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
 
-        "nextBookId": _docRef.documentID,
-        "nextBookDue": book.dateCompleted,
+        "nextEventId": _docRef.documentID,
+        "nextEventDue": event.dateCompleted,
       });
 
       //adding a notification document
       DocumentSnapshot doc =
       await _firestore.collection("groups").document(groupId).get();
       createNotifications(
-          List<String>.from(doc.data["tokens"]) ?? [], book.name, book.author);
+          List<String>.from(doc.data["tokens"]) ?? [], event.name, event.author);
 
       retVal = "success";
     } catch (e) {
@@ -299,25 +299,25 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<String> addCurrentBook(String groupId, BookModel book) async {
+  Future<String> addCurrentEvent(String groupId, EventModel event) async {
     String retVal = "error";
 
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("books")
+          .collection("events")
           .add({
-        'name': book.name.trim(),
-        'author': book.author.trim(),
-        'length': book.length,
-        'dateCompleted': book.dateCompleted,
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
       });
 
 
       await _firestore.collection("groups").document(groupId).updateData({
-        "currentBookId": _docRef.documentID,
-        "currentBookDue": book.dateCompleted,
+        "currentEventId": _docRef.documentID,
+        "currentEventDue": event.dateCompleted,
       });
 
       //adding a notification document
@@ -325,7 +325,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
       await _firestore.collection("groups").document(groupId).get();
       createNotifications(
-          List<String>.from(doc.data["tokens"]) ?? [], book.name, book.author);
+          List<String>.from(doc.data["tokens"]) ?? [], event.name, event.author);
 
       retVal = "success";
     } catch (e) {
@@ -335,17 +335,17 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<BookModel> getCurrentBook(String groupId, String bookId) async {
-    BookModel retVal;
+  Future<EventModel> getCurrentEvent(String groupId, String eventId) async {
+    EventModel retVal;
 
     try {
       DocumentSnapshot _docSnapshot = await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("books")
-          .document(bookId)
+          .collection("events")
+          .document(eventId)
           .get();
-      retVal = BookModel.fromDocumentSnapshot(doc: _docSnapshot);
+      retVal = EventModel.fromDocumentSnapshot(doc: _docSnapshot);
     } catch (e) {
       print(e);
     }
@@ -353,9 +353,9 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<String> finishedBook(
+  Future<String> finishedEvent(
       String groupId,
-      String bookId,
+      String eventId,
       String uid,
       int rating,
       String review,
@@ -366,9 +366,9 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
 
-          .document(bookId)
+          .document(eventId)
           .collection("reviews")
 
           .document(uid)
@@ -383,17 +383,17 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<bool> isUserDoneWithBook(
-      String groupId, String bookId, String uid) async {
+  Future<bool> isUserDoneWithEvent(
+      String groupId, String eventId, String uid) async {
     bool retVal = false;
     try {
       DocumentSnapshot _docSnapshot = await _firestore
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
 
-          .document(bookId)
+          .document(eventId)
           .collection("reviews")
 
           .document(uid)
@@ -464,12 +464,12 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
   //       currentUser.id).get();
   // }
   Future<String> createNotifications(
-      List<String> tokens, String bookName, String author) async {
+      List<String> tokens, String eventName, String author) async {
     String retVal = "error";
 
     try {
       await _firestore.collection("notifications").add({
-        'bookName': bookName.trim(),
+        'eventName': eventName.trim(),
         'author': author.trim(),
         'tokens': tokens,
       });
@@ -481,22 +481,22 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-  Future<List<BookModel>> getBookHistory(String groupId) async {
-    List<BookModel> retVal = List();
+  Future<List<EventModel>> getEventHistory(String groupId) async {
+    List<EventModel> retVal = List();
 
     try {
       QuerySnapshot query = await _firestore
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
           .orderBy("dateCompleted", descending: true)
 
           .getDocuments();
 
 
       query.documents.forEach((element) {
-        retVal.add(BookModel.fromDocumentSnapshot(doc: element));
+        retVal.add(EventModel.fromDocumentSnapshot(doc: element));
       });
     } catch (e) {
       print(e);
@@ -505,7 +505,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
   }
 
   Future<List<ReviewModel>> getReviewHistory(
-      String groupId, String bookId) async {
+      String groupId, String eventId) async {
     List<ReviewModel> retVal = List();
 
     try {
@@ -513,9 +513,9 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
           .collection("groups")
 
           .document(groupId)
-          .collection("books")
+          .collection("events")
 
-          .document(bookId)
+          .document(eventId)
           .collection("reviews")
 
           .getDocuments();

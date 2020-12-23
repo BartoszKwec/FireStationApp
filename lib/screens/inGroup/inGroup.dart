@@ -1,7 +1,7 @@
 
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
-import 'package:fire_station_inz_app/screens/bookHistory/bookHistory.dart';
+import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/auth.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
@@ -56,16 +56,16 @@ class InGroupState extends State<InGroup> {
     GroupModel group = Provider.of<GroupModel>(context, listen: false);
     Clipboard.setData(ClipboardData(text: group.id));
     key.currentState.showSnackBar(SnackBar(
-      content: Text("Copied!"),
+      content: Text("Skopiowano do schowka!"),
     ));
   }
 
-  void _goToBookHistory() {
+  void _goToEventHistory() {
     GroupModel group = Provider.of<GroupModel>(context, listen: false);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BookHistory(
+        builder: (context) => EventHistory(
           groupId: group.id,
         ),
       ),
@@ -103,16 +103,16 @@ class InGroupState extends State<InGroup> {
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
               child: Text(
-                "Book Club History",
+                "Historia Eventów",
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () => _goToBookHistory(),
+              onPressed: () => _goToEventHistory(),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
-              child: Text("Copy Group Id"),
+              child: Text("Skopiuj id grupy."),
               onPressed: () => _copyGroupId(context),
               color: Theme.of(context).canvasColor,
               shape: RoundedRectangleBorder(
@@ -127,7 +127,7 @@ class InGroupState extends State<InGroup> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
             child: FlatButton(
-              child: Text("Leave Group"),
+              child: Text("Wyjdź z grupy"),
               onPressed: () => _leaveGroup(context),
               color: Theme.of(context).canvasColor,
             ),

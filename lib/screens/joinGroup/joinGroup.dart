@@ -61,7 +61,7 @@ class _JoinGroupState extends State<JoinGroup> {
                     controller: _groupIdController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.group),
-                      hintText: "Group Id",
+                      hintText: "Id grupy",
                     ),
                   ),
                   SizedBox(
@@ -71,7 +71,7 @@ class _JoinGroupState extends State<JoinGroup> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 100),
                       child: Text(
-                        "Join",
+                        "Dołącz",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

@@ -30,7 +30,7 @@ class _EachReviewState extends State<EachReview> {
       child: Column(
         children: [
           Text(
-            (user != null) ? user.fullName : "loading...",
+            (user != null) ? user.fullName : "ładowanie...",
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class _EachReviewState extends State<EachReview> {
             height: 10,
           ),
           Text(
-            "Rating: " + widget.review.rating.toString(),
+            "Ocena: " + widget.review.rating.toString(),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

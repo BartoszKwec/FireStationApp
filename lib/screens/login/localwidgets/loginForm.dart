@@ -78,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                'Zaloguj się przez Google',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
@@ -99,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             child: Text(
-              "Log In",
+              "Zaloguj sie",
               style: TextStyle(
                 color: Theme.of(context).secondaryHeaderColor,
                 fontSize: 25.0,
@@ -121,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _passwordController,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_outline),
-              hintText: "Password",
+              hintText: "Hasło",
             ),
             obscureText: true,
           ),
@@ -132,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 100),
               child: Text(
-                "Log In",
+                "Zaloguj sie",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           FlatButton(
-            child: Text("Don't have an account? Sign up here"),
+            child: Text("Nie masz konta? Zarejestruj się tutaj"),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             onPressed: () {
               Navigator.of(context).push(

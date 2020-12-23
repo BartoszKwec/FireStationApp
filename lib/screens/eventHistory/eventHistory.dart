@@ -3,34 +3,34 @@ import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:flutter/material.dart';
 
-import 'local_widgets/eachBook.dart';
+import 'local_widgets/eachEvent.dart';
 
-class BookHistory extends StatefulWidget {
+class EventHistory extends StatefulWidget {
   final String groupId;
 
-  BookHistory({
+  EventHistory({
     this.groupId,
   });
   @override
-  _BookHistoryState createState() => _BookHistoryState();
+  _EventHistoryState createState() => _EventHistoryState();
 }
 
-class _BookHistoryState extends State<BookHistory> {
-  Future<List<EventModel>> books;
+class _EventHistoryState extends State<EventHistory> {
+  Future<List<EventModel>> events;
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    books = DBFuture().getBookHistory(widget.groupId);
+    events = DBFuture().getEventHistory(widget.groupId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: books,
-        builder: (BuildContext context, AsyncSnapshot<List<BookModel>> snapshot) {
+        future: events,
+        builder: (BuildContext context, AsyncSnapshot<List<EventModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return ListView.builder(
               itemCount: snapshot.data.length + 1,
@@ -47,8 +47,8 @@ class _BookHistoryState extends State<BookHistory> {
                 } else {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: EachBook(
-                      book: snapshot.data[index - 1],
+                    child: EachEvent(
+                      event: snapshot.data[index - 1],
                       groupId: widget.groupId,
                     ),
                   );

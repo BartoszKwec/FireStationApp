@@ -70,7 +70,7 @@ class NoGroup extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: Text(
-              "Welcome to Book Club",
+              "Witamy w aplikacji",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 40.0,
@@ -81,8 +81,8 @@ class NoGroup extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
-              "Since you are not in a book club, you can select either " +
-                  "to join a club or create a club.",
+              "Ponieważ nie należysz do klubu, możesz wybrać albo " +
+                  "dołączyć do klubu lub założyć klub.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 10.0,
@@ -99,7 +99,7 @@ class NoGroup extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 RaisedButton(
-                  child: Text("Create"),
+                  child: Text("Utwórz"),
                   onPressed: () => _goToCreate(context),
                   color: Theme.of(context).canvasColor,
                   shape: RoundedRectangleBorder(
@@ -112,7 +112,7 @@ class NoGroup extends StatelessWidget {
                 ),
                 RaisedButton(
                   child: Text(
-                    "Join",
+                    "Dołącz",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () => _goToJoin(context),

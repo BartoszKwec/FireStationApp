@@ -4,8 +4,8 @@ import 'package:fire_station_inz_app/screens/reviewHistory/reviewHistory.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
 import 'package:flutter/material.dart';
 
-class EachBook extends StatelessWidget {
-  final EventModel book;
+class EachEvent extends StatelessWidget {
+  final EventModel event;
   final String groupId;
 
   void _goToReviewHistory(BuildContext context) {
@@ -14,27 +14,27 @@ class EachBook extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => ReviewHistory(
           groupId: groupId,
-          bookId: book.id,
+          eventId: event.id,
         ),
       ),
     );
   }
 
-  EachBook({this.book, this.groupId});
+  EachEvent({this.event, this.groupId});
   @override
   Widget build(BuildContext context) {
     return ShadowContainer(
       child: Column(
         children: [
           Text(
-            book.name,
+            event.name,
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            book.author,
+            event.author,
             style: TextStyle(
               fontSize: 20,
               color: Colors.grey[600],
@@ -44,7 +44,7 @@ class EachBook extends StatelessWidget {
             height: 10,
           ),
           RaisedButton(
-            child: Text("Reviews"),
+            child: Text("Recenzje"),
             onPressed: () => _goToReviewHistory(context),
           )
         ],

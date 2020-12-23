@@ -20,7 +20,7 @@ void inputData()async{
 
 }
 
-class OurAddBook extends StatefulWidget {
+class OurAddEvent extends StatefulWidget {
   final bool onGroupCreation;
   final bool onError;
   final String groupName;
@@ -28,7 +28,7 @@ class OurAddBook extends StatefulWidget {
   final UserModel userModel;
 
 
-  OurAddBook({
+  OurAddEvent({
     this.onGroupCreation,
     this.onError,
     this.groupName,
@@ -36,14 +36,14 @@ class OurAddBook extends StatefulWidget {
     this.userModel
   });
   @override
-  _OurAddBookState createState() => _OurAddBookState();
+  _OurAddEventState createState() => _OurAddEventState();
 }
 
-class _OurAddBookState extends State<OurAddBook> {
+class _OurAddEventState extends State<OurAddEvent> {
 
-  final addBookKey = GlobalKey<ScaffoldState>();
+  final addEventKey = GlobalKey<ScaffoldState>();
 
-  TextEditingController _bookNameController = TextEditingController();
+  TextEditingController _eventNameController = TextEditingController();
   TextEditingController _authorController = TextEditingController();
   TextEditingController _lengthController = TextEditingController();
 
@@ -92,7 +92,7 @@ class _OurAddBookState extends State<OurAddBook> {
   }
 
 
-  void _addBook(BuildContext context, String groupName, EventModel book) async {
+  void _addEvent(BuildContext context, String groupName, EventModel event) async {
     String _returnString;
     final FirebaseUser user = await auth1.currentUser();
     final uid = user.uid;
@@ -106,15 +106,15 @@ class _OurAddBookState extends State<OurAddBook> {
         // print(widget.currentUser.uid);
 
 
-        _returnString = await DBFuture().createGroup(groupName, user, book);
-        //_returnString = await DBFuture().createGroup(groupName, user,book);
+        _returnString = await DBFuture().createGroup(groupName, user, event);
+        //_returnString = await DBFuture().createGroup(groupName, user,event);
 
       } else if (widget.onError) {
         _returnString =
-        await DBFuture().addCurrentBook(widget.currentUser.groupId, book);
+        await DBFuture().addCurrentEvent(widget.currentUser.groupId, event);
       } else {
         _returnString =
-        await DBFuture().addNextBook(widget.currentUser.groupId, book);
+        await DBFuture().addNextEvent(widget.currentUser.groupId, event);
       }
 
       if (_returnString == "success") {
@@ -126,9 +126,9 @@ class _OurAddBookState extends State<OurAddBook> {
                 (route) => false);
       }
     } else {
-      addBookKey.currentState.showSnackBar(
+      addEventKey.currentState.showSnackBar(
         SnackBar(
-          content: Text("Due date is less that a day from now!"),
+          content: Text("Termin jest mniejszy niż jeden dzień od teraz!"),
         ),
       );
     }
@@ -151,7 +151,7 @@ class _OurAddBookState extends State<OurAddBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: addBookKey,
+      key: addEventKey,
       body: ListView(
         children: <Widget>[
           Padding(
@@ -169,10 +169,10 @@ class _OurAddBookState extends State<OurAddBook> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    controller: _bookNameController,
+                    controller: _eventNameController,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.book),
-                      hintText: "Book Name",
+                      prefixIcon: Icon(Icons.event),
+                      hintText: "Nazwa wydarzenia",
                     ),
                   ),
                   SizedBox(
@@ -205,13 +205,13 @@ class _OurAddBookState extends State<OurAddBook> {
                     children: [
                       Expanded(
                         child: FlatButton(
-                          child: Text("Change Date"),
+                          child: Text("Zmień datę"),
                           onPressed: () => _selectDate(),
                         ),
                       ),
                       Expanded(
                         child: FlatButton(
-                          child: Text("Change Time"),
+                          child: Text("Zmienić czas"),
                           onPressed: () => _selectTime(),
                         ),
                       ),
@@ -221,7 +221,7 @@ class _OurAddBookState extends State<OurAddBook> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 100),
                       child: Text(
-                        "Create",
+                        "Stwórz",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -230,26 +230,26 @@ class _OurAddBookState extends State<OurAddBook> {
                       ),
                     ),
                     onPressed: () {
-                      EventModel book = EventModel();
-                      if (_bookNameController.text == "") {
-                        addBookKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Need to add book name"),
+                      EventModel event = EventModel();
+                      if (_eventNameController.text == "") {
+                        addEventKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz dodać nazwę wydarzenia"),
                         ));
                       } else if (_authorController.text == "") {
-                        addBookKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Need to add author"),
+                        addEventKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz dodać autora"),
                         ));
                       } else if (_lengthController.text == "") {
-                        addBookKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Need to add book length"),
+                        addEventKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz dodać długość wydarzenia"),
                         ));
                       } else {
-                        book.name = _bookNameController.text;
-                        book.author = _authorController.text;
-                        book.length = int.parse(_lengthController.text);
-                        book.dateCompleted = Timestamp.fromDate(_selectedDate);
+                        event.name = _eventNameController.text;
+                        event.author = _authorController.text;
+                        event.length = int.parse(_lengthController.text);
+                        event.dateCompleted = Timestamp.fromDate(_selectedDate);
 
-                        _addBook(context, widget.groupName, book);
+                        _addEvent(context, widget.groupName, event);
                       }
                     },
                   ),

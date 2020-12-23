@@ -10,15 +10,15 @@ class TimeLeft {
 
     if (_daysUntil > 0) {
       retVal = _daysUntil.toString() +
-          " days\n" +
+          " dni\n" +
           _hoursUntil.toString() +
-          " hours\n" +
+          " godin\n" +
           _minUntil.toString() +
-          " mins";
+          " minut";
     } else if (_hoursUntil > 0) {
-      retVal = _hoursUntil.toString() + " hours\n" + _minUntil.toString() + " mins";
+      retVal = _hoursUntil.toString() + " godin\n" + _minUntil.toString() + " minut";
     } else if (_minUntil > 0) {
-      retVal = _minUntil.toString() + " mins";
+      retVal = _minUntil.toString() + " minut";
     } else if (_minUntil == 0) {
       retVal = "almost there ";
     } else {

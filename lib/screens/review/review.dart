@@ -48,7 +48,7 @@ class _ReviewState extends State<Review> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text("Rate book 1-10:"),
+                      Text("Oceń wydarzenie 1-10:"),
                       DropdownButton<int>(
                         value: _dropdownValue,
                         icon: Icon(Icons.arrow_downward),
@@ -79,7 +79,7 @@ class _ReviewState extends State<Review> {
                     controller: _reviewController,
                     maxLines: 6,
                     decoration: InputDecoration(
-                      hintText: "Add A Review",
+                      hintText: "Dodać recenzję",
                     ),
                   ),
                   SizedBox(
@@ -89,7 +89,7 @@ class _ReviewState extends State<Review> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 80),
                       child: Text(
-                        "Add Review",
+                        "Dodaj recenzję",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -99,9 +99,9 @@ class _ReviewState extends State<Review> {
                     ),
                     onPressed: () {
                       if (_dropdownValue != null) {
-                        DBFuture().finishedBook(
+                        DBFuture().finishedEvent(
                             widget.groupModel.id,
-                            widget.groupModel.currentBookId,
+                            widget.groupModel.currentEventId,
                             _authModel.uid,
                             _dropdownValue,
                             _reviewController.text);
@@ -114,7 +114,7 @@ class _ReviewState extends State<Review> {
                         );
                       } else {
                         reviewKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Need to add rating!"),
+                          content: Text("Musisz dodać ocenę!"),
                         ));
                       }
                     },

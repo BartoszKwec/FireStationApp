@@ -5,7 +5,7 @@ import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
-import 'package:fire_station_inz_app/screens/addBook/addBook.dart';
+import 'package:fire_station_inz_app/screens/addEvent/addEvent.dart';
 import 'package:fire_station_inz_app/screens/review/review.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/utils/timeLeft.dart';
@@ -21,16 +21,16 @@ class TopCard extends StatefulWidget {
 class _TopCardState extends State<TopCard> {
   String _timeUntil = "loading...";
   AuthModel _authModel;
-  bool _doneWithBook = true;
+  bool _doneWithEvent = true;
   Timer _timer;
-  BookModel _currentBook;
+  EventModel _currentEvent;
   GroupModel _groupModel;
 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (this.mounted) {
         setState(() {
-          _timeUntil = TimeLeft().timeLeft(_groupModel.currentBookDue.toDate());
+          _timeUntil = TimeLeft().timeLeft(_groupModel.currentEventDue.toDate());
         });
       }
     });
@@ -42,9 +42,9 @@ class _TopCardState extends State<TopCard> {
     _authModel = Provider.of<AuthModel>(context);
     _groupModel = Provider.of<GroupModel>(context);
     if (_groupModel != null) {
-      isUserDoneWithBook();
-      _currentBook = await DBFuture()
-          .getCurrentBook(_groupModel.id, _groupModel.currentBookId);
+      isUserDoneWithEvent();
+      _currentEvent = await DBFuture()
+          .getCurrentEvent(_groupModel.id, _groupModel.currentEventId);
       _startTimer();
     }
   }
@@ -57,12 +57,12 @@ class _TopCardState extends State<TopCard> {
     super.dispose();
   }
 
-  isUserDoneWithBook() async {
-    if (await DBFuture().isUserDoneWithBook(
-        _groupModel.id, _groupModel.currentBookId, _authModel.uid)) {
-      _doneWithBook = true;
+  isUserDoneWithEvent() async {
+    if (await DBFuture().isUserDoneWithEvent(
+        _groupModel.id, _groupModel.currentEventId, _authModel.uid)) {
+      _doneWithEvent = true;
     } else {
-      _doneWithBook = false;
+      _doneWithEvent = false;
     }
   }
 
@@ -77,12 +77,12 @@ class _TopCardState extends State<TopCard> {
     );
   }
 
-  void _goToAddBook(BuildContext context) {
+  void _goToAddEvent(BuildContext context) {
     UserModel _currentUser = Provider.of<UserModel>(context, listen: false);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OurAddBook(
+        builder: (context) => OurAddEvent(
           onGroupCreation: false,
           onError: true,
           currentUser: _currentUser,
@@ -91,22 +91,22 @@ class _TopCardState extends State<TopCard> {
     );
   }
 
-  Widget noNextBook() {
+  Widget noNextEvent() {
     if (_authModel != null && _groupModel != null) {
-      if (_groupModel.currentBookId == "waiting") {
+      if (_groupModel.currentEventId == "waiting") {
         if (_authModel.uid == _groupModel.leader) {
           return Column(
             children: <Widget>[
               Text(
-                "Nobody picked the next book. Leader needs to step in and pick!",
+                "Nikt nie wybrał następnej wydarzenie. Lider musi wkroczyć i wybrać!",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(
                 height: 10,
               ),
               RaisedButton(
-                child: Text("Pick Next Book"),
-                onPressed: () => _goToAddBook(context),
+                child: Text("Wybierz następną wydarzenie"),
+                onPressed: () => _goToAddEvent(context),
                 textColor: Colors.white,
               )
             ],
@@ -114,7 +114,7 @@ class _TopCardState extends State<TopCard> {
         } else {
           return Center(
             child: Text(
-              "Nobody picked the next book. Leader needs to step in and pick!",
+              "Nikt nie wybrał następnej wydarzenia. Lider musi wkroczyć i wybrać!",
               style: TextStyle(fontSize: 20),
             ),
           );
@@ -133,21 +133,21 @@ class _TopCardState extends State<TopCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentBook == null) {
-      return ShadowContainer(child: noNextBook());
+    if (_currentEvent == null) {
+      return ShadowContainer(child: noNextEvent());
     }
     return ShadowContainer(
       child: Column(
         children: <Widget>[
           Text(
-            _currentBook.name,
+            _currentEvent.name,
             style: TextStyle(
               fontSize: 30,
               color: Colors.grey[600],
             ),
           ),
           Text(
-            _currentBook.author,
+            _currentEvent.author,
             style: TextStyle(
               fontSize: 20,
               color: Colors.grey[600],
@@ -158,7 +158,7 @@ class _TopCardState extends State<TopCard> {
             child: Row(
               children: <Widget>[
                 Text(
-                  "Due In: ",
+                  "W terminie: ",
                   style: TextStyle(
                     fontSize: 30,
                     color: Colors.grey[600],
@@ -166,7 +166,7 @@ class _TopCardState extends State<TopCard> {
                 ),
                 Expanded(
                   child: Text(
-                    _timeUntil ?? "loading...",
+                    _timeUntil ?? "ładowanie...",
                     style: TextStyle(
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
@@ -178,10 +178,10 @@ class _TopCardState extends State<TopCard> {
           ),
           RaisedButton(
             child: Text(
-              "Finished Book",
+              "Zakończ wydarzenie",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: _doneWithBook ? null : _goToReview,
+            onPressed: _doneWithEvent ? null : _goToReview,
           )
         ],
       ),
