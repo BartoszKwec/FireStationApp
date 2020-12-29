@@ -18,36 +18,60 @@ class UserList extends StatefulWidget {
 
   @override
   _UserListState createState() => _UserListState();
+
 }
 
-class _UserListState extends State<UserList> {
-  List<String> members;
-  List<UserModel>users;
-  int dlu;
-  GroupModel groupModel;
 
+class _UserListState extends State<UserList> {
+
+  Future<List<UserModel>> userModel;
+  //List<UserModel> users;
+
+  Future<List<UserModel>> getData() async {
+    var model = await DBFuture().getGroup(widget.groupId);
+    return await DBFuture().getUsers(model.members);
+  }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    groupModel = await DBFuture().getGroup(widget.groupId);
-    users = await DBFuture().getUsers(groupModel.members);
-    print(groupModel.members);
-    dlu = groupModel.members.length;
+    userModel=getData();
+    // GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
+    // List<UserModel> users = await DBFuture().getUsers(groupModel.members);
+    // print(groupModel.members);
+
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<UserModel>>(
-      future: DBFuture().getUsers(groupModel.members),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.amber,
+        title: Text(
+          "Lista osób",style: new TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25.0,
+
+        )
+        ),
+
+
+      ),
+    body: FutureBuilder<List<UserModel>>(
+        //DBFuture().getUsers(groupModel.members)
+      future: userModel,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
+
           return ListView.builder(
-            itemCount: dlu,
+            itemCount: snapshot.data.length,
             shrinkWrap: true,
+
             itemBuilder: (BuildContext context, index) =>
                 Container(
+                  //color: (index % 2 == 0) ? Colors.white : Colors.white70,
 
                   width: MediaQuery
                       .of(context)
@@ -60,6 +84,7 @@ class _UserListState extends State<UserList> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     child: Container(
+
                       width: MediaQuery
                           .of(context)
                           .size
@@ -74,6 +99,7 @@ class _UserListState extends State<UserList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
+
                               // Container(
                               //   width: 55.0,
                               //   height: 55.0,
@@ -88,7 +114,7 @@ class _UserListState extends State<UserList> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(users[index].fullName,
+                                  Text(snapshot.data[index].fullName,
                                       style: new TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 25.0)),
@@ -128,8 +154,12 @@ class _UserListState extends State<UserList> {
                               ),
 
 
+
+
                             ],
+
                           ),
+
 
                           // Container(
                           //   alignment: Alignment.center,
@@ -177,13 +207,24 @@ class _UserListState extends State<UserList> {
                           // ),
                         ],
                       ),
+
                     ),
+
                   ),
+
                 ),
           );
         }
-        return Center(child: CircularProgressIndicator(),);
+        return Center(child: CircularProgressIndicator(
+
+        ),
+        );
       },
+    )
     );
+
+
   }
+
 }
+

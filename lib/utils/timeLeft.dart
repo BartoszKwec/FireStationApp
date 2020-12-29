@@ -12,11 +12,11 @@ class TimeLeft {
       retVal = _daysUntil.toString() +
           " dni\n" +
           _hoursUntil.toString() +
-          " godin\n" +
+          " godzin\n" +
           _minUntil.toString() +
           " minut";
     } else if (_hoursUntil > 0) {
-      retVal = _hoursUntil.toString() + " godin\n" + _minUntil.toString() + " minut";
+      retVal = _hoursUntil.toString() + " godzin\n" + _minUntil.toString() + " minut";
     } else if (_minUntil > 0) {
       retVal = _minUntil.toString() + " minut";
     } else if (_minUntil == 0) {
