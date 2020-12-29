@@ -7,6 +7,8 @@ class UserModel {
   String fullName;
   String groupId;
   String notifToken;
+  var photoUrl;
+  String rank;
 
   UserModel({
     this.uid,
@@ -15,6 +17,8 @@ class UserModel {
     this.fullName,
     this.groupId,
     this.notifToken,
+    this.photoUrl,
+    this.rank,
   });
 
   UserModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
@@ -25,6 +29,8 @@ class UserModel {
     fullName = doc.data['fullName'];
     groupId = doc.data['groupId'];
     notifToken = doc.data['notifToken'];
+    photoUrl=doc.data['photoUrl'];
+    rank=doc.data["rank"];
   }
   String get getNot{
     return notifToken;

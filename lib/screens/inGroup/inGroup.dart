@@ -2,19 +2,24 @@
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
+import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/auth.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'local_widgets/secondCard.dart';
+import 'local_widgets/eachUser.dart';
 import 'local_widgets/topCard.dart';
 
 class InGroup extends StatefulWidget {
   @override
   InGroupState createState() => InGroupState();
+
+  FirebaseUser user;
 }
 
 class InGroupState extends State<InGroup> {
@@ -71,6 +76,17 @@ class InGroupState extends State<InGroup> {
       ),
     );
   }
+  void _UserList(){
+    GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserList(
+          groupId: group.id,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +128,16 @@ class InGroupState extends State<InGroup> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
+              child: Text(
+                "Lista",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => _UserList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: RaisedButton(
               child: Text("Skopiuj id grupy."),
               onPressed: () => _copyGroupId(context),
               color: Theme.of(context).canvasColor,
@@ -131,6 +157,10 @@ class InGroupState extends State<InGroup> {
               onPressed: () => _leaveGroup(context),
               color: Theme.of(context).canvasColor,
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            //child: ThirdCard(),
           ),
         ],
       ),

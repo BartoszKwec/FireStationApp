@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/eventModel.dart';
+import 'package:fire_station_inz_app/models/groupModel.dart';
+import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/reviewModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -419,6 +421,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'accountCreated': Timestamp.now(),
         'notifToken': user.notifToken,
         'uid' : user.uid,
+        'photoUrl': user.photoUrl,
+        'rank': user.rank,
       });
       retVal = "success";
     } catch (e) {
@@ -442,6 +446,96 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+  Future<List<UserModel>> getUserList(List<String>members)async{
+    List<UserModel> retVal;
+    int index=0;
+    String uid;
+    for (var id in members) retVal.add(await getUser(uid));
+      uid=members[index];
+
+      retVal=getUser(uid) as List<UserModel>;
+      index++;
+
+    return retVal;
+  }
+  Future<List<UserModel>> getUsers(List<String> members) async {
+    List<UserModel> retVal = [];
+    for (var uid in members) {
+      retVal.add(await getUser(uid));
+    }
+    return retVal;
+  }
+  Future<List<MembersModel>> getMembers(String groupId)async{
+    List<MembersModel> retVal = List();
+
+    try {
+      QuerySnapshot query = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("members")
+          .getDocuments();
+
+      query.documents.forEach((element) {
+        retVal.add(MembersModel.fromDocumentSnapshot(doc: element));
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+
+
+  }
+  Future<GroupModel> getGroup(String groupId)async {
+    GroupModel retVal;
+
+    try {
+      DocumentSnapshot _docSnapshot =
+      await _firestore.collection("groups").document(groupId).get();
+      retVal = GroupModel.fromDocumentSnapshot(doc: _docSnapshot);
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+  // Future<List<GroupModel>> getGroup2(String groupId)async{
+  //   List<GroupModel> retVal = List();
+  //
+  //   try {
+  //     DocumentSnapshot _docSnapshot =  (await _firestore
+  //         .collection("groups")
+  //
+  //         .document(groupId)
+  //
+  //         .get());
+  //
+  //
+  //   //retVal = GroupModel.fromDocumentSnapshot(doc: _docSnapshot);
+  //   } catch (e) {
+  //   print(e);
+  //   }
+  //   return retVal;
+  // }
+  // Future<List<String>> getMembersId(String groupId)async{
+  //   List<String> retVal = List();
+  //
+  //   try {
+  //     QuerySnapshot query = await _firestore
+  //         .collection("groups")
+  //         .document(groupId)
+  //         .collection("members")
+  //         .getDocuments();
+  //
+  //     query.documents.forEach((element) {
+  //       retVal.add(List<String>.fromDocumentSnapshot(doc: element));
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //   return retVal;
+  // }
   // //
   // Future <UserModel> getUserInfo(String uid) async{
   //   UserModel retVal = UserModel();
@@ -529,5 +623,23 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
     return retVal;
   }
+  // Future<List<MembersModel>> getMembers5(String groupId)async {
+  //   List<MembersModel> retVal = List();
+  //
+  //   try {
+  //     QuerySnapshot query = await _firestore
+  //         .collection("groups")
+  //         .document(groupId)
+  //         .getDocuments();
+  //
+  //     query.documents.forEach((element) {
+  //       retVal.add(MembersModel.fromDocumentSnapshot(doc: element));
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //   return retVal;
+  // }
 
-}
+  }
