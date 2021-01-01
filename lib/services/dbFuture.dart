@@ -336,6 +336,25 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+  Future<String>addRank(String uid,String rank)async{
+
+    String retVal = "error";
+
+    try {
+
+      await _firestore.collection("users").document(uid).updateData({
+        'rank': rank,
+      });
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+
+
+
+  }
 
   Future<EventModel> getCurrentEvent(String groupId, String eventId) async {
     EventModel retVal;

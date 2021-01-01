@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
+import 'package:fire_station_inz_app/screens/rank/rank.dart';
+import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'inGroup.dart';
 import 'local_widgets/eachUser.dart';
 
 Firestore _firestore = Firestore.instance;
@@ -22,10 +25,12 @@ class UserList extends StatefulWidget {
 }
 
 
+
 class _UserListState extends State<UserList> {
 
   Future<List<UserModel>> userModel;
   //List<UserModel> users;
+  UserModel _userRank;
 
   Future<List<UserModel>> getData() async {
     var model = await DBFuture().getGroup(widget.groupId);
@@ -36,10 +41,20 @@ class _UserListState extends State<UserList> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     userModel=getData();
-    // GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
-    // List<UserModel> users = await DBFuture().getUsers(groupModel.members);
+    GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
+    List<UserModel> users = await DBFuture().getUsers(groupModel.members);
     // print(groupModel.members);
 
+  }
+  void _goToRank(UserModel _userRank) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Rank(
+          userRank: _userRank,
+        ),
+      ),
+    );
   }
 
 
@@ -56,7 +71,16 @@ class _UserListState extends State<UserList> {
 
         )
         ),
-
+        // leading: BackButton(
+        //     color: Colors.black
+        // ),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.push(context,MaterialPageRoute(
+            builder: (context)=>OurRoot()
+          )
+          ),
+        ),
 
       ),
     body: FutureBuilder<List<UserModel>>(
@@ -118,7 +142,7 @@ class _UserListState extends State<UserList> {
                                       style: new TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 25.0)),
-                                  Text("Ranga: "),
+                                  Text((snapshot.data[index].rank=="")?("Ranga: brak rangi"):("Ranga: "+snapshot.data[index].rank)),
                                 ],
                               ),
                               Container(
@@ -126,7 +150,11 @@ class _UserListState extends State<UserList> {
 
                                 child: IconButton(
 
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _userRank=snapshot.data[index];
+                                      _goToRank(_userRank);
+                                    },
+
                                     color: Colors.blue,
                                     icon: Icon(Icons.person)
                                 ),
