@@ -6,6 +6,7 @@ import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/reviewModel.dart';
+import 'package:fire_station_inz_app/models/taskModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -355,6 +356,31 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
 
   }
+  Future<String>addTask(String uid,String contents, String priority, String authorEmail)async{
+    String retVal = "error";
+
+    try {
+      DocumentReference _docRef = await _firestore
+          .collection("users")
+
+          .document(uid)
+          .collection("tasks")
+          .add({
+        'authorEmail': authorEmail,
+        'priority': priority,
+        'contents': contents,
+
+      });
+
+
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+
+  }
 
   Future<EventModel> getCurrentEvent(String groupId, String eventId) async {
     EventModel retVal;
@@ -373,6 +399,56 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+  Future<TaskModel> getTask(String userId, String taskId) async{
+    TaskModel taskModel;
+
+    try {
+      DocumentSnapshot _docSnapshot =
+      await _firestore.collection("users").document(userId).collection("tasks").document(taskId).get();
+      taskModel = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
+    } catch (e) {
+      print(e);
+    }
+
+    return taskModel;
+
+  }
+  // Future<TaskModel> getTaskId(String userId) async{
+  //   TaskModel taskModel;
+  //
+  //   try {
+  //     DocumentSnapshot _docSnapshot =
+  //     await _firestore.collection("users").document(userId).collection("tasks").document().get();
+  //     taskModel = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //   return taskModel;
+  //
+  // }
+  // Future<List> getTasks(String userId) async{
+  //   List<TaskModel> taskList = [];
+  //
+  //   // QuerySnapshot querySnapshot = await Firestore.instance.collection("users").document(userId).collection("tasks").getDocuments();
+  //   // taskList = querySnapshot.documents.cast<TaskModel>();
+  //
+  //
+  //
+  //   try {
+  //     DocumentSnapshot _docSnapshot =
+  //     await _firestore.collection("users").document(userId).collection("tasks").document().get();
+  //     //taskList = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //
+  //
+  //   return taskList;
+  //
+  // }
+
 
   Future<String> finishedEvent(
       String groupId,
@@ -465,18 +541,18 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<List<UserModel>> getUserList(List<String>members)async{
-    List<UserModel> retVal;
-    int index=0;
-    String uid;
-    for (var id in members) retVal.add(await getUser(uid));
-      uid=members[index];
-
-      retVal=getUser(uid) as List<UserModel>;
-      index++;
-
-    return retVal;
-  }
+  // Future<List<UserModel>> getUserList(List<String>members)async{
+  //   List<UserModel> retVal;
+  //   int index=0;
+  //   String uid;
+  //   for (var id in members) retVal.add(await getUser(uid));
+  //     uid=members[index];
+  //
+  //     retVal=getUser(uid) as List<UserModel>;
+  //     index++;
+  //
+  //   return retVal;
+  // }
   Future<List<UserModel>> getUsers(List<String> members) async {
     List<UserModel> retVal = [];
     for (var uid in members) {
@@ -502,8 +578,25 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
 
     return retVal;
+  }
+  Future<List<TaskModel>> getTasks(String userId)async{
+    List<TaskModel> retVal = List();
 
+    try {
+      QuerySnapshot query = await _firestore
+          .collection("users")
+          .document(userId)
+          .collection("tasks")
+          .getDocuments();
 
+      query.documents.forEach((element) {
+        retVal.add(TaskModel.fromDocumentSnapshot(doc: element));
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
   }
   Future<GroupModel> getGroup(String groupId)async {
     GroupModel retVal;

@@ -139,6 +139,10 @@ class _RankState extends State<Rank> {
                           ),
                               (route) => false,
                         );
+                      } else {
+                        rankKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz dodać rangę!"),
+                        ));
                       }
                     }
                   ),

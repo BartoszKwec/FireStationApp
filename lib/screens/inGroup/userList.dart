@@ -4,6 +4,7 @@ import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/rank/rank.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
+import 'package:fire_station_inz_app/screens/task/task.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,7 @@ class _UserListState extends State<UserList> {
   Future<List<UserModel>> userModel;
   //List<UserModel> users;
   UserModel _userRank;
+  UserModel _userModel;
 
   Future<List<UserModel>> getData() async {
     var model = await DBFuture().getGroup(widget.groupId);
@@ -42,7 +44,7 @@ class _UserListState extends State<UserList> {
     super.didChangeDependencies();
     userModel=getData();
     GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
-    List<UserModel> users = await DBFuture().getUsers(groupModel.members);
+    //List<UserModel> users = await DBFuture().getUsers(groupModel.members);
     // print(groupModel.members);
 
   }
@@ -52,6 +54,16 @@ class _UserListState extends State<UserList> {
       MaterialPageRoute(
         builder: (context) => Rank(
           userRank: _userRank,
+        ),
+      ),
+    );
+  }
+  void _goToTask(UserModel _userModel) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Task(
+          userModel: _userModel,
         ),
       ),
     );
@@ -142,7 +154,7 @@ class _UserListState extends State<UserList> {
                                       style: new TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 25.0)),
-                                  Text((snapshot.data[index].rank=="")?("Ranga: brak rangi"):("Ranga: "+snapshot.data[index].rank)),
+                                  Text((snapshot.data[index].rank=="" ||snapshot.data[index].rank==null)?("Ranga: brak rangi"):("Ranga: "+snapshot.data[index].rank)),
                                 ],
                               ),
                               Container(
@@ -165,7 +177,10 @@ class _UserListState extends State<UserList> {
 
                                 child: IconButton(
 
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _userModel=snapshot.data[index];
+                                      _goToTask(_userModel);
+                                    },
                                     color: Colors.red,
                                     icon: Icon(Icons.event_note)
                                 ),

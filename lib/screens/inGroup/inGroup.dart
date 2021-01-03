@@ -2,6 +2,7 @@
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
+import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/auth.dart';
@@ -88,6 +89,18 @@ class InGroupState extends State<InGroup> {
       ),
     );
   }
+  void _TaskList(){
+    UserModel user = Provider.of<UserModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+
+        builder: (context) => TaskList(
+          userId: user.uid,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +147,16 @@ class InGroupState extends State<InGroup> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () => _UserList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: RaisedButton(
+              child: Text(
+                "Zadania",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => _TaskList(),
             ),
           ),
           Padding(
