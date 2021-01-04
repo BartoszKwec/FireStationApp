@@ -10,6 +10,8 @@ import 'package:fire_station_inz_app/services/dbFuture.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_responsive_screen/flutter_responsive_screen.dart';
 
 import 'inGroup.dart';
 import 'local_widgets/eachUser.dart';
@@ -23,13 +25,9 @@ class TaskList extends StatefulWidget {
 
   @override
   _TaskListState createState() => _TaskListState();
-
 }
 
-
-
 class _TaskListState extends State<TaskList> {
-
   //Future<List<UserModel>> userModel;
   //List<UserModel> users;
   // UserModel _userRank;
@@ -44,7 +42,7 @@ class _TaskListState extends State<TaskList> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    taskModel=getData();
+    taskModel = getData();
 
     //userModel=await DBFuture().getUser()
     //var model = await DBFuture().getTasks(widget.userId);
@@ -52,10 +50,7 @@ class _TaskListState extends State<TaskList> {
     //GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
     //List<UserModel> users = await DBFuture().getUsers(groupModel.members);
     // print(groupModel.members);
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,120 +58,140 @@ class _TaskListState extends State<TaskList> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.amber,
-          title: Text(
-              "Zadania",style: new TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-
-          )
-          ),
+          title: Text("Zadania",
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25.0,
+              )),
           // leading: BackButton(
           //     color: Colors.black
           // ),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.push(context,MaterialPageRoute(
-                builder: (context)=>OurRoot()
-            )
-            ),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => OurRoot())),
           ),
-
         ),
         body: FutureBuilder<List<TaskModel>>(
           //DBFuture().getUsers(groupModel.members)
           future: taskModel,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 shrinkWrap: true,
+                itemBuilder: (BuildContext context, index) => Container(
+                  //color: (index % 2 == 0) ? Colors.white : Colors.white70,
+                  //height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
 
-                itemBuilder: (BuildContext context, index) =>
-                    Container(
-                      //color: (index % 2 == 0) ? Colors.white : Colors.white70,
-                      height: 300,
-                      // width: MediaQuery
-                      //     .of(context)
-                      //     .size
-                      //     .width,
-                      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-
-                      child: Card(
-                        elevation: 10.0,
-
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: Container(
-                          // width: MediaQuery
-                          //     .of(context)
-                          //     .size
-                          //     .width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 10.0),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            // crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Card(
+                    elevation: 10.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-
-                              Row(
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                // verticalDirection: down,
+                              // Container(
+                              //   width: 55.0,
+                              //   height: 55.0,
+                              //   child: CircleAvatar(
+                              //     //backgroundImage: users[index].photoUrl,
+                              //     backgroundColor: Colors.red,
+                              //   ),
+                              // ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-
-                                  // Container(
-                                  //   width: 55.0,
-                                  //   height: 55.0,
-                                  //   child: CircleAvatar(
-                                  //     //backgroundImage: users[index].photoUrl,
-                                  //     backgroundColor: Colors.red,
-                                  //   ),
-                                  // ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Text(
+                                      "Autor : " +
+                                          snapshot.data[index].authorEmail,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.0)),
+                                  (snapshot.data[index].priority == "Niskie")
+                                      ? (Text("Priorytet: Niskie",
+                                          style: new TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20.0)))
+                                      : (snapshot.data[index].priority ==
+                                              "Ważne")
+                                          ? (Text("Priorytet: Ważne",
+                                              style: new TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20.0)))
+                                          : (Text("Priorytet: Średnie",
+                                              style: new TextStyle(
+                                                  color: Colors.orange,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20.0))),
+                                  (Text("Treść zadania : ",
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15.0))),
+                                  Container(
+                                      width:
+                                          (MediaQuery.of(context).size.width) /
+                                              1.1,
+                                      child: Text(
+                                        snapshot.data[index].contents,
+                                        //overflow: TextOverflow.ellipsis,
+                                        maxLines: 6,
+                                      )),
+                                  Container(
+                                    padding:EdgeInsets.symmetric(horizontal:  125, vertical: 10.0),
+                                    alignment: Alignment.centerRight,
+                                    //color: Colors.yellow,
+                                  child: Row(
                                     children: <Widget>[
-                                      Text("Autor : "+snapshot.data[index].authorEmail, style: new TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25.0)),
-                                      (snapshot.data[index].priority=="Niskie")?
-                                      (Text("Priorytet: Niskie", style: new TextStyle(color: Colors.green, fontSize: 20.0))):
-                                      (snapshot.data[index].priority=="Ważne")?
-                                      (Text("Priorytet: Ważne", style: new TextStyle(color: Colors.red, fontSize: 20.0))):
-                                      (Text("Priorytet: Średnie", style: new TextStyle(color: Colors.orange, fontSize: 20.0))),
-                                      Expanded(child: Text("Zadanie : "+snapshot.data[index].contents,overflow: TextOverflow.ellipsis, ))
-
+                                      IconButton(
+                                        iconSize: 35,
+                                        onPressed: () {},
+                                        color: Colors.green,
+                                        icon: Icon(Icons.check),
+                                        //alignment: Alignment.centerRight,
+                                      ),
+                                      IconButton(
+                                        iconSize: 35,
+                                        onPressed: () {},
+                                        color: Colors.red,
+                                        icon: Icon(Icons.clear),
+                                        //alignment: Alignment.centerRight,
+                                      ),
                                     ],
-
                                   ),
-
+                                  ),
                                 ],
-
                               ),
                             ],
                           ),
-
-                        ),
-
+                        ],
                       ),
-
                     ),
+                  ),
+                ),
               );
             }
-            return Center(child: CircularProgressIndicator(
-
-            ),
+            return Center(
+              child: CircularProgressIndicator(),
             );
           },
-        )
-    );
-
-
+        ));
   }
-
 }
-

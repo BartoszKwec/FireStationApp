@@ -150,10 +150,9 @@ class _UserListState extends State<UserList> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(snapshot.data[index].fullName,
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25.0)),
+                                  Text("Email: "+snapshot.data[index].email, style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                                  Text("Nazwa: "+snapshot.data[index].fullName,
+                                      style: new TextStyle(fontWeight: FontWeight.normal, fontSize: 20.0)),
                                   Text((snapshot.data[index].rank=="" ||snapshot.data[index].rank==null)?("Ranga: brak rangi"):("Ranga: "+snapshot.data[index].rank)),
                                 ],
                               ),

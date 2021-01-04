@@ -133,6 +133,16 @@ class InGroupState extends State<InGroup> {
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
               child: Text(
+                "Zdarzenie",
+                style: TextStyle(color: Colors.red),
+              ),
+              //onPressed: () => (),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: RaisedButton(
+              child: Text(
                 "Historia Eventów",
                 style: TextStyle(color: Colors.white),
               ),

@@ -39,6 +39,7 @@ dependencies:
   provider: ^4.3.2+3
   numberpicker: ^1.3.0
   shared_preferences: ^0.5.3+4
+  flutter_responsive_screen: ^1.0.0
 
 dev_dependencies:
   flutter_test:
