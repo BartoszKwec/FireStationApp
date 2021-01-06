@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,71 +18,65 @@ class DBFuture {
   Firestore _firestore = Firestore.instance;
   UserModel loggedInUser;
 
-
-
   FirebaseUser user;
 
   void inputData() async {
     final FirebaseUser userr = await auth.currentUser();
     final uuid = userr.uid;
-
   }
 
-  Future<DocumentSnapshot> getData() async{
+  Future<DocumentSnapshot> getData() async {
     var firebaseUser = await FirebaseAuth.instance.currentUser;
     return _firestore.collection("users").document(user.uid).get();
-
   }
 
-Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
-  String retVal = "error";
-  List<String> members = List();
-  List<String> tokens = List();
+  Future<String> createGroupBase(String groupName, FirebaseUser user2) async {
+    String retVal = "error";
+    List<String> members = List();
+    List<String> tokens = List();
 
-  try {
-    members.add(user2.uid);
-    //tokens.add(user.notifToken);
-    DocumentReference _docRef;
-    if (user != null) {
-      _docRef = await _firestore.collection("groups").add({
-        'name': groupName.trim(),
-        'leader': user2.uid,
-        'members': members,
-        'tokens': tokens,
-        'groupCreated': Timestamp.now(),
-        'nextEventId': "waiting",
-        'indexPickingEvent': 0
+    try {
+      members.add(user2.uid);
+      //tokens.add(user.notifToken);
+      DocumentReference _docRef;
+      if (user != null) {
+        _docRef = await _firestore.collection("groups").add({
+          'name': groupName.trim(),
+          'leader': user2.uid,
+          'members': members,
+          'tokens': tokens,
+          'groupCreated': Timestamp.now(),
+          'nextEventId': "waiting",
+          'indexPickingEvent': 0
+        });
+      } else {
+        _docRef = await _firestore.collection("groups").add({
+          'name': groupName.trim(),
+          'leader': user2.uid,
+          'members': members,
+          'groupCreated': Timestamp.now(),
+          'nextEventId': "waiting",
+          'indexPickingEvent': 0
+        });
+      }
+
+      await _firestore.collection("users").document(user2.uid).updateData({
+        'groupId': _docRef.documentID,
       });
-    } else {
-      _docRef = await _firestore.collection("groups").add({
-        'name': groupName.trim(),
-        'leader': user2.uid,
-        'members': members,
-        'groupCreated': Timestamp.now(),
-        'nextEventId': "waiting",
-        'indexPickingEvent': 0
-      });
+      addEventEmpty(_docRef.documentID);
+      retVal = "success";
+    } catch (e) {
+      print(e);
     }
 
-
-    await _firestore.collection("users").document(user2.uid).updateData({
-
-      'groupId': _docRef.documentID,
-    });
-    addEventEmpty(_docRef.documentID);
-    retVal = "success";
-  } catch (e) {
-    print(e);
+    return retVal;
   }
-
-  return retVal;
-
-}
-
 
   Future<String> createGroup(
       //FirebaseUser user
-      String groupName, FirebaseUser user, EventModel initialEvent) async {
+      String groupName,
+      FirebaseUser user,
+      EventModel initialEvent) async {
     // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
 
     //print(user.uid);
@@ -92,8 +85,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     List<String> tokens = List();
 
     //Future <UserModel> vall=getUser(user.uid);
-
-
 
     // user.uid= (await _firestore.collection("users").document(user.uid).get()) as String;
     //user.notifToken= (await _firestore.collection("user").document(user.notifToken).get()) as String;
@@ -130,9 +121,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         });
       }
 
-
       await _firestore.collection("users").document(user.uid).updateData({
-
         'groupId': _docRef.documentID,
       });
 
@@ -160,7 +149,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'members': FieldValue.arrayUnion(members),
         'tokens': FieldValue.arrayUnion(tokens),
       });
-
 
       await _firestore.collection("users").document(userModel.uid).updateData({
         'groupId': groupId.trim(),
@@ -190,7 +178,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'tokens': FieldValue.arrayRemove(tokens),
       });
 
-
       await _firestore.collection("users").document(userModel.uid).updateData({
         'groupId': null,
       });
@@ -207,7 +194,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
           .add({
@@ -220,7 +206,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
       //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
-
         "currentEventId": _docRef.documentID,
         "currentEventDue": event.dateCompleted,
       });
@@ -232,13 +217,13 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+
   Future<String> addEventEmpty(String groupId) async {
     String retVal = "error";
 
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
           .add({
@@ -251,7 +236,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
       //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
-
         "currentEventId": null,
         "currentEventDue": null,
       });
@@ -270,7 +254,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
           .add({
@@ -283,16 +266,15 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
       //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
-
         "nextEventId": _docRef.documentID,
         "nextEventDue": event.dateCompleted,
       });
 
       //adding a notification document
       DocumentSnapshot doc =
-      await _firestore.collection("groups").document(groupId).get();
-      createNotifications(
-          List<String>.from(doc.data["tokens"]) ?? [], event.name, event.author);
+          await _firestore.collection("groups").document(groupId).get();
+      createNotifications(List<String>.from(doc.data["tokens"]) ?? [],
+          event.name, event.author);
 
       retVal = "success";
     } catch (e) {
@@ -317,7 +299,6 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
         'dateCompleted': event.dateCompleted,
       });
 
-
       await _firestore.collection("groups").document(groupId).updateData({
         "currentEventId": _docRef.documentID,
         "currentEventDue": event.dateCompleted,
@@ -325,10 +306,9 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
       //adding a notification document
       DocumentSnapshot doc =
-
-      await _firestore.collection("groups").document(groupId).get();
-      createNotifications(
-          List<String>.from(doc.data["tokens"]) ?? [], event.name, event.author);
+          await _firestore.collection("groups").document(groupId).get();
+      createNotifications(List<String>.from(doc.data["tokens"]) ?? [],
+          event.name, event.author);
 
       retVal = "success";
     } catch (e) {
@@ -337,12 +317,11 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<String>addRank(String uid,String rank)async{
 
+  Future<String> addRank(String uid, String rank) async {
     String retVal = "error";
 
     try {
-
       await _firestore.collection("users").document(uid).updateData({
         'rank': rank,
       });
@@ -352,26 +331,23 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
 
     return retVal;
-
-
-
   }
-  Future<String>addTask(String uid,String contents, String priority, String authorEmail)async{
+
+  Future<String> addTask(
+      String uid, String contents, String priority, String authorEmail) async {
     String retVal = "error";
 
     try {
       DocumentReference _docRef = await _firestore
           .collection("users")
-
           .document(uid)
           .collection("tasks")
           .add({
+        'userUid': uid,
         'authorEmail': authorEmail,
         'priority': priority,
         'contents': contents,
-
       });
-
 
       retVal = "success";
     } catch (e) {
@@ -379,7 +355,19 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
 
     return retVal;
+  }
 
+  void DeleteTask(String userUid, String taskUid) async {
+    try {
+      await _firestore
+          .collection("users")
+          .document(userUid)
+          .collection("tasks")
+          .document(taskUid)
+          .delete();
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<EventModel> getCurrentEvent(String groupId, String eventId) async {
@@ -399,20 +387,25 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<TaskModel> getTask(String userId, String taskId) async{
+
+  Future<TaskModel> getTask(String userId, String taskId) async {
     TaskModel taskModel;
 
     try {
-      DocumentSnapshot _docSnapshot =
-      await _firestore.collection("users").document(userId).collection("tasks").document(taskId).get();
+      DocumentSnapshot _docSnapshot = await _firestore
+          .collection("users")
+          .document(userId)
+          .collection("tasks")
+          .document(taskId)
+          .get();
       taskModel = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
     } catch (e) {
       print(e);
     }
 
     return taskModel;
-
   }
+
   // Future<TaskModel> getTaskId(String userId) async{
   //   TaskModel taskModel;
   //
@@ -449,27 +442,22 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
   //
   // }
 
-
   Future<String> finishedEvent(
-      String groupId,
-      String eventId,
-      String uid,
-      int rating,
-      String review,
-      ) async {
+    String groupId,
+    String eventId,
+    String uid,
+    int rating,
+    String review,
+  ) async {
     String retVal = "error";
     try {
       await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
-
           .document(eventId)
           .collection("reviews")
-
           .document(uid)
-
           .setData({
         'rating': rating,
         'review': review,
@@ -486,13 +474,10 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     try {
       DocumentSnapshot _docSnapshot = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
-
           .document(eventId)
           .collection("reviews")
-
           .document(uid)
           .get();
 
@@ -509,13 +494,12 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     String retVal = "error";
 
     try {
-
       await _firestore.collection("users").document(user.uid).setData({
         'fullName': user.fullName.trim(),
         'email': user.email.trim(),
         'accountCreated': Timestamp.now(),
         'notifToken': user.notifToken,
-        'uid' : user.uid,
+        'uid': user.uid,
         'photoUrl': user.photoUrl,
         'rank': user.rank,
       });
@@ -527,13 +511,12 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     return retVal;
   }
 
-
   Future<UserModel> getUser(String uid) async {
     UserModel retVal;
 
     try {
       DocumentSnapshot _docSnapshot =
-      await _firestore.collection("users").document(uid).get();
+          await _firestore.collection("users").document(uid).get();
       retVal = UserModel.fromDocumentSnapshot(doc: _docSnapshot);
     } catch (e) {
       print(e);
@@ -541,6 +524,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+
   // Future<List<UserModel>> getUserList(List<String>members)async{
   //   List<UserModel> retVal;
   //   int index=0;
@@ -560,7 +544,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
     return retVal;
   }
-  Future<List<MembersModel>> getMembers(String groupId)async{
+
+  Future<List<MembersModel>> getMembers(String groupId) async {
     List<MembersModel> retVal = List();
 
     try {
@@ -579,7 +564,8 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<List<TaskModel>> getTasks(String userId)async{
+
+  Future<List<TaskModel>> getTasks(String userId) async {
     List<TaskModel> retVal = List();
 
     try {
@@ -598,12 +584,13 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
-  Future<GroupModel> getGroup(String groupId)async {
+
+  Future<GroupModel> getGroup(String groupId) async {
     GroupModel retVal;
 
     try {
       DocumentSnapshot _docSnapshot =
-      await _firestore.collection("groups").document(groupId).get();
+          await _firestore.collection("groups").document(groupId).get();
       retVal = GroupModel.fromDocumentSnapshot(doc: _docSnapshot);
     } catch (e) {
       print(e);
@@ -611,6 +598,7 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
 
     return retVal;
   }
+
   // Future<List<GroupModel>> getGroup2(String groupId)async{
   //   List<GroupModel> retVal = List();
   //
@@ -693,13 +681,10 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     try {
       QuerySnapshot query = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
           .orderBy("dateCompleted", descending: true)
-
           .getDocuments();
-
 
       query.documents.forEach((element) {
         retVal.add(EventModel.fromDocumentSnapshot(doc: element));
@@ -717,15 +702,11 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     try {
       QuerySnapshot query = await _firestore
           .collection("groups")
-
           .document(groupId)
           .collection("events")
-
           .document(eventId)
           .collection("reviews")
-
           .getDocuments();
-
 
       query.documents.forEach((element) {
         retVal.add(ReviewModel.fromDocumentSnapshot(doc: element));
@@ -735,23 +716,23 @@ Future<String> createGroupBase(String groupName, FirebaseUser user2)async{
     }
     return retVal;
   }
-  // Future<List<MembersModel>> getMembers5(String groupId)async {
-  //   List<MembersModel> retVal = List();
-  //
-  //   try {
-  //     QuerySnapshot query = await _firestore
-  //         .collection("groups")
-  //         .document(groupId)
-  //         .getDocuments();
-  //
-  //     query.documents.forEach((element) {
-  //       retVal.add(MembersModel.fromDocumentSnapshot(doc: element));
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //
-  //   return retVal;
-  // }
+// Future<List<MembersModel>> getMembers5(String groupId)async {
+//   List<MembersModel> retVal = List();
+//
+//   try {
+//     QuerySnapshot query = await _firestore
+//         .collection("groups")
+//         .document(groupId)
+//         .getDocuments();
+//
+//     query.documents.forEach((element) {
+//       retVal.add(MembersModel.fromDocumentSnapshot(doc: element));
+//     });
+//   } catch (e) {
+//     print(e);
+//   }
+//
+//   return retVal;
+// }
 
-  }
+}

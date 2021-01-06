@@ -92,7 +92,7 @@ class _TaskState extends State<Task> {
                   ),
                   TextFormField(
                     controller: _taskController,
-                    maxLines: 6,
+                    maxLines: 10,
                     decoration: InputDecoration(
                       hintText: "Dodaj treść zadania.",
                     ),

@@ -1,6 +1,7 @@
 
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
+import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
@@ -101,6 +102,18 @@ class InGroupState extends State<InGroup> {
       ),
     );
   }
+  void _Emergency(){
+    GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+
+        builder: (context) => Emergency(
+          groupId: group.id,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +149,7 @@ class InGroupState extends State<InGroup> {
                 "Zdarzenie",
                 style: TextStyle(color: Colors.red),
               ),
-              //onPressed: () => (),
+              onPressed: () => (_Emergency()),
             ),
           ),
           Padding(

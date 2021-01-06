@@ -154,46 +154,44 @@ class _UserListState extends State<UserList> {
                                   Text("Nazwa: "+snapshot.data[index].fullName,
                                       style: new TextStyle(fontWeight: FontWeight.normal, fontSize: 20.0)),
                                   Text((snapshot.data[index].rank=="" ||snapshot.data[index].rank==null)?("Ranga: brak rangi"):("Ranga: "+snapshot.data[index].rank)),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5.0),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      children: <Widget>[
+                                        IconButton(
+
+                                            onPressed: () {
+                                              _userRank=snapshot.data[index];
+                                              _goToRank(_userRank);
+                                            },
+
+                                            color: Colors.blue,
+                                            icon: Icon(Icons.person)
+                                        ),
+                                        IconButton(
+
+                                            onPressed: () {
+                                              _userModel=snapshot.data[index];
+                                              _goToTask(_userModel);
+                                            },
+                                            color: Colors.red,
+                                            icon: Icon(Icons.event_note)
+                                        ),
+                                        IconButton(
+
+                                            onPressed: () {},
+                                            color: Colors.yellow,
+                                            icon: Icon(Icons.email)
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
                                 ],
                               ),
-                              Container(
-                                alignment: Alignment.centerRight,
 
-                                child: IconButton(
-
-                                    onPressed: () {
-                                      _userRank=snapshot.data[index];
-                                      _goToRank(_userRank);
-                                    },
-
-                                    color: Colors.blue,
-                                    icon: Icon(Icons.person)
-                                ),
-
-                              ),
-                              Container(
-                                alignment: Alignment.centerRight,
-
-                                child: IconButton(
-
-                                    onPressed: () {
-                                      _userModel=snapshot.data[index];
-                                      _goToTask(_userModel);
-                                    },
-                                    color: Colors.red,
-                                    icon: Icon(Icons.event_note)
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerRight,
-
-                                child: IconButton(
-
-                                    onPressed: () {},
-                                    color: Colors.yellow,
-                                    icon: Icon(Icons.email)
-                                ),
-                              ),
 
 
 
