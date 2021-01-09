@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_responsive_screen/flutter_responsive_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'inGroup.dart';
 import 'local_widgets/eachUser.dart';
@@ -187,10 +188,11 @@ class _TaskListState extends State<TaskList> {
                                             )),
                                         Container(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 125, vertical: 10.0),
+                                              horizontal: 10, vertical: 10.0),
                                           alignment: Alignment.centerRight,
                                           //color: Colors.yellow,
                                           child: Row(
+                                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: <Widget>[
                                               IconButton(
                                                 iconSize: 35,
@@ -206,6 +208,40 @@ class _TaskListState extends State<TaskList> {
                                                   userUid=snapshot.data[index].userUid;
                                                   taskUid=snapshot.data[index].id;
                                                   _goToDeleteTask(userUid, taskUid);
+                                                },
+                                                color: Colors.red,
+                                                icon: Icon(Icons.clear),
+                                                //alignment: Alignment.centerRight,
+                                              ),
+                                              IconButton(
+                                                iconSize: 35,
+                                                onPressed: () {
+                                                  return Alert(context: context,
+                                                      title: "Usuwanie zadania",
+                                                      desc:"Czy napewno chcesz usunąć zadanie?",
+                                                      buttons: [
+                                                        DialogButton(
+                                                          child: Text("Tak",
+                                                              style: new TextStyle(
+                                                                  fontWeight: FontWeight.normal,
+                                                                  fontSize: 20.0,
+                                                              color: Colors.red)),
+                                                          onPressed: (){
+                                                            DBFuture().DeleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
+                                                            Navigator.pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) => TaskList(
+                                                                  userId: snapshot.data[index].userUid,
+                                                                ),
+                                                              ),
+                                                                  (route) => false,
+                                                            );
+                                                          },
+                                                        )
+                                                      ]
+                                                  )
+                                                      .show();
                                                 },
                                                 color: Colors.red,
                                                 icon: Icon(Icons.clear),

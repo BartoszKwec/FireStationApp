@@ -25,7 +25,7 @@ class OurAddEvent extends StatefulWidget {
   final bool onError;
   final String groupName;
   final UserModel currentUser;
-  final UserModel userModel;
+  //final UserModel userModel;
 
 
   OurAddEvent({
@@ -33,7 +33,7 @@ class OurAddEvent extends StatefulWidget {
     this.onError,
     this.groupName,
     this.currentUser,
-    this.userModel
+    //this.userModel
   });
   @override
   _OurAddEventState createState() => _OurAddEventState();
@@ -92,21 +92,23 @@ class _OurAddEventState extends State<OurAddEvent> {
   }
 
 
-  void _addEvent(BuildContext context, String groupName, EventModel event) async {
+  void _addEvent(BuildContext context,UserModel userModel, String groupName, EventModel event) async {
     String _returnString;
-    final FirebaseUser user = await auth1.currentUser();
-    final uid = user.uid;
-    UserModel _currentUser = widget.userModel;
-     //print(widget.userModel.notifToken);
+    // final FirebaseUser user = await auth1.currentUser();
+    // final uid = user.uid;
+    //UserModel _currentUser = widget.userModel;
+     print("HAHDASHDAHSDHASHDAS");
+    print("HAHDASHDAHSDHASHDAS"+ widget.currentUser.notifToken);
 
 
     if (_selectedDate.isAfter(DateTime.now().add(Duration(days: 1)))) {
       if (widget.onGroupCreation) {
         // print("boook addd widget.currentUser.uid");
         // print(widget.currentUser.uid);
-
-
-        _returnString = await DBFuture().createGroup(groupName, user, event);
+        print("tu tu tu ");
+        print(widget.currentUser.uid);
+        //user
+        _returnString = await DBFuture().createGroup(groupName,widget.currentUser, event);
         //_returnString = await DBFuture().createGroup(groupName, user,event);
 
       } else if (widget.onError) {
@@ -249,7 +251,7 @@ class _OurAddEventState extends State<OurAddEvent> {
                         event.length = int.parse(_lengthController.text);
                         event.dateCompleted = Timestamp.fromDate(_selectedDate);
 
-                        _addEvent(context, widget.groupName, event);
+                        _addEvent(context,widget.currentUser, widget.groupName, event);
                       }
                     },
                   ),

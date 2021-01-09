@@ -1,4 +1,5 @@
 
+import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyAlert.dart';
@@ -20,7 +21,9 @@ class _EmergencyState extends State<Emergency> {
   final emergencyKey = GlobalKey<ScaffoldState>();
   TextEditingController _placeController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+  String aaaa;
 
+EmergencyModel emergencyModel;
   String _dropdownValue;
   AuthModel _authModel;
 
@@ -29,6 +32,16 @@ class _EmergencyState extends State<Emergency> {
     _authModel = Provider.of<AuthModel>(context);
     super.didChangeDependencies();
   }
+  void _emergencyCreate(EmergencyModel emergencyModel, String groupId) {
+    DBFuture().createEmergency(groupId, emergencyModel);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OurRoot(),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,19 +180,25 @@ class _EmergencyState extends State<Emergency> {
                       ),
                     ),
                     onPressed: () {
-                      if (_dropdownValue != null) {
-
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OurRoot(),
-                          ),
-                              (route) => false,
-                        );
-                      } else {
+                      EmergencyModel emergency = EmergencyModel();
+                      if (_placeController.text == "") {
                         emergencyKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Musisz uzupełnic informację"),
+                          content: Text("Musisz dodać miejsce zdarzenia"),
                         ));
+                      } else if (_descriptionController.text == "") {
+                        emergencyKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz dodać opis"),
+                        ));
+                      } else if (_dropdownValue== null){
+                        emergencyKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Musisz uzupełnic informację o poszkodowanych"),
+                        ));
+                      }else {
+                        emergency.place = _placeController.text;
+                        emergency.description = _descriptionController.text;
+                        emergency.injured=_dropdownValue;
+
+                        _emergencyCreate(emergency, widget.groupId);
                       }
                     },
                   ),
@@ -214,6 +233,37 @@ class _EmergencyState extends State<Emergency> {
                       }
                     },
                   ),
+                  // RaisedButton(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 80),
+                  //     child: Text(
+                  //       "Testt2",
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 20.0,
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   onPressed: () {
+                  //     if (_dropdownValue != null) {
+                  //
+                  //       Navigator.pushAndRemoveUntil(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => EmergencyWait(
+                  //             groupId: widget.groupId,
+                  //           ),
+                  //         ),
+                  //             (route) => false,
+                  //       );
+                  //     } else {
+                  //       emergencyKey.currentState.showSnackBar(SnackBar(
+                  //         content: Text("Musisz uzupełnic informację"),
+                  //       ));
+                  //     }
+                  //   },
+                  // ),
                 ],
               ),
             ),

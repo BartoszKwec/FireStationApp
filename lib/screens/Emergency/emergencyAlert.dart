@@ -27,7 +27,7 @@ class EmergencyAlert extends StatefulWidget {
 }
 
 class _EmergencyAlertState extends State<EmergencyAlert> {
-  final rankKey = GlobalKey<ScaffoldState>();
+  final emergencyKey = GlobalKey<ScaffoldState>();
   TextEditingController _reviewController = TextEditingController();
   String _dropdownValue;
   AuthModel _authModel;
@@ -54,7 +54,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: rankKey,
+      key: emergencyKey,
       body: Column(
         children: <Widget>[
           Padding(
@@ -83,9 +83,96 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                   SizedBox(
                     height: 20.0,
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Miejsce zdarzenia: ",style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Opis: ",style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Liczba poszkodowanych: ",style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.0, vertical: 10.0),
+                        child: Text("Potrzebny czas na przybycie: ", style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ),
+                      DropdownButton<String>(
+                        value: _dropdownValue,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor),
+                        underline: Container(
+                          height: 2,
+                          color: Theme.of(context).canvasColor,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _dropdownValue = newValue;
+                          });
+                        },
+                        items: <String>["Na miejscu","~2 min.","~3 min.","~4 min.","~5 min.","~6 min.","~7 min.","~8 min.","~9 min.","+10 min."]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value,style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                            ),),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         child: RaisedButton(
@@ -101,19 +188,25 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                               ),
                             ),
                             onPressed: () {
+                              if (_dropdownValue != null) {
+                                _TaskList();
 
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  //builder: (context) => (),
-                                ),
-                                    (route) => false,
-                              );
-
-                            }
-
-                        ),
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    //builder: (context) => (),
+                                  ),
+                                      (route) => false,
+                                );
+                              } else {
+                                emergencyKey.currentState.showSnackBar(SnackBar(
+                                  content: Text("Musisz uzupełnic informację"),
+                                ));
+                              }
+                            },
+                            ),
                       ),
+
                       Container(
                        child: RaisedButton(
                             child: Padding(

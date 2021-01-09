@@ -26,7 +26,10 @@ class NoGroup extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CreateGroup(),
+          builder: (context) => CreateGroup(
+            userModel: _currentUser,
+          ),
+
         ),
       );
     }

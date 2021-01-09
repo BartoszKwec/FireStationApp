@@ -45,6 +45,7 @@ class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       key: taskKey,
       body: Column(
         children: <Widget>[

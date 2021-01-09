@@ -18,11 +18,12 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  void _goToAddEvent(BuildContext context, String groupName) async {
+  void _goToAddEvent(BuildContext context, String groupName, UserModel userModel) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => OurAddEvent(
+         currentUser: userModel,
           onGroupCreation: true,
           onError: false,
           groupName: groupName,
@@ -31,10 +32,12 @@ class _CreateGroupState extends State<CreateGroup> {
     );
   }
   void _createGroup(BuildContext context, String groupName) async {
+    print(widget.userModel.notifToken);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => OurAddEvent(
+          currentUser: widget.userModel,
           onGroupCreation: true,
           onError: false,
           groupName: groupName,
@@ -99,7 +102,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       ),
                     ),
                     onPressed: () =>
-                        _goToAddEvent(context, _groupNameController.text, ),
+                        _goToAddEvent(context, _groupNameController.text, widget.userModel ),
                   ),
                   RaisedButton(
                     child: Padding(

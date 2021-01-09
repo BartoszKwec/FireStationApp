@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
@@ -37,7 +38,7 @@ class DBFuture {
 
     try {
       members.add(user2.uid);
-      //tokens.add(user.notifToken);
+     // tokens.add(user.notifToken);
       DocumentReference _docRef;
       if (user != null) {
         _docRef = await _firestore.collection("groups").add({
@@ -73,13 +74,16 @@ class DBFuture {
   }
 
   Future<String> createGroup(
+
       //FirebaseUser user
       String groupName,
-      FirebaseUser user,
-      EventModel initialEvent) async {
-    // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
+      UserModel userModel,
 
-    //print(user.uid);
+      EventModel initialEvent) async {
+    //FirebaseUser user,
+    // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
+    print("jestem tutaj");
+    print(userModel.uid);
     String retVal = "error";
     List<String> members = List();
     List<String> tokens = List();
@@ -97,13 +101,13 @@ class DBFuture {
     // print(uuid);
 
     try {
-      members.add(user.uid);
-      //tokens.add(userModel.notifToken);
+      members.add(userModel.uid);
+      tokens.add(userModel.notifToken);
       DocumentReference _docRef;
-      if (user != null) {
+      if (userModel.notifToken != null) {
         _docRef = await _firestore.collection("groups").add({
-          'name': groupName.trim(),
-          'leader': user.uid,
+          'name': groupName, //tu i w else .trim()
+          'leader': userModel.uid,
           'members': members,
           'tokens': tokens,
           'groupCreated': Timestamp.now(),
@@ -112,8 +116,8 @@ class DBFuture {
         });
       } else {
         _docRef = await _firestore.collection("groups").add({
-          'name': groupName.trim(),
-          'leader': user.uid,
+          'name': groupName,
+          'leader': userModel.uid,
           'members': members,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
@@ -121,7 +125,7 @@ class DBFuture {
         });
       }
 
-      await _firestore.collection("users").document(user.uid).updateData({
+      await _firestore.collection("users").document(userModel.uid).updateData({
         'groupId': _docRef.documentID,
       });
 
@@ -349,6 +353,49 @@ class DBFuture {
         'contents': contents,
       });
 
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+  Future<String> createEmergency(
+      String groupId, EmergencyModel emergencyModel) async {
+    //String place, String description, String injured
+    String retVal = "error";
+
+    try {
+      DocumentReference _docRef = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .add({
+        'place': emergencyModel.place,
+        'description': emergencyModel.description,
+        'injured': emergencyModel.injured,
+        //'dataCreated': emergencyModel.dateCreated,
+      });
+      DocumentSnapshot doc = await _firestore.collection("groups").document(groupId).get();
+      createNotificationsEmergency(List<String>.from(doc.data["tokens"])?? [], emergencyModel.description, emergencyModel.place, emergencyModel.injured);
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+  Future<String> createNotificationsEmergency(
+      List<String> tokens, String description, String place, String injured) async {
+    String retVal = "error";
+
+    try {
+      await _firestore.collection("emergencies").add({
+        'description': description,
+        'place': place,
+        'injured': injured,
+        'tokens': tokens,
+      });
       retVal = "success";
     } catch (e) {
       print(e);
