@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/authModel.dart';
+import 'widgets/messaging_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +24,8 @@ class MyApp extends StatelessWidget {
         theme: OurTheme().buildTheme(),
         home: OurRoot(),
       ),
+      
     );
+ 
   }
 }

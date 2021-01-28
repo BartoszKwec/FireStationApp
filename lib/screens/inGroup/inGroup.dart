@@ -134,14 +134,19 @@ class InGroupState extends State<InGroup> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TopCard(),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(20.0),
+          //   child: TopCard(),
+          // ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: SecondCard(),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(20.0),
+            
+          //   child: MessagingWidget()
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(

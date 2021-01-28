@@ -33,6 +33,7 @@ EmergencyModel emergencyModel;
     super.didChangeDependencies();
   }
   void _emergencyCreate(EmergencyModel emergencyModel, String groupId) {
+    
     DBFuture().createEmergency(groupId, emergencyModel);
     Navigator.push(
       context,
