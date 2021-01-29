@@ -6,6 +6,7 @@ class EmergencyModel {
   String description;
   String injured;
   Timestamp dateCreated;
+  String author;
 
   EmergencyModel({
     this.id,
@@ -13,6 +14,7 @@ class EmergencyModel {
     this.description,
     this.injured,
     this.dateCreated,
+    this.author,
   });
 
   EmergencyModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
@@ -22,5 +24,6 @@ class EmergencyModel {
     description = doc.data["author"];
     injured = doc.data["injured"];
     dateCreated = doc.data['dateCreated'];
+    author= doc.data['author'];
   }
 }

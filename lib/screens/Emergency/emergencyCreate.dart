@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 
 class Emergency extends StatefulWidget {
   final String groupId;
+  final String userName;
 
-  Emergency({@required this.groupId});
+  Emergency({@required this.groupId, this.userName});
   @override
   _EmergencyState createState() => _EmergencyState();
 }
@@ -32,9 +33,9 @@ EmergencyModel emergencyModel;
     _authModel = Provider.of<AuthModel>(context);
     super.didChangeDependencies();
   }
-  void _emergencyCreate(EmergencyModel emergencyModel, String groupId) {
+  void _emergencyCreate(EmergencyModel emergencyModel, String groupId, String userName) {
     
-    DBFuture().createEmergency(groupId, emergencyModel);
+    DBFuture().createEmergency(groupId, emergencyModel, userName);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -199,7 +200,7 @@ EmergencyModel emergencyModel;
                         emergency.description = _descriptionController.text;
                         emergency.injured=_dropdownValue;
 
-                        _emergencyCreate(emergency, widget.groupId);
+                        _emergencyCreate(emergency, widget.groupId, widget.userName);
                       }
                     },
                   ),

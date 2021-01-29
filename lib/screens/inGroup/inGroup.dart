@@ -104,12 +104,14 @@ class InGroupState extends State<InGroup> {
   }
   void _Emergency(){
     GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    UserModel user = Provider.of<UserModel>(context, listen: false);
     Navigator.push(
       context,
       MaterialPageRoute(
 
         builder: (context) => Emergency(
           groupId: group.id,
+          userName: user.fullName,
         ),
       ),
     );

@@ -361,7 +361,7 @@ class DBFuture {
     return retVal;
   }
   Future<String> createEmergency(
-      String groupId, EmergencyModel emergencyModel) async {
+      String groupId, EmergencyModel emergencyModel, String author) async {
     //String place, String description, String injured
     String retVal = "error";
 
@@ -374,10 +374,11 @@ class DBFuture {
         'place': emergencyModel.place,
         'description': emergencyModel.description,
         'injured': emergencyModel.injured,
+        'author': author,
         //'dataCreated': emergencyModel.dateCreated,
       });
       DocumentSnapshot doc = await _firestore.collection("groups").document(groupId).get();
-      createNotificationsEmergency(List<String>.from(doc.data["tokens"])?? [], emergencyModel.description, emergencyModel.place, emergencyModel.injured);
+      createNotificationsEmergency(List<String>.from(doc.data["tokens"])?? [], emergencyModel.description, emergencyModel.place, emergencyModel.injured, author);
       retVal = "success";
     } catch (e) {
       print(e);
@@ -386,7 +387,7 @@ class DBFuture {
     return retVal;
   }
   Future<String> createNotificationsEmergency(
-      List<String> tokens, String description, String place, String injured) async {
+      List<String> tokens, String description, String place, String injured, String author) async {
     String retVal = "error";
 
     try {
@@ -395,6 +396,7 @@ class DBFuture {
         'place': place,
         'injured': injured,
         'tokens': tokens,
+        'author': author,
       });
       retVal = "success";
     } catch (e) {
