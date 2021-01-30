@@ -30,42 +30,43 @@ const database= admin.firestore();
 //     return admin.messaging().sendToDevice(token, alertLoad);
 // });
 
-// exports.checkForEventTransition = functions.pubsub.schedule('0 * * * *').onRun(async (context) => {
-//     const query = await database.collection("groups")
-//         .where("currentEventDue", '<=', admin.firestore.Timestamp.now())
-//         .get();
-//     query.forEach(async eachGroup => {
-//         var currentIndex = eachGroup.data()["indexPickingEvent"];
-//         var totalMembers = eachGroup.data()["members"].length;
-//         var nextIndex;
+exports.checkForEventTransition = functions.pubsub.schedule('0 * * * *').onRun(
+    async (_context) => {
+    const query = await database.collection("groups")
+        .where("currentEventDue", '<=', admin.firestore.Timestamp.now())
+        .get();
+    query.forEach(async eachGroup => {
+        var currentIndex = eachGroup.data()["indexPickingEvent"];
+        var totalMembers = eachGroup.data()["members"].length;
+        var nextIndex;
 
-//         if (currentIndex >= (totalMembers - 1)) {
-//             nextIndex = 0;
-//         } else {
-//             nextIndex = currentIndex + 1;
-//         }
+        if (currentIndex >= (totalMembers - 1)) {
+            nextIndex = 0;
+        } else {
+            nextIndex = currentIndex + 1;
+        }
 
-//         if ((eachGroup.data()["nextEventId"] !== null) || (eachGroup.data()["nextEventId"] !== "waiting")) {
-//             await database.doc('groups/' + eachGroup.id).update({
-//                 "currentEventDue": eachGroup.data()["nextEventDue"],
-//                 "currentEventId": eachGroup.data()["nextEventId"],
-//                 "nextEventId": "waiting",
-//                 "indexPickingEvent": nextIndex,
-//             })
-//         } else {
-//             await database.doc('groups/' + eachGroup.id).update({
-//                 "currentEventDue": "waiting",
-//                 "currentEventId": "waiting",
-//                 "nextEventId": "waiting",
-//                 "indexPickingEvent": nextIndex,
-//             })
-//         }
-//     })
-// })
+        if ((eachGroup.data()["nextEventId"] !== null) || (eachGroup.data()["nextEventId"] !== "waiting")) {
+            await database.doc('groups/' + eachGroup.id).update({
+                "currentEventDue": eachGroup.data()["nextEventDue"],
+                "currentEventId": eachGroup.data()["nextEventId"],
+                "nextEventId": "waiting",
+                "indexPickingEvent": nextIndex,
+            })
+        } else {
+            await database.doc('groups/' + eachGroup.id).update({
+                "currentEventDue": "waiting",
+                "currentEventId": "waiting",
+                "nextEventId": "waiting",
+                "indexPickingEvent": nextIndex,
+            })
+        }
+    })
+})
 
 
 exports.onCreateNotification = functions.firestore.document("/emergencies/{emergencieDoc}").onCreate(
-async (notifSnapshot, context) => { 
+async (notifSnapshot, _context) => { 
         
         
     var tokens = notifSnapshot.data()['tokens'];
@@ -92,3 +93,16 @@ async (notifSnapshot, context) => {
 
 
 });
+// exports.notifyUsers = functions.database.ref('/messages/{messageId}').onCreate(async (snapshot, context) => {
+//     const name = context.params.messageId;
+//     const message = snapshot.val().toString();
+//     const tokens = await getTokens();
+//     const payload = {
+//         notification: {
+//             title: New message from ${name},
+//             body: message,
+//         },
+//         tokens: tokens,
+//     };
+//     await admin.messaging().sendMulticast(payload);
+// })
