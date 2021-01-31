@@ -227,7 +227,7 @@ class _TaskListState extends State<TaskList> {
                                                                   fontSize: 20.0,
                                                               color: Colors.red)),
                                                           onPressed: (){
-                                                            DBFuture().DeleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
+                                                            DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
                                                             Navigator.pushAndRemoveUntil(
                                                               context,
                                                               MaterialPageRoute(

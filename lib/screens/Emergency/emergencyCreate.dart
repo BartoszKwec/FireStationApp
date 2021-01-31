@@ -2,18 +2,25 @@
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
+import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyAlert.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 class Emergency extends StatefulWidget {
   final String groupId;
   final String userName;
+  final String userGroupId;
 
-  Emergency({@required this.groupId, this.userName});
+
+  Emergency({@required this.groupId, this.userName, this.userGroupId});
   @override
   _EmergencyState createState() => _EmergencyState();
 }
@@ -23,6 +30,7 @@ class _EmergencyState extends State<Emergency> {
   TextEditingController _placeController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   String aaaa;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 EmergencyModel emergencyModel;
   String _dropdownValue;
@@ -33,8 +41,41 @@ EmergencyModel emergencyModel;
     _authModel = Provider.of<AuthModel>(context);
     super.didChangeDependencies();
   }
+  @override
+  void initState() {
+    super.initState();
+    var androidInitilize = new AndroidInitializationSettings('app_icon');
+    var iOSinitilize = new IOSInitializationSettings();
+    var initilizationsSettings =
+        new InitializationSettings(androidInitilize, iOSinitilize);
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initilizationsSettings,
+        onSelectNotification: notificationSelected);
+  }
+  Future notificationSelected(String userGroupId) async {
+  showDialog(
+    context: context,
+    builder: (context) =>  EmergencyAlert(groupId: userGroupId),
+
+  );
+}
+  Future _showNotification() async {
+  var androidDetails = new AndroidNotificationDetails(
+      "ID", "topic", "opis",
+      sound: RawResourceAndroidNotificationSound("aaa"),
+      playSound: true,
+      importance: Importance.Max,
+      priority: Priority.High);
+  var iSODetails = new IOSNotificationDetails();
+  var generalNotificationDetails =
+      new NotificationDetails(androidDetails, iSODetails);
+
+   await flutterLocalNotificationsPlugin.show(
+       2, "ALARM!", "Utworzyłeś alarm. Wszystkie osoby zostaną poinformowane.", 
+       generalNotificationDetails, payload: "ALARM!");
+}
+  
   void _emergencyCreate(EmergencyModel emergencyModel, String groupId, String userName) {
-    
     DBFuture().createEmergency(groupId, emergencyModel, userName);
     Navigator.push(
       context,
@@ -199,8 +240,9 @@ EmergencyModel emergencyModel;
                         emergency.place = _placeController.text;
                         emergency.description = _descriptionController.text;
                         emergency.injured=_dropdownValue;
-
+                        emergency.view=true;
                         _emergencyCreate(emergency, widget.groupId, widget.userName);
+                        _showNotification();
                       }
                     },
                   ),

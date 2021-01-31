@@ -1,4 +1,5 @@
 
+import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/taskModel.dart';
@@ -32,6 +33,11 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   String _dropdownValue;
   AuthModel _authModel;
 
+  Future<EmergencyModel> emergencyModel;
+  Future<EmergencyModel> getData()async{
+    var model = await DBFuture().getAlert(widget.groupId, alertId);
+  }
+
 
   @override
   void didChangeDependencies() {
@@ -54,14 +60,29 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.amber,
+          title: Text("",
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25.0,
+              )),
+          // leading: BackButton(
+          //     color: Colors.black
+          // ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => OurRoot())),
+          ),
+        ),
       key: emergencyKey,
       body: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: <Widget>[BackButton()],
-            ),
+            
           ),
           Spacer(),
           Padding(

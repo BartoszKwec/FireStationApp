@@ -7,6 +7,9 @@ class EmergencyModel {
   String injured;
   Timestamp dateCreated;
   String author;
+  bool view;
+  List<String> membersYes;
+  List<String> membersNo;
 
   EmergencyModel({
     this.id,
@@ -15,6 +18,9 @@ class EmergencyModel {
     this.injured,
     this.dateCreated,
     this.author,
+    this.view,
+    this.membersYes,
+    this.membersNo,
   });
 
   EmergencyModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
@@ -25,5 +31,8 @@ class EmergencyModel {
     injured = doc.data["injured"];
     dateCreated = doc.data['dateCreated'];
     author= doc.data['author'];
+    view= doc.data['view'];
+    membersYes = List<String>.from(doc.data["membersYes"]);
+    membersNo = List<String>.from(doc.data["membersNo"]);
   }
 }

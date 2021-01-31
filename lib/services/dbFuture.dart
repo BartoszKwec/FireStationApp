@@ -9,6 +9,7 @@ import 'package:fire_station_inz_app/models/reviewModel.dart';
 import 'package:fire_station_inz_app/models/taskModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +31,7 @@ class DBFuture {
     var firebaseUser = await FirebaseAuth.instance.currentUser;
     return _firestore.collection("users").document(user.uid).get();
   }
+  
 
   Future<String> createGroupBase(String groupName, FirebaseUser user2) async {
     String retVal = "error";
@@ -38,7 +40,7 @@ class DBFuture {
 
     try {
       members.add(user2.uid);
-     // tokens.add(user.notifToken);
+      // tokens.add(user.notifToken);
       DocumentReference _docRef;
       if (user != null) {
         _docRef = await _firestore.collection("groups").add({
@@ -78,7 +80,6 @@ class DBFuture {
       //FirebaseUser user
       String groupName,
       UserModel userModel,
-
       EventModel initialEvent) async {
     //FirebaseUser user,
     // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
@@ -360,6 +361,7 @@ class DBFuture {
 
     return retVal;
   }
+
   Future<String> createEmergency(
       String groupId, EmergencyModel emergencyModel, String author) async {
     //String place, String description, String injured
@@ -375,10 +377,21 @@ class DBFuture {
         'description': emergencyModel.description,
         'injured': emergencyModel.injured,
         'author': author,
+        'duringEmergency': emergencyModel.view,
         //'dataCreated': emergencyModel.dateCreated,
       });
-      DocumentSnapshot doc = await _firestore.collection("groups").document(groupId).get();
-      createNotificationsEmergency(List<String>.from(doc.data["tokens"])?? [], emergencyModel.description, emergencyModel.place, emergencyModel.injured, author);
+      await _firestore.collection("groups").document(groupId).updateData({
+        "duringEmergency": emergencyModel.view,
+      });
+
+      DocumentSnapshot doc =
+          await _firestore.collection("groups").document(groupId).get();
+      createNotificationsEmergency(
+          List<String>.from(doc.data["tokens"]) ?? [],
+          emergencyModel.description,
+          emergencyModel.place,
+          emergencyModel.injured,
+          author);
       retVal = "success";
     } catch (e) {
       print(e);
@@ -386,8 +399,9 @@ class DBFuture {
 
     return retVal;
   }
-  Future<String> createNotificationsEmergency(
-      List<String> tokens, String description, String place, String injured, String author) async {
+
+  Future<String> createNotificationsEmergency(List<String> tokens,
+      String description, String place, String injured, String author) async {
     String retVal = "error";
 
     try {
@@ -406,7 +420,7 @@ class DBFuture {
     return retVal;
   }
 
-  void DeleteTask(String userUid, String taskUid) async {
+  void deleteTask(String userUid, String taskUid) async {
     try {
       await _firestore
           .collection("users")
@@ -453,6 +467,22 @@ class DBFuture {
     }
 
     return taskModel;
+  }
+  Future<EmergencyModel> getAlert(String groupId, String alertId) async {
+    EmergencyModel emergencyModel;
+
+    try {
+      DocumentSnapshot _docSnapshot = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .get();
+      emergencyModel = EmergencyModel.fromDocumentSnapshot(doc: _docSnapshot);
+    } catch (e) {
+      print(e);
+    }
+
+    return emergencyModel;
   }
 
   // Future<TaskModel> getTaskId(String userId) async{
@@ -647,6 +677,7 @@ class DBFuture {
 
     return retVal;
   }
+  
 
   // Future<List<GroupModel>> getGroup2(String groupId)async{
   //   List<GroupModel> retVal = List();
@@ -765,6 +796,7 @@ class DBFuture {
     }
     return retVal;
   }
+
 // Future<List<MembersModel>> getMembers5(String groupId)async {
 //   List<MembersModel> retVal = List();
 //
@@ -783,5 +815,14 @@ class DBFuture {
 //
 //   return retVal;
 // }
+  Future<void> saveTokenToDatabase(String token) async {
+    // Assume user is logged in for this example
+
+    final FirebaseUser userr = await auth.currentUser();
+    String userId = userr.uid;
+    await _firestore.collection('users').document(userId).updateData({
+      'tokens': FieldValue.arrayUnion([token]),
+    });
+  }
 
 }

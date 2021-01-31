@@ -1,11 +1,14 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
+import 'package:fire_station_inz_app/screens/Emergency/emegencyScren.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
+import 'package:fire_station_inz_app/screens/task/task.dart';
 import 'package:fire_station_inz_app/services/auth.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,18 +21,39 @@ import 'local_widgets/eachUser.dart';
 import 'local_widgets/topCard.dart';
 
 class InGroup extends StatefulWidget {
+
+//bool group;
+ 
+
+
+  InGroup();
   @override
   InGroupState createState() => InGroupState();
+
+  
 
   FirebaseUser user;
 }
 
 class InGroupState extends State<InGroup> {
+Future<GroupModel> groupModel1;
+bool _isButtonDisabled=false;
+GroupModel groupModel2;
+bool view;
+
+Firestore _firestore = Firestore.instance;
+
   final key = new GlobalKey<ScaffoldState>();
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async{
     super.didChangeDependencies();
+    final FirebaseUser userr = await auth.currentUser();
+    //groupModel1=DBFuture().getGroup(widget.groupId);
+    //_checkEvent();
+    
+
   }
+ 
 
   void _signOut(BuildContext context) async {
     String _returnString = await Auth().signOut();
@@ -112,14 +136,41 @@ class InGroupState extends State<InGroup> {
         builder: (context) => Emergency(
           groupId: group.id,
           userName: user.fullName,
+          userGroupId: user.groupId,
         ),
       ),
     );
   }
+  void _emergencyScreen(){
+    GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    UserModel user = Provider.of<UserModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+
+        builder: (context) => EmergencyScreen(
+          group: group.duringEmergency,
+          groupId: group.id,
+          userName: user.fullName,
+          userGroupId: user.groupId,
+        ),
+      ),
+    );
+  }
+  // bool DuringEvent(){
+  //   GroupModel group = Provider.of<GroupModel>(context, listen: false);
+  //   if (group.duringEmergency=="false") {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+    
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       key: key,
       body: ListView(
         children: <Widget>[
@@ -149,21 +200,37 @@ class InGroupState extends State<InGroup> {
             
           //   child: MessagingWidget()
           // ),
+            
+          //   Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              
+          //     child: RaisedButton(
+          //     child: Text(
+          //       "Utwórz alarm",
+          //       style: TextStyle(color: Colors.red),
+          //     ),
+              
+          //     onPressed:  () => (_Emergency()),
+          //   ),
+            
+          // ),
+          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
               child: Text(
-                "Zdarzenie",
-                style: TextStyle(color: Colors.red),
+                "System Alarmów",
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () => (_Emergency()),
+              onPressed: () => _emergencyScreen(),
             ),
           ),
+          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
               child: Text(
-                "Historia Eventów",
+                "Historia wydarzeń",
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () => _goToEventHistory(),
@@ -220,4 +287,6 @@ class InGroupState extends State<InGroup> {
       ),
     );
   }
+
 }
+  

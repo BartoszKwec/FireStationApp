@@ -95,6 +95,7 @@ class LoggedIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserModel _userStream = Provider.of<UserModel>(context);
+    //GroupModel _group = Provider.of<GroupModel>(context);
     Widget retVal;
     if (_userStream != null) {
       if (_userStream.groupId != null) {

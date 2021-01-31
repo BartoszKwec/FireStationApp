@@ -95,7 +95,7 @@ class _DeleteTaskState extends State<DeleteTask> {
                         ),
                       ),
                       onPressed: () {
-                        DBFuture().DeleteTask(widget.userUid,widget.taskUid);
+                        DBFuture().deleteTask(widget.userUid,widget.taskUid);
 
                           Navigator.pushAndRemoveUntil(
                             context,
