@@ -4,6 +4,7 @@ import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emegencyScren.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
+import 'package:fire_station_inz_app/screens/Emergency/emergencyInGroup.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
@@ -137,6 +138,7 @@ Firestore _firestore = Firestore.instance;
           groupId: group.id,
           userName: user.fullName,
           userGroupId: user.groupId,
+         
         ),
       ),
     );
@@ -153,6 +155,22 @@ Firestore _firestore = Firestore.instance;
           groupId: group.id,
           userName: user.fullName,
           userGroupId: user.groupId,
+          groupAlertId:group.alertId,
+        ),
+      ),
+    );
+  }
+  void _emergencyInGroup(){
+    GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    UserModel user = Provider.of<UserModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+
+        builder: (context) => EmergencyInGroup(
+          
+          groupId: group.id,
+          
         ),
       ),
     );
@@ -206,11 +224,11 @@ Firestore _firestore = Firestore.instance;
               
           //     child: RaisedButton(
           //     child: Text(
-          //       "Utwórz alarm",
+          //       "Lista alarmów",
           //       style: TextStyle(color: Colors.red),
           //     ),
               
-          //     onPressed:  () => (_Emergency()),
+          //     onPressed:  () => (_emergencyInGroup()),
           //   ),
             
           // ),

@@ -3,7 +3,7 @@ import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
-import 'package:fire_station_inz_app/screens/Emergency/emergencyAlert.dart';
+import 'package:fire_station_inz_app/screens/Emergency/emergencyAlertHistory.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
@@ -55,7 +55,7 @@ EmergencyModel emergencyModel;
   Future notificationSelected(String userGroupId) async {
   showDialog(
     context: context,
-    builder: (context) =>  EmergencyAlert(groupId: userGroupId),
+    builder: (context) =>  EemergencyAlertHistory(groupId: userGroupId),
 
   );
 }
@@ -77,6 +77,7 @@ EmergencyModel emergencyModel;
   
   void _emergencyCreate(EmergencyModel emergencyModel, String groupId, String userName) {
     DBFuture().createEmergency(groupId, emergencyModel, userName);
+    DBFuture().createEmergencyHistory(groupId, emergencyModel, userName);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -264,7 +265,7 @@ EmergencyModel emergencyModel;
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EmergencyAlert(
+                            builder: (context) => EemergencyAlertHistory(
                               groupId: widget.groupId,
                             ),
                           ),

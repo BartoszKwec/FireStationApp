@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
@@ -15,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'emergencyAlert.dart';
+import 'EmergencyAlert.dart';
+import 'emergencyAlertHistory.dart';
 
 
 class EmergencyScreen extends StatefulWidget {
@@ -24,8 +26,9 @@ bool group;
 String groupId;
 String userName;
 String userGroupId;
+String groupAlertId;
 
-  EmergencyScreen({@required this.group, this.groupId, this.user, this.userGroupId, this.userName});
+  EmergencyScreen({@required this.group, this.groupAlertId, this.groupId, this.user, this.userGroupId, this.userName});
   @override
   EmergencyScreenState createState() => EmergencyScreenState();
 
@@ -41,19 +44,24 @@ bool _isButtonDisabledEnd;
 bool _isButtonDisabledAlert;
 GroupModel groupModel2;
 bool view;
+// Future<EmergencyModel> emergencyModel;
 
 Firestore _firestore = Firestore.instance;
-
+// Future<EmergencyModel> getData()async{
+//     return await DBFuture().getAlert(widget.groupId);
+//   }
   final key = new GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
     final FirebaseUser userr = await auth.currentUser();
+    // emergencyModel=getData();
     //groupModel1=DBFuture().getGroup(widget.groupId);
     //_checkEvent();
     
 
   }
+  
   
   void _checkEvent(BuildContext context)async{
    //GroupModel group = Provider.of<GroupModel>(context, listen: false);
@@ -98,6 +106,21 @@ Firestore _firestore = Firestore.instance;
     
           
   }
+   void _EmergencyAlertHistory(){
+    
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EemergencyAlertHistory(
+            groupId: widget.groupId,
+          ),
+        ),
+            (route) => false,
+      );
+    
+          
+  }
+
   // bool DuringEvent(){
   //   GroupModel group = Provider.of<GroupModel>(context, listen: false);
   //   if (group.duringEmergency=="false") {
@@ -157,10 +180,10 @@ Firestore _firestore = Firestore.instance;
               child: RaisedButton(
               child: Text(
                 "Historia alarmów",
-                style: TextStyle(color: Colors.red),
+                
               ),
               
-              // onPressed:  () => ,
+               onPressed:  () => _EmergencyAlertHistory(),
             ),
             
           ),

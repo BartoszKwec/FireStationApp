@@ -1,4 +1,3 @@
-
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
@@ -34,9 +33,9 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   AuthModel _authModel;
 
   Future<EmergencyModel> emergencyModel;
-  Future<EmergencyModel> getData()async{
-    var model = await DBFuture().getAlert(widget.groupId, alertId);
-  }
+  // Future<EmergencyModel> getData()async{
+  //   var model = await DBFuture().getAlert(widget.groupId, alertId);
+  // }
 
 
   @override

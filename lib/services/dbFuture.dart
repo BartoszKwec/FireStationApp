@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
@@ -361,29 +360,58 @@ class DBFuture {
 
     return retVal;
   }
-
-  Future<String> createEmergency(
-      String groupId, EmergencyModel emergencyModel, String author) async {
-    //String place, String description, String injured
-    String retVal = "error";
-
-    try {
-      DocumentReference _docRef = await _firestore
+  Future<String>createEmergencyHistory(
+      String groupId, EmergencyModel emergencyModel, String author)async{
+        String retVal = "error";
+        try{
+          DocumentReference _docRef = await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("emergencies")
+          .collection("emergenciesHistory")
           .add({
+         
         'place': emergencyModel.place,
         'description': emergencyModel.description,
         'injured': emergencyModel.injured,
         'author': author,
         'duringEmergency': emergencyModel.view,
         //'dataCreated': emergencyModel.dateCreated,
+
+        
+      });
+        }catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+
+  Future<String> createEmergency(
+      String groupId, EmergencyModel emergencyModel, String author) async {
+    //String place, String description, String injured
+    String retVal = "error";
+    //DocumentReference _docRef;
+    try {
+      DocumentReference _docRef = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .add({
+         
+        'place': emergencyModel.place,
+        'description': emergencyModel.description,
+        'injured': emergencyModel.injured,
+        'author': author,
+        'duringEmergency': emergencyModel.view,
+        //'dataCreated': emergencyModel.dateCreated,
+        
+        
       });
       await _firestore.collection("groups").document(groupId).updateData({
         "duringEmergency": emergencyModel.view,
+        "alertsId": _docRef.documentID,
       });
-
+     
       DocumentSnapshot doc =
           await _firestore.collection("groups").document(groupId).get();
       createNotificationsEmergency(
@@ -468,7 +496,26 @@ class DBFuture {
 
     return taskModel;
   }
-  Future<EmergencyModel> getAlert(String groupId, String alertId) async {
+  Future<List<EmergencyModel>> getAlert(String groupId) async {
+    List<EmergencyModel> emergencyModel = List();
+
+    try {
+      QuerySnapshot query = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .getDocuments();
+
+      query.documents.forEach((element) {
+        emergencyModel.add(EmergencyModel.fromDocumentSnapshot(doc: element));
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return emergencyModel;
+  }
+Future<EmergencyModel> getAlert1(String groupId) async {
     EmergencyModel emergencyModel;
 
     try {
@@ -476,15 +523,25 @@ class DBFuture {
           .collection("groups")
           .document(groupId)
           .collection("emergencies")
-          .get();
-      emergencyModel = EmergencyModel.fromDocumentSnapshot(doc: _docSnapshot);
+          .document().get();
+
+
+        emergencyModel=(EmergencyModel.fromDocumentSnapshot(doc: _docSnapshot));
+
     } catch (e) {
       print(e);
     }
+    
 
     return emergencyModel;
   }
-
+  // Future<List<EmergencyModel>>getAlerts(List<String> id)async{
+  //     List<EmergencyModel> retVal = [];
+  //     for(var uid in id){
+  //       retVal.add(await getAlert1(uid));
+  //     }
+  //     return retVal;
+  //   }
   // Future<TaskModel> getTaskId(String userId) async{
   //   TaskModel taskModel;
   //
@@ -603,6 +660,21 @@ class DBFuture {
 
     return retVal;
   }
+  Future<UserModel> getAlertId(String alertId, String groupId) async {
+    UserModel retVal;
+
+    try {
+      DocumentSnapshot _docSnapshot =
+          await _firestore.collection("group").document(groupId).
+          collection("emergencies").document(alertId).
+          get();
+      retVal = UserModel.fromDocumentSnapshot(doc: _docSnapshot);
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
 
   // Future<List<UserModel>> getUserList(List<String>members)async{
   //   List<UserModel> retVal;
@@ -656,6 +728,25 @@ class DBFuture {
 
       query.documents.forEach((element) {
         retVal.add(TaskModel.fromDocumentSnapshot(doc: element));
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+  Future<List<EmergencyModel>> getAlertsHistory(String groupId) async {
+    List<EmergencyModel> retVal = List();
+
+    try {
+      QuerySnapshot query = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergenciesHistory")
+          .getDocuments();
+
+      query.documents.forEach((element) {
+        retVal.add(EmergencyModel.fromDocumentSnapshot(doc: element));
       });
     } catch (e) {
       print(e);
