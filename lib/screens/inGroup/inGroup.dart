@@ -1,10 +1,10 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emegencyScren.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyInGroup.dart';
+import 'package:fire_station_inz_app/screens/addEvent/addEvent.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
@@ -176,6 +176,19 @@ Firestore _firestore = Firestore.instance;
       ),
     );
   }
+  void _goToAddEvent(BuildContext context) {
+    UserModel _currentUser = Provider.of<UserModel>(context, listen: false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OurAddEvent(
+          onGroupCreation: false,
+          onError: true,
+          currentUser: _currentUser,
+        ),
+      ),
+    );
+  }
   // bool DuringEvent(){
   //   GroupModel group = Provider.of<GroupModel>(context, listen: false);
   //   if (group.duringEmergency=="false") {
@@ -206,14 +219,14 @@ Firestore _firestore = Firestore.instance;
               ),
             ],
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(20.0),
-          //   child: TopCard(),
-          // ),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: SecondCard(),
+            child: TopCard(),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(20.0),
+          //   child: SecondCard(),
+          // ),
           // Padding(
           //   padding: const EdgeInsets.all(20.0),
             
@@ -242,6 +255,16 @@ Firestore _firestore = Firestore.instance;
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () => _emergencyScreen(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: RaisedButton(
+              child: Text(
+                "Stwórz nowe wydarzenie",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => _goToAddEvent(context)
             ),
           ),
           
@@ -308,4 +331,3 @@ Firestore _firestore = Firestore.instance;
   }
 
 }
-  

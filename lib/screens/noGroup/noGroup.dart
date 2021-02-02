@@ -67,28 +67,30 @@ class NoGroup extends StatelessWidget {
             flex: 1,
           ),
           Padding(
-            padding: EdgeInsets.all(80.0),
+            padding: EdgeInsets.all(10.0),
             //child: Image.asset("assets/logo.png"),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "Witamy w aplikacji",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 40.0,
+                fontSize: 60.0,
                 color: Colors.grey[600],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(20.0),
             child: Text(
-              "Ponieważ nie należysz do klubu, możesz wybrać albo " +
-                  "dołączyć do klubu lub założyć klub.",
+              "Ponieważ nie należysz do żadnej grupy, "+
+              " możesz wybrać,  " +
+                  "dołącz do istniejącej grupy lub "+
+                  "załuż własną grupę.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10.0,
+                fontSize: 25.0,
                 color: Colors.grey[600],
               ),
             ),

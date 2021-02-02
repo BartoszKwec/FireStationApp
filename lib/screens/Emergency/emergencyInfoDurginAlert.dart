@@ -82,11 +82,13 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
             padding: const EdgeInsets.all(5.0),
             
           ),
-          Spacer(),
+          //Spacer(),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
             child: ShadowContainer(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -109,9 +111,10 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
 
 
                     child: Column(
+                      
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Miejsce zdarzenia: ",
+                        (Text("Miejsce zdarzenia: ",textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
@@ -125,7 +128,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                               .width) /
                               3,
                           child: Text(
-                            snapshot.data.place,
+                            snapshot.data.place,textAlign: TextAlign.center,
                             //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
@@ -145,7 +148,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Opis :",
+                        (Text("Opis :",textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
@@ -159,7 +162,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                               .width) /
                               3,
                           child: Text(
-                            snapshot.data.description,
+                            snapshot.data.description,textAlign: TextAlign.center,
                             //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
@@ -177,7 +180,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Liczba poszkodowanych :",
+                        (Text("Liczba poszkodowanych :",textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
@@ -191,7 +194,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                               .width) /
                               2,
                           child: Text(
-                            snapshot.data.injured,
+                            snapshot.data.injured,textAlign: TextAlign.center,
                             //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
@@ -212,7 +215,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Zakceptowało: "+ (snapshot.data.accept).toString(),
+                        (Text("Zakceptowało: "+ (snapshot.data.accept).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
@@ -229,7 +232,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Odrzóciło: "+ (snapshot.data.noAccept).toString(),
+                        (Text("Odrzóciło: "+ (snapshot.data.noAccept).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),

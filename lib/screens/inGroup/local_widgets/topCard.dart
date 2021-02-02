@@ -19,7 +19,7 @@ class TopCard extends StatefulWidget {
 }
 
 class _TopCardState extends State<TopCard> {
-  String _timeUntil = "loading...";
+  String _timeUntil = "ładowanie...";
   AuthModel _authModel;
   bool _doneWithEvent = true;
   Timer _timer;
@@ -30,7 +30,12 @@ class _TopCardState extends State<TopCard> {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (this.mounted) {
         setState(() {
-          _timeUntil = TimeLeft().timeLeft(_groupModel.currentEventDue.toDate());
+          if(_groupModel.currentEventDue!=null){
+              _timeUntil = TimeLeft().timeLeft(_groupModel.currentEventDue.toDate());
+          }else{
+            _timer.cancel();
+          }
+          
         });
       }
     });
@@ -121,12 +126,12 @@ class _TopCardState extends State<TopCard> {
         }
       } else {
         return Center(
-          child: Text("loading..."),
+          child: Text("ładowanie..."),
         );
       }
     } else {
       return Center(
-        child: Text("loading..."),
+        child: Text("ładowanie..."),
       );
     }
   }
@@ -158,7 +163,7 @@ class _TopCardState extends State<TopCard> {
             child: Row(
               children: <Widget>[
                 Text(
-                  "W terminie: ",
+                  "Start za: ",
                   style: TextStyle(
                     fontSize: 30,
                     color: Colors.grey[600],

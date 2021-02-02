@@ -32,19 +32,19 @@ class DBFuture {
   }
   
 
-  Future<String> createGroupBase(String groupName, FirebaseUser user2) async {
+  Future<String> createGroupBase(String groupName, FirebaseUser user) async {
     String retVal = "error";
     List<String> members = List();
     List<String> tokens = List();
 
     try {
-      members.add(user2.uid);
+      members.add(user.uid);
       // tokens.add(user.notifToken);
       DocumentReference _docRef;
       if (user != null) {
         _docRef = await _firestore.collection("groups").add({
           'name': groupName.trim(),
-          'leader': user2.uid,
+          'leader': user.uid,
           'members': members,
           'tokens': tokens,
           'groupCreated': Timestamp.now(),
@@ -54,7 +54,7 @@ class DBFuture {
       } else {
         _docRef = await _firestore.collection("groups").add({
           'name': groupName.trim(),
-          'leader': user2.uid,
+          'leader': user.uid,
           'members': members,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
@@ -62,7 +62,7 @@ class DBFuture {
         });
       }
 
-      await _firestore.collection("users").document(user2.uid).updateData({
+      await _firestore.collection("users").document(user.uid).updateData({
         'groupId': _docRef.documentID,
       });
       addEventEmpty(_docRef.documentID);
