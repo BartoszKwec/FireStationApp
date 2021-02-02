@@ -56,7 +56,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
       appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.amber,
-          title: Text("",
+          title: Text("Trwający alarm",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,
@@ -78,13 +78,13 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
-              Icon(
-                Icons.check_circle_outline,
-                color: Colors.green,
-                size: 60,
-              ),
-                            Padding(
-            padding: const EdgeInsets.all(20.0),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            
+          ),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: ShadowContainer(
               child: Column(
                 children: <Widget>[
@@ -94,7 +94,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                       Text("Alarm!", style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 35.0,
                       ),
                       ),
                     ],
@@ -105,103 +105,147 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                    child: Row(
+                    
+
+
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Miejsce zdarzenia: "+ snapshot.data.place,style: TextStyle(
-                          color: Colors.black,
+                        (Text("Miejsce zdarzenia: ",
+                      style: new TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
-                        ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        
+                          fontSize: 20.0))),
                         Container(
+                          padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
                           width:
-                        (MediaQuery
-                            .of(context)
-                            .size
-                            .width) /
-                            1.1,
-                          child: Text("Opis: "+ snapshot.data.description,style: TextStyle(
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .width) /
+                              3,
+                          child: Text(
+                            snapshot.data.place,
+                            //overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                          style: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           fontSize: 15.0,
-                          // overflow: 
-                          // maxLines: 10,
-                        ),
                         ),
                         ),
                         
+                          ),
                       ],
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Liczba poszkodowanych: "+ snapshot.data.injured,style: TextStyle(
-                          color: Colors.black,
+                        (Text("Opis :",
+                      style: new TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 20.0))),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                          width:
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .width) /
+                              1,
+                          child: Text(
+                            snapshot.data.description,
+                            //overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                          style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
                           fontSize: 15.0,
-                        ),
-                        ),
+                        ),)
+                          ),
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 10.0),
-                        child: Text("Potrzebny czas na przybycie: ", style: TextStyle(
-                          color: Colors.black,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        (Text("Liczba poszkodowanych :",
+                      style: new TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 20.0))),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                        horizontal: 5.0, vertical: 1.0),
+                          width:
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .width) /
+                              4,
+                          child: Text(
+                            snapshot.data.injured,
+                            //overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                          style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
                           fontSize: 15.0,
-                        ),
-                        ),
-                      ),
-                      DropdownButton<String>(
-                        value: _dropdownValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
-                        underline: Container(
-                          height: 2,
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _dropdownValue = newValue;
-                          });
-                        },
-                        items: <String>["Na miejscu","~2 min.","~3 min.","~4 min.","~5 min.","~6 min.","~7 min.","~8 min.","~9 min.","+10 min."]
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value,style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
-                            ),),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                        ),)
+                          ),
+                      ],
+                    ),
                   ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: <Widget>[
+                  //     Container(
+                  //       padding: EdgeInsets.symmetric(
+                  //           horizontal: 5.0, vertical: 10.0),
+                  //       child: Text("Potrzebny czas na przybycie: ", style: TextStyle(
+                  //         color: Colors.black,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 15.0,
+                  //       ),
+                  //       ),
+                  //     ),
+                      // DropdownButton<String>(
+                      //   value: _dropdownValue,
+                      //   icon: Icon(Icons.arrow_downward),
+                      //   iconSize: 24,
+                      //   elevation: 16,
+                      //   style: TextStyle(
+                      //       color: Theme.of(context).secondaryHeaderColor),
+                      //   underline: Container(
+                      //     height: 2,
+                      //     color: Theme.of(context).canvasColor,
+                      //   ),
+                      //   onChanged: (String newValue) {
+                      //     setState(() {
+                      //       _dropdownValue = newValue;
+                      //     });
+                      //   },
+                      //   items: <String>["Na miejscu","~2 min.","~3 min.","~4 min.","~5 min.","~6 min.","~7 min.","~8 min.","~9 min.","+10 min."]
+                      //       .map<DropdownMenuItem<String>>((String value) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: value,
+                      //       child: Text(value,style: TextStyle(
+                      //         color: Colors.black,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 15.0,
+                      //       ),),
+                      //     );
+                      //   }).toList(),
+                      // ),
+                  //   ],
+                  // ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -219,21 +263,17 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                               ),
                             ),
                             onPressed: () {
-                              if (_dropdownValue != null) {
-                                
+                             
+                                DBFuture().emergencyAccept(widget.groupId, widget.alertId);
 
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    //builder: (context) => (),
+                                    builder: (context) => OurRoot(),
                                   ),
                                       (route) => false,
                                 );
-                              } else {
-                                emergencyKey.currentState.showSnackBar(SnackBar(
-                                  content: Text("Musisz uzupełnic informację"),
-                                ));
-                              }
+
                             },
                             ),
                       ),
@@ -252,12 +292,12 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                               ),
                             ),
                             onPressed: () {
-
+                              DBFuture().emergencyReject(widget.groupId,widget.alertId );
 
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  //builder: (context) => TaskList(),
+                                  builder: (context) => OurRoot(),
                                 ),
                                     (route) => false,
                               );
@@ -269,12 +309,13 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                     ]
                   ),
 
-
-                ],
-              ),
+              
+                ]
+              )
             ),
-          ),
-            ];
+          )];
+      
+
           } else if (snapshot.hasError) {
             children = <Widget>[
               Icon(

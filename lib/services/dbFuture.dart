@@ -415,12 +415,67 @@ class DBFuture {
       print(e);
     }
   }
+  Future<String> emergencyAccept(String groupId, String emeId)async {
+    //String place, String description, String injured
+    String retVal = "error";
+    //DocumentReference _docRef;
+    
+    
+    try {
+      await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .document(emeId)
+          .updateData({
+            "accept": FieldValue.increment(1),
+         
+      });
+             
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+  Future<String> emergencyReject(String groupId, String emeId)async {
+    //String place, String description, String injured
+    String retVal = "error";
+    //DocumentReference _docRef;
+    
+    
+    try {
+      await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("emergencies")
+          .document(emeId)
+          .updateData({
+            "noAccept": FieldValue.increment(1),
+         
+      });
+             
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
 
   Future<String> createEmergency(
       String groupId, EmergencyModel emergencyModel, String author) async {
     //String place, String description, String injured
     String retVal = "error";
     //DocumentReference _docRef;
+    
+    
+      // await _firestore.collection("groups").document(groupId).updateData({
+      //   'members': FieldValue.arrayUnion(members),
+      //   'tokens': FieldValue.arrayUnion(tokens),
+    
+  
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
@@ -433,6 +488,9 @@ class DBFuture {
         'injured': emergencyModel.injured,
         'author': author,
         'duringEmergency': emergencyModel.view,
+        'accept' : 0,
+        'noAccept': 0,
+        
         //'dataCreated': emergencyModel.dateCreated,
         
         

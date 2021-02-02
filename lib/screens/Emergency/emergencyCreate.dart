@@ -247,37 +247,7 @@ EmergencyModel emergencyModel;
                       }
                     },
                   ),
-                  RaisedButton(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 80),
-                      child: Text(
-                        "Testt",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      if (_dropdownValue != null) {
-
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EemergencyAlertHistory(
-                              groupId: widget.groupId,
-                            ),
-                          ),
-                              (route) => false,
-                        );
-                      } else {
-                        emergencyKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Musisz uzupełnic informację"),
-                        ));
-                      }
-                    },
-                  ),
+                  
                   // RaisedButton(
                   //   child: Padding(
                   //     padding: EdgeInsets.symmetric(horizontal: 80),

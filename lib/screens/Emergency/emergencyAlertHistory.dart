@@ -137,9 +137,11 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
                                             "Autor : "+snapshot.data[index].author ,
                                             style: new TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 25.0)),
+                                                fontSize: 18.0)),
                                         
                                         Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 10.0),
                                             width:
                                             (MediaQuery
                                                 .of(context)
@@ -147,29 +149,59 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
                                                 .width) /
                                                 1.1,
                                             child: Text(
-                                             "asdas"
+                                             
+                                             "Miejsce: "+snapshot.data[index].place,style: new TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0)
                                               //overflow: TextOverflow.ellipsis,
                                              
-                                            )),
+                                            )
+                                            ),
+                                            (Text("Opis : ",
+                                            style: new TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0))),
+                                            Container(
+                                              
+                                            width:
+                                            (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width) /
+                                                1.1,
+                                            child: Text(
+                                             snapshot.data[index].description ,
+                                             maxLines: 10,
+                                             style: new TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 15.0)
+                                              //overflow: TextOverflow.ellipsis,
+                                             
+                                            )
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 5.0),
+                                            width:
+                                            (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width) /
+                                                1.1,
+                                            child: Text(
+                                             "Poszkodowani: "+snapshot.data[index].injured ,style: new TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0)
+                                              //overflow: TextOverflow.ellipsis,
+                                             
+                                            )
+                                            ),
                                         Container(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10.0),
+                                              horizontal: 0, vertical: 5.0),
                                           alignment: Alignment.centerRight,
                                           //color: Colors.yellow,
-                                          child: Row(
-                                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: <Widget>[
-                                              IconButton(
-                                                iconSize: 35,
-                                                onPressed: () {},
-                                                color: Colors.green,
-                                                icon: Icon(Icons.check),
-                                                //alignment: Alignment.centerRight,
-                                              ),
-                                              
-                                            
-                                            ],
-                                          ),
+                                          
                                         ),
                                       ],
                                     ),

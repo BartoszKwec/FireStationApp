@@ -87,9 +87,9 @@ Firestore _firestore = Firestore.instance;
       context,
       MaterialPageRoute(
 
-        builder: (context) => EmergencyInfoDuringAlert(
+        builder: (context) => EmergencyAlertInfo(
           groupId: widget.groupId,
-
+          alertId: widget.groupAlertId,
         ),
       ),
     );
@@ -199,15 +199,34 @@ Firestore _firestore = Firestore.instance;
               // ),
             ],
           ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 10.0),
+              child: _buildButtonDuringAlert(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 10.0),
+              child: _buildCounterButton(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 10.0),
+              child: _buildButtonActualAlert(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                                              horizontal: 0.0, vertical: 10.0),
+              child: _buildButtonEnd(),
+            ),
+            
+            
 
-            _buildButtonDuringAlert(),
-            _buildCounterButton(),
-
-            _buildButtonActualAlert(),
-            _buildButtonEnd(),
+            
+            
             
             Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 41.0, vertical: 10.0),
               
               child: RaisedButton(
               child: Text(
