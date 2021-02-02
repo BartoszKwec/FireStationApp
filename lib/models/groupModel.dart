@@ -13,7 +13,7 @@ class GroupModel {
   Timestamp currentEventDue;
   Timestamp nextEventDue;
   bool duringEmergency;
-  String alertId;
+  String alertsId;
 
   GroupModel({
     this.id,
@@ -27,7 +27,7 @@ class GroupModel {
     this.nextEventId,
     this.currentEventDue,
     this.nextEventDue,
-    this.alertId,
+    this.alertsId,
     this.duringEmergency,
   });
 
@@ -45,6 +45,6 @@ class GroupModel {
     currentEventDue = doc.data["currentEventDue"];
     nextEventDue = doc.data["nextEventDue"];
     duringEmergency = doc.data["duringEmergency"];
-    alertId = doc.data["alertId"];
+    alertsId = doc.data["alertsId"];
   }
 }

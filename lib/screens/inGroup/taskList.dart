@@ -266,7 +266,7 @@ class _TaskListState extends State<TaskList> {
                     fontWeight: FontWeight.bold,
                     fontSize: 25.0)),
               );
-            }
+            }else // tutaj zmiana
             return Center(
               child: CircularProgressIndicator(),
             );

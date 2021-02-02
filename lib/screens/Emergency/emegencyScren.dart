@@ -4,6 +4,7 @@ import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
+import 'package:fire_station_inz_app/screens/Emergency/emergencyInfoDurginAlert.dart';
 import 'package:fire_station_inz_app/screens/eventHistory/eventHistory.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/inGroup/userList.dart';
@@ -18,6 +19,7 @@ import 'package:provider/provider.dart';
 
 import 'EmergencyAlert.dart';
 import 'emergencyAlertHistory.dart';
+import 'emergencyEnd.dart';
 
 
 class EmergencyScreen extends StatefulWidget {
@@ -27,6 +29,7 @@ String groupId;
 String userName;
 String userGroupId;
 String groupAlertId;
+
 
   EmergencyScreen({@required this.group, this.groupAlertId, this.groupId, this.user, this.userGroupId, this.userName});
   @override
@@ -55,6 +58,8 @@ Firestore _firestore = Firestore.instance;
   void didChangeDependencies() async{
     super.didChangeDependencies();
     final FirebaseUser userr = await auth.currentUser();
+    // print("asdas");
+    // print(widget.groupAlertId);
     // emergencyModel=getData();
     //groupModel1=DBFuture().getGroup(widget.groupId);
     //_checkEvent();
@@ -77,6 +82,18 @@ Firestore _firestore = Firestore.instance;
     }
   }
 
+  void _EmergencyInfoAlert(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+
+        builder: (context) => EmergencyInfoDuringAlert(
+          groupId: widget.groupId,
+
+        ),
+      ),
+    );
+  }
   void _Emergency(){
     // GroupModel group = Provider.of<GroupModel>(context, listen: false);
     // UserModel user = Provider.of<UserModel>(context, listen: false);
@@ -99,6 +116,7 @@ Firestore _firestore = Firestore.instance;
         MaterialPageRoute(
           builder: (context) => EmergencyAlert(
             groupId: widget.groupId,
+            alertId: widget.groupAlertId,
           ),
         ),
             (route) => false,
@@ -119,6 +137,18 @@ Firestore _firestore = Firestore.instance;
       );
     
           
+  }
+  void _EmergencyEnd(){
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmergencyEnd(
+            groupId: widget.groupId,
+            
+          ),
+        ),
+            (route) => false,
+      );
   }
 
   // bool DuringEvent(){
@@ -169,8 +199,10 @@ Firestore _firestore = Firestore.instance;
               // ),
             ],
           ),
-          
+
+            _buildButtonDuringAlert(),
             _buildCounterButton(),
+
             _buildButtonActualAlert(),
             _buildButtonEnd(),
             
@@ -208,7 +240,7 @@ Firestore _firestore = Firestore.instance;
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: RaisedButton(
       child: new Text(
-        _isButtonDisabledAlert ? "Aktualnie nie ma alarmu" : "wyswietl alarm"
+        _isButtonDisabledAlert ? "Aktualnie nie ma alarmu" : "Dołącz do alarmu"
       ),
       onPressed: _isButtonDisabledAlert ? null : _EmergencyAlert,
     ),
@@ -223,7 +255,20 @@ Firestore _firestore = Firestore.instance;
       child: new Text(
         _isButtonDisabledEnd ? "Nie ma alarmu do zakończenia" : "Zakończ alarm"
       ),
-      onPressed: _isButtonDisabledEnd  ? null : _Emergency,
+      onPressed: _isButtonDisabledEnd  ? null : _EmergencyEnd,
+      ), 
+    );
+  }
+    Widget _buildButtonDuringAlert() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+      child: RaisedButton(
+      
+      
+      child: new Text(
+        _isButtonDisabledEnd ? "Aktualnie nie trwa alarm" : "Informacje ogólne o aktualnym  alarmie"
+      ),
+      onPressed: _isButtonDisabledEnd  ? null : _EmergencyInfoAlert,
       ), 
     );
   }

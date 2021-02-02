@@ -155,7 +155,8 @@ Firestore _firestore = Firestore.instance;
           groupId: group.id,
           userName: user.fullName,
           userGroupId: user.groupId,
-          groupAlertId:group.alertId,
+          groupAlertId:group.alertsId,
+          
         ),
       ),
     );

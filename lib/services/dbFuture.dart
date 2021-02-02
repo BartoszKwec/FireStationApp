@@ -112,7 +112,8 @@ class DBFuture {
           'tokens': tokens,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
-          'indexPickingEvent': 0
+          'indexPickingEvent': 0,
+          'duringEmergency': false,
         });
       } else {
         _docRef = await _firestore.collection("groups").add({
@@ -121,7 +122,8 @@ class DBFuture {
           'members': members,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
-          'indexPickingEvent': 0
+          'indexPickingEvent': 0,
+          'duringEmergency': false,
         });
       }
 
@@ -385,6 +387,34 @@ class DBFuture {
 
     return retVal;
   }
+  void deleteEmergencyAlert(String groupUid) async {
+
+    try {
+      // await _firestore
+      //     .collection("groups")
+      //     .document(groupUid)
+      //     .collection("emergencies")
+          
+      //     .delete();
+
+      await _firestore.collection('groups').document(groupUid).collection("emergencies").getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents){
+        ds.reference.delete();
+      };
+    });
+
+        
+       await _firestore.collection("groups").document(groupUid).updateData({
+        "duringEmergency": false,
+
+        
+      });
+
+
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<String> createEmergency(
       String groupId, EmergencyModel emergencyModel, String author) async {
@@ -515,7 +545,7 @@ class DBFuture {
 
     return emergencyModel;
   }
-Future<EmergencyModel> getAlert1(String groupId) async {
+Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
     EmergencyModel emergencyModel;
 
     try {
@@ -523,7 +553,7 @@ Future<EmergencyModel> getAlert1(String groupId) async {
           .collection("groups")
           .document(groupId)
           .collection("emergencies")
-          .document().get();
+          .document(alertId).get();
 
 
         emergencyModel=(EmergencyModel.fromDocumentSnapshot(doc: _docSnapshot));
