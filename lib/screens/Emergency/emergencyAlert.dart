@@ -52,13 +52,28 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
 
 
   Widget build(BuildContext context) {
-    return DefaultTextStyle(
+    return Scaffold(
+      appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.amber,
+          title: Text("",
+              style: new TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25.0,
+              )),
+          // leading: BackButton(
+          //     color: Colors.black
+          // ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => OurRoot())),
+          ),
+        ),
+     
       
-      style: Theme.of(context).textTheme.headline2,
-      textAlign: TextAlign.center,
-      
-      child: FutureBuilder<EmergencyModel>(
-        future: _emergencyModel, // a previously-obtained Future<String> or null
+      body: FutureBuilder<EmergencyModel>(
+        future: _emergencyModel, 
         builder: (BuildContext context, AsyncSnapshot<EmergencyModel> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
@@ -68,10 +83,197 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                 color: Colors.green,
                 size: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Text('Result: ${snapshot.data.author}', style: TextStyle(color: Colors.white,)),
-              )
+                            Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ShadowContainer(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text("Alarm!", style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Miejsce zdarzenia: "+ snapshot.data.place,style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        
+                        Container(
+                          width:
+                        (MediaQuery
+                            .of(context)
+                            .size
+                            .width) /
+                            1.1,
+                          child: Text("Opis: "+ snapshot.data.description,style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                          // overflow: 
+                          // maxLines: 10,
+                        ),
+                        ),
+                        ),
+                        
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Liczba poszkodowanych: "+ snapshot.data.injured,style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.0, vertical: 10.0),
+                        child: Text("Potrzebny czas na przybycie: ", style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                        ),
+                        ),
+                      ),
+                      DropdownButton<String>(
+                        value: _dropdownValue,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor),
+                        underline: Container(
+                          height: 2,
+                          color: Theme.of(context).canvasColor,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _dropdownValue = newValue;
+                          });
+                        },
+                        items: <String>["Na miejscu","~2 min.","~3 min.","~4 min.","~5 min.","~6 min.","~7 min.","~8 min.","~9 min.","+10 min."]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value,style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                            ),),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: RaisedButton(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: Text(
+                                "Akceptuj",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (_dropdownValue != null) {
+                                
+
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    //builder: (context) => (),
+                                  ),
+                                      (route) => false,
+                                );
+                              } else {
+                                emergencyKey.currentState.showSnackBar(SnackBar(
+                                  content: Text("Musisz uzupełnic informację"),
+                                ));
+                              }
+                            },
+                            ),
+                      ),
+
+                      Container(
+                       child: RaisedButton(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: Text(
+                                "Odrzóć",
+                                style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+
+
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  //builder: (context) => TaskList(),
+                                ),
+                                    (route) => false,
+                              );
+
+                            }
+
+                        ),
+                      ),
+                    ]
+                  ),
+
+
+                ],
+              ),
+            ),
+          ),
             ];
           } else if (snapshot.hasError) {
             children = <Widget>[
@@ -264,7 +466,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   //                           ),
   //                           onPressed: () {
   //                             if (_dropdownValue != null) {
-  //                               _TaskList();
+                                
 
   //                               Navigator.pushAndRemoveUntil(
   //                                 context,
