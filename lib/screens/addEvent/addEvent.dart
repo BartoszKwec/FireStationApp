@@ -102,31 +102,22 @@ class _OurAddEventState extends State<OurAddEvent> {
 
 
     if (_selectedDate.isAfter(DateTime.now().add(Duration(days: 1)))) {
-      if (widget.onGroupCreation) {
-        // print("boook addd widget.currentUser.uid");
-        // print(widget.currentUser.uid);
-        print("tu tu tu ");
-        print(widget.currentUser.uid);
-        //user
-        _returnString = await DBFuture().createGroup(groupName,widget.currentUser, event);
-        //_returnString = await DBFuture().createGroup(groupName, user,event);
+      
+    DBFuture().createEvent(widget.currentUser.groupId, event);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
 
-      } else if (widget.onError) {
-        _returnString =
-        await DBFuture().addCurrentEvent(widget.currentUser.groupId, event);
-      } else {
-        _returnString =
-        await DBFuture().addNextEvent(widget.currentUser.groupId, event);
-      }
+        builder: (context) => OurRoot(
+          
+        ),
+      ),
+    );
+  
 
-      if (_returnString == "success") {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OurRoot(),
-            ),
-                (route) => false);
-      }
+      
+        
+      
     } else {
       addEventKey.currentState.showSnackBar(
         SnackBar(
@@ -184,7 +175,7 @@ class _OurAddEventState extends State<OurAddEvent> {
                     controller: _authorController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person_outline),
-                      hintText: "Author",
+                      hintText: "Opis",
                     ),
                   ),
                   SizedBox(
@@ -194,7 +185,7 @@ class _OurAddEventState extends State<OurAddEvent> {
                     controller: _lengthController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.format_list_numbered),
-                      hintText: "Length",
+                      hintText: "Długość wydarzenia w godz.",
                     ),
                     keyboardType: TextInputType.number,
                   ),

@@ -1,5 +1,7 @@
 
 import 'package:fire_station_inz_app/models/eventModel.dart';
+import 'package:fire_station_inz_app/models/groupModel.dart';
+import 'package:fire_station_inz_app/screens/review/review.dart';
 import 'package:fire_station_inz_app/screens/reviewHistory/reviewHistory.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,10 @@ import 'package:flutter/material.dart';
 class EachEvent extends StatelessWidget {
   final EventModel event;
   final String groupId;
+  final GroupModel group;
+  
+
+  
 
   void _goToReviewHistory(BuildContext context) {
     Navigator.push(
@@ -19,8 +25,20 @@ class EachEvent extends StatelessWidget {
       ),
     );
   }
+  // void _goToReview(BuildContext context){
 
-  EachEvent({this.event, this.groupId});
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => Review(
+  //         groupModel: group,
+          
+  //       ),
+  //     ),
+  //   )
+  // }
+
+  EachEvent({this.event, this.groupId, this.group});
   @override
   Widget build(BuildContext context) {
     return ShadowContainer(
@@ -43,8 +61,12 @@ class EachEvent extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
+          // RaisedButton(
+          //   child: Text("Dodaj recenzje"),
+          //   onPressed: () => _goToReview(context),
+          // ),
           RaisedButton(
-            child: Text("Recenzje"),
+            child: Text("Wszystkie recenzje"),
             onPressed: () => _goToReviewHistory(context),
           )
         ],

@@ -49,7 +49,9 @@ class DBFuture {
           'tokens': tokens,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
-          'indexPickingEvent': 0
+          'indexPickingEvent': 0,
+          'duringEmergency': false,
+          'duringEvent': false,
         });
       } else {
         _docRef = await _firestore.collection("groups").add({
@@ -58,14 +60,16 @@ class DBFuture {
           'members': members,
           'groupCreated': Timestamp.now(),
           'nextEventId': "waiting",
-          'indexPickingEvent': 0
+          'indexPickingEvent': 0,
+          'duringEmergency': false,
+          'duringEvent': false,
         });
       }
 
       await _firestore.collection("users").document(user.uid).updateData({
         'groupId': _docRef.documentID,
       });
-      addEventEmpty(_docRef.documentID);
+ 
       retVal = "success";
     } catch (e) {
       print(e);
@@ -114,6 +118,7 @@ class DBFuture {
           'nextEventId': "waiting",
           'indexPickingEvent': 0,
           'duringEmergency': false,
+          'duringEvent': true,
         });
       } else {
         _docRef = await _firestore.collection("groups").add({
@@ -124,6 +129,7 @@ class DBFuture {
           'nextEventId': "waiting",
           'indexPickingEvent': 0,
           'duringEmergency': false,
+          'duringEvent': true,
         });
       }
 
@@ -193,9 +199,67 @@ class DBFuture {
 
     return retVal;
   }
+  Future<String> createEvent(String groupId, EventModel event) async {
+    String retVal = "error";
+    DocumentReference _docRef = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("eventsHistory")
+          .add({
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
+        "duringEvent": true,
+      });
+
+      await _firestore.collection("groups").document(groupId).updateData({
+              "currentEventId": _docRef.documentID,
+              "currentEventDue": event.dateCompleted,
+              "duringEvent": true,
+            });
+    try {
+      DocumentReference _docRef = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("events")
+          .add({
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
+        "duringEvent": true,
+      });
+      await _firestore.collection("groups").document(groupId).updateData({
+              "viewId": _docRef.documentID,
+              
+            });
+        
+
+      //add current event to group schedule
+
+      
+
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+
+    return retVal;
+  }
 
   Future<String> addEvent(String groupId, EventModel event) async {
     String retVal = "error";
+    DocumentReference _docRef = await _firestore
+          .collection("groups")
+          .document(groupId)
+          .collection("eventsHistory")
+          .add({
+        'name': event.name.trim(),
+        'author': event.author.trim(),
+        'length': event.length,
+        'dateCompleted': event.dateCompleted,
+      });
 
     try {
       DocumentReference _docRef = await _firestore
@@ -208,12 +272,14 @@ class DBFuture {
         'length': event.length,
         'dateCompleted': event.dateCompleted,
       });
+        
 
       //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
         "currentEventId": _docRef.documentID,
         "currentEventDue": event.dateCompleted,
+        "duringEvent": true,
       });
 
       retVal = "success";
@@ -386,6 +452,28 @@ class DBFuture {
     }
 
     return retVal;
+  }
+  void deleteEvent(GroupModel group)async{
+     try {
+
+
+      await _firestore.collection('groups').document(group.id).collection("events").getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents){
+        ds.reference.delete();
+      };
+    });
+
+        
+       await _firestore.collection("groups").document(group.id).updateData({
+        "duringEvent": false,
+
+        
+      });
+
+
+    } catch (e) {
+      print(e);
+    }
   }
   void deleteEmergencyAlert(String groupUid) async {
 
@@ -678,7 +766,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
       await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("events")
+          .collection("eventsHistory")
           .document(eventId)
           .collection("reviews")
           .document(uid)
@@ -941,7 +1029,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
       QuerySnapshot query = await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("events")
+          .collection("eventsHistory")
           .orderBy("dateCompleted", descending: true)
           .getDocuments();
 
@@ -962,7 +1050,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
       QuerySnapshot query = await _firestore
           .collection("groups")
           .document(groupId)
-          .collection("events")
+          .collection("eventsHistory")
           .document(eventId)
           .collection("reviews")
           .getDocuments();

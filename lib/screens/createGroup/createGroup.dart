@@ -89,41 +89,27 @@ class _CreateGroupState extends State<CreateGroup> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  RaisedButton(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 80),
-                      child: Text(
-                        "Dodaj wydarzenie",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                    onPressed: () =>
-                        _goToAddEvent(context, _groupNameController.text, widget.userModel ),
-                  ),
+                  // RaisedButton(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 80),
+                  //     child: Text(
+                  //       "Stwórz z wydarzeniem",
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 20.0,
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   onPressed: () =>
+                  //       _goToAddEvent(context, _groupNameController.text, widget.userModel ),
+                  // ),
+                  
                   RaisedButton(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 80),
                       child: Text(
                         "Stwórz",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                    onPressed: () =>
-                        _createGroup(context, _groupNameController.text, ),
-                  ),
-                  RaisedButton(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 80),
-                      child: Text(
-                        "Create 2",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

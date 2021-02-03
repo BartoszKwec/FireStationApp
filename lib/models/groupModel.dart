@@ -14,6 +14,8 @@ class GroupModel {
   Timestamp nextEventDue;
   bool duringEmergency;
   String alertsId;
+  bool duringEvent;
+  String viewId;
 
   GroupModel({
     this.id,
@@ -29,6 +31,8 @@ class GroupModel {
     this.nextEventDue,
     this.alertsId,
     this.duringEmergency,
+    this.duringEvent,
+    this.viewId,
   });
 
   GroupModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
@@ -46,5 +50,7 @@ class GroupModel {
     nextEventDue = doc.data["nextEventDue"];
     duringEmergency = doc.data["duringEmergency"];
     alertsId = doc.data["alertsId"];
+    duringEvent= doc.data["duringEvent"];
+    viewId= doc.data["viewId"];
   }
 }

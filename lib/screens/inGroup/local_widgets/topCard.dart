@@ -6,12 +6,15 @@ import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/addEvent/addEvent.dart';
+import 'package:fire_station_inz_app/screens/inGroup/local_widgets/endEvent.dart';
 import 'package:fire_station_inz_app/screens/review/review.dart';
+import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
 import 'package:fire_station_inz_app/utils/timeLeft.dart';
 import 'package:fire_station_inz_app/widgets/shadowContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class TopCard extends StatefulWidget {
   @override
@@ -49,7 +52,7 @@ class _TopCardState extends State<TopCard> {
     if (_groupModel != null) {
       isUserDoneWithEvent();
       _currentEvent = await DBFuture()
-          .getCurrentEvent(_groupModel.id, _groupModel.currentEventId);
+          .getCurrentEvent(_groupModel.id, _groupModel.viewId);
       _startTimer();
     }
   }
@@ -69,6 +72,27 @@ class _TopCardState extends State<TopCard> {
     } else {
       _doneWithEvent = false;
     }
+  }
+  void _doneEvent(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Review(
+          groupModel: _groupModel,
+        ),
+      ),
+    );
+  }
+    void _endEvent(){
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DeleteEvent(
+          groupModel: _groupModel,
+        ),
+      ),
+    );
   }
 
   void _goToReview() {
@@ -97,7 +121,9 @@ class _TopCardState extends State<TopCard> {
   }
 
   Widget noNextEvent() {
+    
     if (_authModel != null && _groupModel != null) {
+      if(_groupModel.duringEvent){
       if (_groupModel.currentEventId == "waiting") {
         if (_authModel.uid == _groupModel.leader) {
           return Column(
@@ -126,14 +152,25 @@ class _TopCardState extends State<TopCard> {
         }
       } else {
         return Center(
-          child: Text("ładowanie..."),
+          child: Text(("ładowanie..."), 
+          ),
         );
       }
-    } else {
+    } 
+    else{
+      return Center(
+          child: Text(("Aktualnie nie jest zaplanowane następne wydarzenie"),  textAlign: TextAlign.center,style: new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0)),
+        );
+    }
+    }
+    else {
       return Center(
         child: Text("ładowanie..."),
       );
     }
+    
   }
 
   @override
@@ -186,8 +223,18 @@ class _TopCardState extends State<TopCard> {
               "Zakończ wydarzenie",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: _doneWithEvent ? null : _goToReview,
-          )
+            
+            onPressed: _endEvent, 
+          ),
+          RaisedButton(
+            child: Text(
+              "Dodaj recenzje",
+              style: TextStyle(color: Colors.white),
+            ),
+            
+            onPressed: _goToReview, 
+          ),
+
         ],
       ),
     );
