@@ -49,7 +49,7 @@ class _CreateGroupState extends State<CreateGroup> {
     final FirebaseUser user = await auth1.currentUser();
     UserModel _currentUser = widget.userModel;
     //var user= FirebaseAuth.instance.currentUser();
-    String _returnString = await DBFuture().createGroupBase(groupName,user);
+    String _returnString = await DBFuture().createGroupBase(groupName,widget.userModel);
 
     if (_returnString == "success") {
       Navigator.pushAndRemoveUntil(

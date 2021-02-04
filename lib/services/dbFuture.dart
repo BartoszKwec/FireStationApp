@@ -17,6 +17,7 @@ class DBFuture {
   FirebaseUser user1;
   FirebaseAuth auth;
   Firestore _firestore = Firestore.instance;
+  FirebaseMessaging _fcm = FirebaseMessaging();
   UserModel loggedInUser;
 
   FirebaseUser user;
@@ -32,16 +33,16 @@ class DBFuture {
   }
   
 
-  Future<String> createGroupBase(String groupName, FirebaseUser user) async {
+  Future<String> createGroupBase(String groupName, UserModel user) async {
     String retVal = "error";
     List<String> members = List();
     List<String> tokens = List();
 
     try {
       members.add(user.uid);
-      // tokens.add(user.notifToken);
+      tokens.add(user.notifToken);
       DocumentReference _docRef;
-      if (user != null) {
+      if (user.notifToken != null) {
         _docRef = await _firestore.collection("groups").add({
           'name': groupName.trim(),
           'leader': user.uid,
@@ -557,13 +558,14 @@ class DBFuture {
     //String place, String description, String injured
     String retVal = "error";
     //DocumentReference _docRef;
+    List<String> members = List();
+    List<String> tokens = List();
     
+      await _firestore.collection("groups").document(groupId).updateData({
+        'members': FieldValue.arrayUnion(members),
+        'tokens': FieldValue.arrayUnion(tokens),
     
-      // await _firestore.collection("groups").document(groupId).updateData({
-      //   'members': FieldValue.arrayUnion(members),
-      //   'tokens': FieldValue.arrayUnion(tokens),
-    
-  
+      });
     try {
       DocumentReference _docRef = await _firestore
           .collection("groups")
@@ -615,6 +617,7 @@ class DBFuture {
         'injured': injured,
         'tokens': tokens,
         'author': author,
+        'sent': false,
       });
       retVal = "success";
     } catch (e) {

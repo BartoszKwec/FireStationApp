@@ -1,31 +1,43 @@
-var admin = require("firebase-admin");
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+const database = admin.firestore();
 
-// ownerId - who owns the picture someone liked
-// userId - id of the user who liked the picture
-// picture - metadata about the picture
+exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
 
-async function onUserPictureLiked(ownerId, userId, text) {
-  // Get the owners details
-  const owner = admin.firestore().collection("users").doc(ownerId).get();
+  const query = await database.collection("emergencies").where("sent", "==", false).get();
+  
 
-  // Get the users details
-  const user = admin.firestore().collection("users").doc(userId).get();
+  query.forEach(async snapshot => {
+      
+      sendNotification(snapshot);
+      await database.collection('emergencies').doc(snapshot.id).update({
+          "sent": true,
+          
+      });
+  });
 
-  await admin.messaging().sendToDevice(
-    owner.tokens, // ['token_1', 'token_2', ...]
-    {
-      data: {
-        owner: JSON.stringify(owner),
-        user: JSON.stringify(user),
-        picture: JSON.stringify(text),
-      },
-    },
-    {
-      // Required for background/quit data-only messages on iOS
-      contentAvailable: true,
-      // Required for background/quit data-only messages on Android
-      priority: "high",
-    }
-  );
+  function sendNotification(snapshot) {
+      var tokens = snapshot.data()['tokens'];
+      let title = "Alarm!";
+      let body = "Twój zespół Cię potrzebuje!";
+    tokens.forEach(async eachToken =>{
+        const message = {
+          notification: { title: title, body: body },
+          token: eachToken,
+          data: { click_action: 'FLUTTER_NOTIFICATION_CLICK' },
+      }
+            admin.messaging().send(message).then((response) => {
+            return console.log('Successfully sent message:', response);
+        }).catch((error) => {
+            return console.log('Error sending message:', error);
+        });
+    })
+      
+
+    
 }
+  return console.log('Koniec funkcji');
+});
+
 

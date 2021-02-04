@@ -201,18 +201,18 @@ class _TaskListState extends State<TaskList> {
                                                 icon: Icon(Icons.check),
                                                 //alignment: Alignment.centerRight,
                                               ),
-                                              IconButton(
-                                                iconSize: 35,
-                                                onPressed: () {
-                                                 // DBFuture().DeleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
-                                                  userUid=snapshot.data[index].userUid;
-                                                  taskUid=snapshot.data[index].id;
-                                                  _goToDeleteTask(userUid, taskUid);
-                                                },
-                                                color: Colors.red,
-                                                icon: Icon(Icons.clear),
-                                                //alignment: Alignment.centerRight,
-                                              ),
+                                              // IconButton(
+                                              //   iconSize: 35,
+                                              //   onPressed: () {
+                                              //    // DBFuture().DeleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
+                                              //     userUid=snapshot.data[index].userUid;
+                                              //     taskUid=snapshot.data[index].id;
+                                              //     _goToDeleteTask(userUid, taskUid);
+                                              //   },
+                                              //   color: Colors.red,
+                                              //   icon: Icon(Icons.clear),
+                                              //   //alignment: Alignment.centerRight,
+                                              // ),
                                               IconButton(
                                                 iconSize: 35,
                                                 onPressed: () {
@@ -252,13 +252,23 @@ class _TaskListState extends State<TaskList> {
                                         ),
                                       ],
                                     ),
+                                    
                                   ],
                                 ),
                               ],
+                              
                             ),
+                            
                           ),
+                          
                         ),
+                        
+
+
+
+
                       ),
+                      
                 );
               }
               return Center(

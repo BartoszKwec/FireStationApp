@@ -10,7 +10,7 @@ class EmergencyModel {
   bool view;
   int accept;
   int noAccept;
-  
+  bool sent;
   // Map<String,String> infoMembers;
   // List<String> membersYes;
   // List<String> membersNo;
@@ -32,6 +32,7 @@ class EmergencyModel {
     // this.membersNo,
     // this.timeYes,
     // this.timeNo,
+    this.sent,
   });
 
   EmergencyModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
@@ -45,6 +46,7 @@ class EmergencyModel {
     view= doc.data['view'];
     accept = doc.data['accept'];
     noAccept = doc.data['noAccept'];
+    sent = doc.data['sent'];
     // infoMembers = Map<String,String>.from(doc.data["infoMembers"]);
     // membersYes= List<String>.from(doc.data["membersYes"]);
     // membersNo= List<String>.from(doc.data["membersNo"]);
