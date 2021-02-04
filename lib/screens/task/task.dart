@@ -109,7 +109,7 @@ class _TaskState extends State<Task> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
+                          fontSize: 14.0,
                         ),
                       ),
                     ),

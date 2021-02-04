@@ -92,9 +92,9 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           RaisedButton(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 100),
+              padding: EdgeInsets.symmetric(horizontal: 75),
               child: Text(
-                "Zarejestruj się",
+                "Zarejestruj się", textAlign:TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

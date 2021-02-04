@@ -30,6 +30,7 @@ class _ReviewState extends State<Review> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       key: reviewKey,
       body: Column(
         children: <Widget>[

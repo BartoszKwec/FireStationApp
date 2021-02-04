@@ -86,7 +86,8 @@ class _EmergencyEndState extends State<EmergencyEnd> {
                       Text("Na pewno chcesz zakończyć alarm?", style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        
+                        fontSize: 15.0,
                       ),
                       ),
                     ],

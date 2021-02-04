@@ -115,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 25.0,
           ),
           TextFormField(
             controller: _passwordController,
@@ -130,13 +130,13 @@ class _LoginFormState extends State<LoginForm> {
           ),
           RaisedButton(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 100),
+              padding: EdgeInsets.symmetric(horizontal: 80),
               child: Text(
                 "Zaloguj sie",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize: 15.0,
                 ),
               ),
             ),

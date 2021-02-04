@@ -87,7 +87,7 @@ class NoGroup extends StatelessWidget {
               "Ponieważ nie należysz do żadnej grupy, "+
               " możesz wybrać,  " +
                   "dołącz do istniejącej grupy lub "+
-                  "załuż własną grupę.",
+                  "załóż własną grupę.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25.0,

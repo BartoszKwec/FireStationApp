@@ -70,10 +70,11 @@ class _DeleteEventState extends State<DeleteEvent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text("Na pewno chcesz zakończyć wydarzenie?", style: TextStyle(
+                      Text("Zakończyć wydarzenie?", style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
+                        fontSize: 18.0,
+                        
                       ),
                       ),
                     ],

@@ -93,6 +93,7 @@ EmergencyModel emergencyModel;
       resizeToAvoidBottomPadding: false,
       key: emergencyKey,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -174,11 +175,11 @@ EmergencyModel emergencyModel;
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 25.0),
+                            horizontal: 10.0, vertical: 20.0),
                         child: Text("Liczba poszkodowanych: ", style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
+                          fontSize: 13.0,
                         ),
                         ),
                       ),
@@ -209,7 +210,7 @@ EmergencyModel emergencyModel;
                     ],
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 9.0,
                   ),
                   RaisedButton(
                     child: Padding(

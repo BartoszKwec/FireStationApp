@@ -218,7 +218,7 @@ class _OurAddEventState extends State<OurAddEvent> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
+                          fontSize: 19.0,
                         ),
                       ),
                     ),

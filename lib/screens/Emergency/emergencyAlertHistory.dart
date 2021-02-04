@@ -127,7 +127,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
                                     //   ),
                                     // ),
                                     SizedBox(
-                                      width: 5.0,
+                                      width: 4.0,
                                     ),
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment
@@ -147,7 +147,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
                                                 .of(context)
                                                 .size
                                                 .width) /
-                                                1.1,
+                                                1.5,
                                             child: Text(
                                              
                                              "Miejsce: "+snapshot.data[index].place,style: new TextStyle(
@@ -168,7 +168,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
                                                 .of(context)
                                                 .size
                                                 .width) /
-                                                1.1,
+                                                1.5,
                                             child: Text(
                                              snapshot.data[index].description ,
                                              maxLines: 10,

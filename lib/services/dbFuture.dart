@@ -237,7 +237,7 @@ class DBFuture {
             });
         
 
-      //add current event to group schedule
+ 
 
       
 
@@ -275,7 +275,6 @@ class DBFuture {
       });
         
 
-      //add current event to group schedule
 
       await _firestore.collection("groups").document(groupId).updateData({
         "currentEventId": _docRef.documentID,
@@ -306,8 +305,6 @@ class DBFuture {
         'dateCompleted': null,
       });
 
-      //add current event to group schedule
-
       await _firestore.collection("groups").document(groupId).updateData({
         "currentEventId": null,
         "currentEventDue": null,
@@ -336,14 +333,14 @@ class DBFuture {
         'dateCompleted': event.dateCompleted,
       });
 
-      //add current event to group schedule
+    
 
       await _firestore.collection("groups").document(groupId).updateData({
         "nextEventId": _docRef.documentID,
         "nextEventDue": event.dateCompleted,
       });
 
-      //adding a notification document
+  
       DocumentSnapshot doc =
           await _firestore.collection("groups").document(groupId).get();
       createNotifications(List<String>.from(doc.data["tokens"]) ?? [],
@@ -377,7 +374,7 @@ class DBFuture {
         "currentEventDue": event.dateCompleted,
       });
 
-      //adding a notification document
+      
       DocumentSnapshot doc =
           await _firestore.collection("groups").document(groupId).get();
       createNotifications(List<String>.from(doc.data["tokens"]) ?? [],
@@ -1086,7 +1083,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
 //   return retVal;
 // }
   Future<void> saveTokenToDatabase(String token) async {
-    // Assume user is logged in for this example
+   
 
     final FirebaseUser userr = await auth.currentUser();
     String userId = userr.uid;

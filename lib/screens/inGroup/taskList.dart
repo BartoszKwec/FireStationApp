@@ -150,7 +150,7 @@ class _TaskListState extends State<TaskList> {
                                                     .authorEmail,
                                             style: new TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 25.0)),
+                                                fontSize: 20.0)),
                                         (snapshot.data[index].priority ==
                                             "Niskie")
                                             ? (Text("Priorytet: Niskie",
@@ -180,7 +180,7 @@ class _TaskListState extends State<TaskList> {
                                                 .of(context)
                                                 .size
                                                 .width) /
-                                                1.1,
+                                                1.3,
                                             child: Text(
                                               snapshot.data[index].contents,
                                               //overflow: TextOverflow.ellipsis,

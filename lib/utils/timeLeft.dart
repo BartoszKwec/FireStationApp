@@ -20,7 +20,7 @@ class TimeLeft {
     } else if (_minUntil > 0) {
       retVal = _minUntil.toString() + " minut";
     } else if (_minUntil == 0) {
-      retVal = "almost there ";
+      retVal = "prawie koniec ";
     } else {
       retVal = "error";
     }

@@ -301,7 +301,7 @@ Firestore _firestore = Firestore.instance;
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
-              child: Text("Skopiuj id grupy."),
+              child: Text("Skopiuj id grupy"),
               onPressed: () => _copyGroupId(context),
               color: Theme.of(context).canvasColor,
               shape: RoundedRectangleBorder(

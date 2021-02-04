@@ -54,7 +54,6 @@ class _OurRootState extends State<OurRoot> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    //get the state, check current User, set AuthStatus based on state
     AuthModel _authStream = Provider.of<AuthModel>(context);
     if (_authStream != null) {
       setState(() {
