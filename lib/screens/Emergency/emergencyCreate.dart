@@ -92,8 +92,8 @@ EmergencyModel emergencyModel;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       key: emergencyKey,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10.0),
