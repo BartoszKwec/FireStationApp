@@ -185,14 +185,14 @@ class _TopCardState extends State<TopCard> {
             _currentEvent.name,
             style: TextStyle(
               fontSize: 30,
-              color: Colors.grey[600],
+              color: Colors.black,
             ),
           ),
           Text(
             _currentEvent.author,
             style: TextStyle(
               fontSize: 20,
-              color: Colors.grey[600],
+              color: Colors.black,
             ),
           ),
           Padding(
@@ -203,7 +203,7 @@ class _TopCardState extends State<TopCard> {
                   "Start za: ",
                   style: TextStyle(
                     fontSize: 30,
-                    color: Colors.grey[600],
+                    color: Colors.black,
                   ),
                 ),
                 Expanded(
@@ -221,7 +221,7 @@ class _TopCardState extends State<TopCard> {
           RaisedButton(
             child: Text(
               "Zakończ wydarzenie",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
             
             onPressed: _endEvent, 
@@ -229,7 +229,7 @@ class _TopCardState extends State<TopCard> {
           RaisedButton(
             child: Text(
               "Dodaj recenzje",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
             
             onPressed: _goToReview, 

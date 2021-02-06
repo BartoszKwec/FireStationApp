@@ -214,7 +214,7 @@ Firestore _firestore = Firestore.instance;
                 child: IconButton(
                   onPressed: () => _signOut(context),
                   icon: Icon(Icons.exit_to_app),
-                  color: Theme.of(context).secondaryHeaderColor,
+                  color: Colors.black,
                 ),
               ),
             ],
@@ -252,7 +252,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "System Alarmów",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: () => _emergencyScreen(),
             ),
@@ -262,7 +262,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Stwórz nowe wydarzenie",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: () => _goToAddEvent(context)
             ),
@@ -273,7 +273,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Historia wydarzeń",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: () => _goToEventHistory(),
             ),
@@ -283,7 +283,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Lista",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: () => _UserList(),
             ),
@@ -293,7 +293,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Zadania",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
               onPressed: () => _TaskList(),
             ),

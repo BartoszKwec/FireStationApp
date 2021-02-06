@@ -76,10 +76,10 @@ class _RankState extends State<Rank> {
                         iconSize: 24,
                         elevation: 16,
                         style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
+                            color: Theme.of(context).accentColor),
                         underline: Container(
                           height: 2,
-                          color: Theme.of(context).canvasColor,
+                          color: Colors.black,
                         ),
                         onChanged: (String newValue) {
                           setState(() {
@@ -112,7 +112,7 @@ class _RankState extends State<Rank> {
                       child: Text(
                         "Dodaj",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),

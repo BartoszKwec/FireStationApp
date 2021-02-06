@@ -73,7 +73,7 @@ class _TaskListState extends State<TaskList> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.amber,
+          backgroundColor: Color.fromARGB(255, 213, 84, 75),
           title: Text("Zadania",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,

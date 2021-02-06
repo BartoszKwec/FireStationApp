@@ -189,10 +189,10 @@ EmergencyModel emergencyModel;
                         iconSize: 24,
                         elevation: 16,
                         style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
+                            color: Theme.of(context).accentColor),
                         underline: Container(
                           height: 2,
-                          color: Theme.of(context).canvasColor,
+                          color: Theme.of(context).accentColor,
                         ),
                         onChanged: (String newValue) {
                           setState(() {
@@ -218,7 +218,7 @@ EmergencyModel emergencyModel;
                       child: Text(
                         "Utwórz",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),

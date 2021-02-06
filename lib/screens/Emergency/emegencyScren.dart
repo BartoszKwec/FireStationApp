@@ -167,7 +167,7 @@ Firestore _firestore = Firestore.instance;
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.amber,
+          backgroundColor: Color.fromARGB(255, 213, 84, 75),
           title: Text("System Alarmów",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,

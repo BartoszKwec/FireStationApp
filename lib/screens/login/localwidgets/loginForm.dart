@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
                 'Zaloguj się przez Google',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.grey,
+                  color: Colors.black,
                 ),
               ),
             )
@@ -101,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               "Zaloguj sie",
               style: TextStyle(
-                color: Theme.of(context).secondaryHeaderColor,
+                color: Theme.of(context).accentColor,
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -134,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Text(
                 "Zaloguj sie",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 15.0,
                 ),

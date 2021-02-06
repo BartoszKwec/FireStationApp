@@ -75,7 +75,7 @@ class _UserListState extends State<UserList> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.amber,
+        backgroundColor: Color.fromARGB(255, 213, 84, 75),
         title: Text(
           "Lista osób",style: new TextStyle(
             fontWeight: FontWeight.bold,

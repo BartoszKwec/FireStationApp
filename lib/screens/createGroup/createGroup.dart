@@ -111,7 +111,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       child: Text(
                         "Stwórz",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),

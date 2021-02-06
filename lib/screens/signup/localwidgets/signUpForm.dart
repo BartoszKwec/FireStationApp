@@ -42,7 +42,7 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Text(
               "Zarejestruj się",
               style: TextStyle(
-                color: Theme.of(context).secondaryHeaderColor,
+                color: Theme.of(context).accentColor,
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -96,7 +96,7 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Text(
                 "Zarejestruj się", textAlign:TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),

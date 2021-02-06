@@ -55,7 +55,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.amber,
+          backgroundColor: Color.fromARGB(255, 213, 84, 75),
           title: Text("Informacje o trwającym alarmie",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,

@@ -71,10 +71,10 @@ class _TaskState extends State<Task> {
                         iconSize: 24,
                         elevation: 16,
                         style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
+                            color: Theme.of(context).accentColor),
                         underline: Container(
                           height: 2,
-                          color: Theme.of(context).canvasColor,
+                          color: Colors.black,
                         ),
                         onChanged: (String newValue) {
                           setState(() {
@@ -107,7 +107,7 @@ class _TaskState extends State<Task> {
                       child: Text(
                         "Dodaj Zadanie",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0,
                         ),

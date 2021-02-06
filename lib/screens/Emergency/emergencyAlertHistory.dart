@@ -62,7 +62,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.amber,
+          backgroundColor: Color.fromARGB(255, 213, 84, 75),
           title: Text("Historia alarmów",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,

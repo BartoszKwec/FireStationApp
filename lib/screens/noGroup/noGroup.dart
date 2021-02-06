@@ -58,7 +58,7 @@ class NoGroup extends StatelessWidget {
                 child: IconButton(
                   onPressed: () => _signOut(context),
                   icon: Icon(Icons.exit_to_app),
-                  color: Theme.of(context).secondaryHeaderColor,
+                  color: Theme.of(context).accentColor,
                 ),
               ),
             ],
@@ -77,7 +77,7 @@ class NoGroup extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 60.0,
-                color: Colors.grey[600],
+                color: Colors.black,
               ),
             ),
           ),
@@ -91,7 +91,7 @@ class NoGroup extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25.0,
-                color: Colors.grey[600],
+                color: Colors.black,
               ),
             ),
           ),
@@ -110,7 +110,7 @@ class NoGroup extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     side: BorderSide(
-                      color: Theme.of(context).secondaryHeaderColor,
+                      color: Theme.of(context).accentColor,
                       width: 2,
                     ),
                   ),
@@ -118,7 +118,7 @@ class NoGroup extends StatelessWidget {
                 RaisedButton(
                   child: Text(
                     "Dołącz",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                   onPressed: () => _goToJoin(context),
                 ),

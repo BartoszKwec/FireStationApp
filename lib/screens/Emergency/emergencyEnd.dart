@@ -56,8 +56,8 @@ class _EmergencyEndState extends State<EmergencyEnd> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.amber,
-          title: Text("Zadania",
+          backgroundColor: Color.fromARGB(255, 213, 84, 75),
+          title: Text("",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,
