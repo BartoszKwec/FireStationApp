@@ -35,6 +35,7 @@ class _TaskListState extends State<TaskList> {
   //List<UserModel> users;
   // UserModel _userRank;
   UserModel userModel;
+  Future user;
   Future<List<TaskModel>> taskModel;
   String taskUid;
   String userUid;
@@ -43,11 +44,16 @@ class _TaskListState extends State<TaskList> {
     var model = await DBFuture().getTasks(widget.userId);
     return model;
   }
+  Future<UserModel> getUser()async{
+    var model = await DBFuture().getUser(widget.userId);
+    return model;
+  }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     taskModel = getData();
+    user = getUser();
     print(taskModel);
     //userModel=await DBFuture().getUser()
     //var model = await DBFuture().getTasks(widget.userId);
@@ -98,7 +104,9 @@ class _TaskListState extends State<TaskList> {
                   itemCount: snapshot.data.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, index) =>
+                      
                       Container(
+                        
                         //color: (index % 2 == 0) ? Colors.white : Colors.white70,
                         //height: 300,
                         width: MediaQuery
@@ -109,11 +117,13 @@ class _TaskListState extends State<TaskList> {
                             horizontal: 5.0, vertical: 5.0),
 
                         child: Card(
+                          
                           elevation: 10.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           child: Container(
+                            
                             width: MediaQuery
                                 .of(context)
                                 .size
@@ -122,6 +132,7 @@ class _TaskListState extends State<TaskList> {
                             EdgeInsets.symmetric(
                                 horizontal: 5.0, vertical: 10.0),
                             child: Row(
+                              
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -137,6 +148,7 @@ class _TaskListState extends State<TaskList> {
                                     //     backgroundColor: Colors.red,
                                     //   ),
                                     // ),
+                                    
                                     SizedBox(
                                       width: 5.0,
                                     ),
@@ -153,19 +165,19 @@ class _TaskListState extends State<TaskList> {
                                                 fontSize: 20.0)),
                                         (snapshot.data[index].priority ==
                                             "Niskie")
-                                            ? (Text("Priorytet: Niskie",
+                                            ? (Text("Priorytet: Niski",
                                             style: new TextStyle(
                                                 color: Colors.green,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 20.0)))
                                             : (snapshot.data[index].priority ==
                                             "Ważne")
-                                            ? (Text("Priorytet: Ważne",
+                                            ? (Text("Priorytet: Ważny",
                                             style: new TextStyle(
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 20.0)))
-                                            : (Text("Priorytet: Średnie",
+                                            : (Text("Priorytet: Średni",
                                             style: new TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.w600,
@@ -196,7 +208,18 @@ class _TaskListState extends State<TaskList> {
                                             children: <Widget>[
                                               IconButton(
                                                 iconSize: 35,
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                            DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
+                                                            Navigator.pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) => TaskList(
+                                                                  userId: snapshot.data[index].userUid,
+                                                                ),
+                                                              ),
+                                                                  (route) => false,
+                                                            );
+                                                          },
                                                 color: Colors.green,
                                                 icon: Icon(Icons.check),
                                                 //alignment: Alignment.centerRight,

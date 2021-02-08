@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
+import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
 import 'package:fire_station_inz_app/screens/rank/rank.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/screens/task/task.dart';
@@ -64,6 +65,16 @@ class _UserListState extends State<UserList> {
       MaterialPageRoute(
         builder: (context) => Task(
           userModel: _userModel,
+        ),
+      ),
+    );
+  }
+  void _goToUserTask(UserModel _userModel){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskList(
+          userId: _userModel.uid,
         ),
       ),
     );
@@ -177,14 +188,17 @@ class _UserListState extends State<UserList> {
                                               _goToTask(_userModel);
                                             },
                                             color: Colors.red,
+                                            icon: Icon(Icons.event)
+                                        ),
+                                        IconButton(
+
+                                            onPressed: () {
+                                              _userModel=snapshot.data[index];
+                                              _goToUserTask(_userModel);
+                                            },
+                                            color: Colors.yellow[800],
                                             icon: Icon(Icons.event_note)
                                         ),
-                                        // IconButton(
-
-                                        //     onPressed: () {},
-                                        //     color: Colors.yellow,
-                                        //     icon: Icon(Icons.)
-                                        // ),
                                       ],
                                     ),
                                   ),
