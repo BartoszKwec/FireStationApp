@@ -3,6 +3,7 @@ import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/inGroup/taskList.dart';
+import 'package:fire_station_inz_app/screens/inGroup/taskListAnother.dart';
 import 'package:fire_station_inz_app/screens/rank/rank.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/screens/task/task.dart';
@@ -10,6 +11,7 @@ import 'package:fire_station_inz_app/services/dbFuture.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'inGroup.dart';
 import 'local_widgets/eachUser.dart';
@@ -18,8 +20,9 @@ Firestore _firestore = Firestore.instance;
 
 class UserList extends StatefulWidget {
   final String groupId;
+  final bool userRank;
 
-  UserList({this.groupId});
+  UserList({this.groupId, this.userRank});
 
   @override
   _UserListState createState() => _UserListState();
@@ -34,6 +37,7 @@ class _UserListState extends State<UserList> {
   //List<UserModel> users;
   UserModel _userRank;
   UserModel _userModel;
+  //bool button ;
 
   Future<List<UserModel>> getData() async {
     var model = await DBFuture().getGroup(widget.groupId);
@@ -42,39 +46,55 @@ class _UserListState extends State<UserList> {
 
   @override
   void didChangeDependencies() async {
+
     super.didChangeDependencies();
+    print("jestem w liście"+widget.userRank.toString());
+    //button=widget.userRank;
     userModel=getData();
+    //print(widget.userRank);
     GroupModel groupModel = await DBFuture().getGroup(widget.groupId);
     //List<UserModel> users = await DBFuture().getUsers(groupModel.members);
     // print(groupModel.members);
 
   }
-  void _goToRank(UserModel _userRank) {
+  //  void checkRank(bool button){
+
+  //   if(widget.userRank=="Dowódca"){
+  //     button=false;
+  //     print(widget.userRank+"jestem tu");
+
+  //   }
+  // }
+  
+  void _goToRank(UserModel _userRank, bool boolRank) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Rank(
           userRank: _userRank,
+          boolRank: boolRank,
         ),
       ),
     );
   }
-  void _goToTask(UserModel _userModel) {
+  void _goToTask(UserModel _userModel, bool userRank) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Task(
           userModel: _userModel,
+          userRank: userRank,
         ),
       ),
     );
   }
-  void _goToUserTask(UserModel _userModel){
+  void _goToUserTask(UserModel _userModel, bool userRank){
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TaskList(
+        builder: (context) => TaskListAnother(
           userId: _userModel.uid,
+          userRank: userRank,
         ),
       ),
     );
@@ -86,9 +106,10 @@ class _UserListState extends State<UserList> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 213, 84, 75),
+        backgroundColor: Color.fromARGB(255, 202, 17, 0),
         title: Text(
           "Lista osób",style: new TextStyle(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 25.0,
 
@@ -98,7 +119,7 @@ class _UserListState extends State<UserList> {
         //     color: Colors.black
         // ),
         leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.black),
+          icon: new Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.push(context,MaterialPageRoute(
             builder: (context)=>OurRoot()
           )
@@ -107,7 +128,6 @@ class _UserListState extends State<UserList> {
 
       ),
     body: FutureBuilder<List<UserModel>>(
-        //DBFuture().getUsers(groupModel.members)
       future: userModel,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -118,7 +138,6 @@ class _UserListState extends State<UserList> {
 
             itemBuilder: (BuildContext context, index) =>
                 Container(
-                  //color: (index % 2 == 0) ? Colors.white : Colors.white70,
 
                   width: MediaQuery
                       .of(context)
@@ -147,14 +166,6 @@ class _UserListState extends State<UserList> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
 
-                              // Container(
-                              //   width: 55.0,
-                              //   height: 55.0,
-                              //   child: CircleAvatar(
-                              //     //backgroundImage: users[index].photoUrl,
-                              //     backgroundColor: Colors.red,
-                              //   ),
-                              // ),
                               SizedBox(
                                 width: 5.0,
                               ),
@@ -171,128 +182,71 @@ class _UserListState extends State<UserList> {
                                     alignment: Alignment.center,
                                     child: Row(
                                       children: <Widget>[
-                                        IconButton(
-
-                                            onPressed: () {
-                                              _userRank=snapshot.data[index];
-                                              _goToRank(_userRank);
-                                            },
+                                        
+                                     AbsorbPointer(
+                                          absorbing: widget.userRank,
+                                          
+                                         child: IconButton(
+                                           disabledColor: Colors.grey,
+                                            onPressed : widget.userRank ? null :  ()=> _goToRank(_userRank=snapshot.data[index], widget.userRank),
+                                            
 
                                             color: Colors.blue,
                                             icon: Icon(Icons.person)
+                                        
                                         ),
-                                        IconButton(
-
-                                            onPressed: () {
-                                              _userModel=snapshot.data[index];
-                                              _goToTask(_userModel);
-                                            },
+                                     ),
+                                        AbsorbPointer(
+                                          absorbing: widget.userRank,
+                                          
+                                         child: IconButton(
+                                           
+                                            disabledColor: Colors.grey,
+                                            onPressed: widget.userRank ? null : () => _goToTask(_userModel=snapshot.data[index], widget.userRank),
                                             color: Colors.red,
                                             icon: Icon(Icons.event)
                                         ),
+                                        ),
+                                        
                                         IconButton(
 
                                             onPressed: () {
                                               _userModel=snapshot.data[index];
-                                              _goToUserTask(_userModel);
+                                              _goToUserTask(_userModel, widget.userRank);
                                             },
                                             color: Colors.yellow[800],
                                             icon: Icon(Icons.event_note)
                                         ),
+                                        // Container(
+                                          
+                                        //   child: RaisedButton(
+                                          
+                                        //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(100.0))),
+                                        //     onPressed: widget.userRank ? null : () => _goToRank(_userModel=snapshot.data[index], widget.userRank),
+                                        //     child: Row(
+                                        //       children: <Widget>[
+                                        //         Padding(
+                                        //           padding: EdgeInsets.fromLTRB(4, 0, 10, 0),
+                                        //           child: Icon(Icons.person),
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                            
+                                        //   ),
+                                        // ),
+                                        
                                       ],
                                     ),
                                   ),
 
                                 ],
                               ),
-                              // Container(
-                              //       padding: EdgeInsets.symmetric(
-                              //           horizontal: 10, vertical: 5.0),
-                              //       alignment: Alignment.center,
-                              //       child: Row(
-                              //         children: <Widget>[
-                              //           IconButton(
-
-                              //               onPressed: () {
-                              //                 _userRank=snapshot.data[index];
-                              //                 _goToRank(_userRank);
-                              //               },
-
-                              //               color: Colors.blue,
-                              //               icon: Icon(Icons.person), iconSize: 40,
-                              //           ),
-                              //           IconButton(
-
-                              //               onPressed: () {
-                              //                 _userModel=snapshot.data[index];
-                              //                 _goToTask(_userModel);
-                              //               },
-                              //               color: Colors.red,
-                              //               icon: Icon(Icons.event_note), iconSize: 40,
-                                            
-                              //           ),
-                              //           // IconButton(
-
-                              //           //     onPressed: () {},
-                              //           //     color: Colors.yellow,
-                              //           //     icon: Icon(Icons.)
-                              //           // ),
-                              //         ],
-                              //       ),
-                              //     ),
-
-
 
 
                             ],
 
                           ),
 
-
-                          // Container(
-                          //   alignment: Alignment.center,
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 5.0, vertical: 5.0),
-                          //   child: IconButton(
-                          //
-                          //       onPressed: () {},
-                          //       color: Colors.blue,
-                          //       icon: Icon(Icons.person)
-                          //   ),
-                          // ),
-                          // Container(
-                          //   alignment: Alignment.center,
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 5.0, vertical: 5.0),
-                          //   child: IconButton(
-                          //
-                          //       onPressed: () {},
-                          //       color: Colors.red,
-                          //       icon: Icon(Icons.email)
-                          //   ),
-                          // ),
-                          // Container(
-                          //   alignment: Alignment.center,
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 5.0, vertical: 5.0),
-                          //   child: IconButton(
-                          //
-                          //       onPressed: () {},
-                          //       color: Colors.yellow,
-                          //       icon: Icon(Icons.smartphone)
-                          //   ),
-                          // ),
-                          // Container(
-                          //   alignment: Alignment.center,
-                          //   padding: EdgeInsets.symmetric(
-                          //       horizontal: 5.0, vertical: 5.0),
-                          //   child: IconButton(
-                          //
-                          //       onPressed: () {},
-                          //       color: Colors.green,
-                          //       icon: Icon(Icons.event)
-                          //   ),
-                          // ),
                         ],
                       ),
 

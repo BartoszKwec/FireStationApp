@@ -21,18 +21,18 @@ import 'local_widgets/eachUser.dart';
 
 Firestore _firestore = Firestore.instance;
 
-class TaskList extends StatefulWidget {
+class TaskListAnother extends StatefulWidget {
   final String userId;
   final bool userRank;
   
 
-  TaskList({this.userId, this.userRank,});
+  TaskListAnother({this.userId, this.userRank,});
 
   @override
-  _TaskListState createState() => _TaskListState();
+  _TaskListAnotherState createState() => _TaskListAnotherState();
 }
 
-class _TaskListState extends State<TaskList> {
+class _TaskListAnotherState extends State<TaskListAnother> {
   //Future<List<UserModel>> userModel;
   //List<UserModel> users;
   // UserModel _userRank;
@@ -207,98 +207,13 @@ class _TaskListState extends State<TaskList> {
                                               //overflow: TextOverflow.ellipsis,
                                               maxLines: 10,
                                             )),
-                                        Container(
-                                          
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10.0),
-                                          alignment: Alignment.centerRight,
-                                          //color: Colors.yellow,
-                                          child: Row(
-                                            
-                                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: <Widget>[
-                                              
-                                               
-                                                
-                                              //  IconButton(
-                                              //   iconSize: 35,
-                                                
-                                                
-                                              //   onPressed: () {
-                                                            
-                                              //               DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
-                                              //               Navigator.pushAndRemoveUntil(
-                                              //                 context,
-                                              //                 MaterialPageRoute(
-                                              //                   builder: (context) => TaskList(
-                                              //                     userId: snapshot.data[index].userUid,
-                                              //                     userRank: widget.userRank,
-                                              //                   ),
-                                              //                 ),
-                                              //                     (route) => false,
-                                              //               );
-                                              //             },
-                                              //   color: Colors.green,
-                                              //   icon: Icon(Icons.check),
-                                              //   //alignment: Alignment.centerRight,
-                                              // ),
-                                              AbsorbPointer(
+                                         AbsorbPointer(
                                                 absorbing: widget.userRank,
+                                                
                                                 child: IconButton(
+                                                disabledColor: Colors.grey,
                                                 iconSize: 35,
-                                                onPressed: () {
-                                                  return Alert(context: context,
-                                                      title: "",
-                                                      desc:"Czy napewno ukończyłeś zadanie?",
-                                                      buttons: [
-                                                        DialogButton(
-                                                          color: Color.fromARGB(255, 202, 17, 0),
-                                                          child: Text("Tak",
-                                                              style: new TextStyle(
-                                                                  fontWeight: FontWeight.normal,
-                                                                  fontSize: 20.0,
-                                                              color: Colors.white)),
-                                                          onPressed: (){
-                                                            DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
-                                                            Navigator.pushAndRemoveUntil(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) => TaskList(
-                                                                  userId: snapshot.data[index].userUid,
-                                                                  userRank: widget.userRank,
-                                                                ),
-                                                              ),
-                                                                  (route) => false,
-                                                            );
-                                                          },
-                                                        )
-                                                      ]
-                                                  )
-                                                      .show();
-                                                },
-                                                color: Colors.green,
-                                                icon: Icon(Icons.check),
-                                                //alignment: Alignment.centerRight,
-                                              ),
-                                              ),
-                                              
-                                              // IconButton(
-                                              //   iconSize: 35,
-                                              //   onPressed: () {
-                                              //    // DBFuture().DeleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
-                                              //     userUid=snapshot.data[index].userUid;
-                                              //     taskUid=snapshot.data[index].id;
-                                              //     _goToDeleteTask(userUid, taskUid);
-                                              //   },
-                                              //   color: Colors.red,
-                                              //   icon: Icon(Icons.clear),
-                                              //   //alignment: Alignment.centerRight,
-                                              // ),
-                                              AbsorbPointer(
-                                                absorbing: widget.userRank,
-                                                child: IconButton(
-                                                iconSize: 35,
-                                                onPressed: () {
+                                                onPressed: widget.userRank ? null :  () {
                                                   return Alert(context: context,
                                                       title: "Usuwanie zadania",
                                                       desc:"Czy napewno chcesz usunąć zadanie?",
@@ -315,7 +230,7 @@ class _TaskListState extends State<TaskList> {
                                                             Navigator.pushAndRemoveUntil(
                                                               context,
                                                               MaterialPageRoute(
-                                                                builder: (context) => TaskList(
+                                                                builder: (context) => TaskListAnother(
                                                                   userId: snapshot.data[index].userUid,
                                                                   userRank: widget.userRank,
                                                                 ),
@@ -333,10 +248,6 @@ class _TaskListState extends State<TaskList> {
                                                 //alignment: Alignment.centerRight,
                                               ),
                                               ),
-                                              
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                     

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
+import 'package:fire_station_inz_app/models/emergencyDuringModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/taskModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
@@ -20,8 +21,9 @@ class EmergencyAlert extends StatefulWidget {
   // final String taskUid;
   final String groupId;
   final String alertId;
+  final String userName;
 
-  EmergencyAlert({@required this.groupId, this.alertId});
+  EmergencyAlert({@required this.groupId, this.alertId, this.userName});
   @override
   _EmergencyAlertState createState() => _EmergencyAlertState();
 
@@ -34,8 +36,8 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
   String _dropdownValue;
   AuthModel _authModel;
 
-  Future<EmergencyModel> _emergencyModel;
-  Future<EmergencyModel> getData()async{
+  Future<EmergencyDuringModel> _emergencyModel;
+  Future<EmergencyDuringModel> getData()async{
     return await DBFuture().getAlert1(widget.groupId, widget.alertId);
   }
 
@@ -55,9 +57,10 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 213, 84, 75),
+          backgroundColor: Color.fromARGB(255, 202, 17, 0),
           title: Text("Trwający alarm",
               style: new TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,
               )),
@@ -72,9 +75,9 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
         ),
      
       
-      body: FutureBuilder<EmergencyModel>(
+      body: FutureBuilder<EmergencyDuringModel>(
         future: _emergencyModel, 
-        builder: (BuildContext context, AsyncSnapshot<EmergencyModel> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<EmergencyDuringModel> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
@@ -206,60 +209,20 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                       ],
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: 5.0, vertical: 10.0),
-                  //       child: Text("Potrzebny czas na przybycie: ", style: TextStyle(
-                  //         color: Colors.black,
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: 15.0,
-                  //       ),
-                  //       ),
-                  //     ),
-                      // DropdownButton<String>(
-                      //   value: _dropdownValue,
-                      //   icon: Icon(Icons.arrow_downward),
-                      //   iconSize: 24,
-                      //   elevation: 16,
-                      //   style: TextStyle(
-                      //       color: Theme.of(context).secondaryHeaderColor),
-                      //   underline: Container(
-                      //     height: 2,
-                      //     color: Theme.of(context).canvasColor,
-                      //   ),
-                      //   onChanged: (String newValue) {
-                      //     setState(() {
-                      //       _dropdownValue = newValue;
-                      //     });
-                      //   },
-                      //   items: <String>["Na miejscu","~2 min.","~3 min.","~4 min.","~5 min.","~6 min.","~7 min.","~8 min.","~9 min.","+10 min."]
-                      //       .map<DropdownMenuItem<String>>((String value) {
-                      //     return DropdownMenuItem<String>(
-                      //       value: value,
-                      //       child: Text(value,style: TextStyle(
-                      //         color: Colors.black,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 15.0,
-                      //       ),),
-                      //     );
-                      //   }).toList(),
-                      // ),
-                  //   ],
-                  // ),
+
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: RaisedButton(
+                          color: Colors.green,
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              
                               child: Text(
                                 "Akceptuj",
                                 style: TextStyle(
-                                  color: Colors.green,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
                                 ),
@@ -267,7 +230,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                             ),
                             onPressed: () {
                              
-                                DBFuture().emergencyAccept(widget.groupId, widget.alertId);
+                                DBFuture().emergencyAccept(widget.groupId, widget.alertId, widget.userName);
 
                                 Navigator.pushAndRemoveUntil(
                                   context,
@@ -286,16 +249,16 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                               child: Text(
-                                "Odrzóć",
+                                "Odrzuć",
                                 style: TextStyle(
-                                  color: Colors.redAccent,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
                                 ),
                               ),
                             ),
                             onPressed: () {
-                              DBFuture().emergencyReject(widget.groupId,widget.alertId );
+                              DBFuture().emergencyReject(widget.groupId,widget.alertId, widget.userName );
 
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -341,7 +304,7 @@ class _EmergencyAlertState extends State<EmergencyAlert> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
+                child: Text('ładowanie...'),
               )
             ];
           }

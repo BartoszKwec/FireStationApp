@@ -62,9 +62,10 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 213, 84, 75),
+          backgroundColor: Color.fromARGB(255, 202, 17, 0),
           title: Text("Historia alarmów",
               style: new TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,
               )),
@@ -72,7 +73,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
           //     color: Colors.black
           // ),
           leading: new IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.black),
+            icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) => OurRoot())),
           ),
@@ -220,6 +221,7 @@ class _EemergencyAlertHistoryState extends State<EemergencyAlertHistory> {
             );
           },
         ));
+        
   }
  
   }

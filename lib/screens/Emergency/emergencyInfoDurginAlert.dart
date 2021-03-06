@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
+import 'package:fire_station_inz_app/models/emergencyDuringModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/taskModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
@@ -21,6 +22,7 @@ class EmergencyAlertInfo extends StatefulWidget {
   final String groupId;
   final String alertId;
 
+
   EmergencyAlertInfo({@required this.groupId, this.alertId});
   @override
   _EmergencyAlertInfoState createState() => _EmergencyAlertInfoState();
@@ -34,8 +36,8 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
   String _dropdownValue;
   AuthModel _authModel;
 
-  Future<EmergencyModel> _emergencyModel;
-  Future<EmergencyModel> getData()async{
+  Future<EmergencyDuringModel> _emergencyModel;
+  Future<EmergencyDuringModel> getData()async{
     return await DBFuture().getAlert1(widget.groupId, widget.alertId);
   }
 
@@ -55,9 +57,11 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 213, 84, 75),
+          backgroundColor: Color.fromARGB(255, 202, 17, 0),
           title: Text("Informacje o trwającym alarmie",
+
               style: new TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
               )),
@@ -65,16 +69,16 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
           //     color: Colors.black
           // ),
           leading: new IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.black),
+            icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) => OurRoot())),
           ),
         ),
      
       
-      body: FutureBuilder<EmergencyModel>(
+      body: FutureBuilder<EmergencyDuringModel>(
         future: _emergencyModel, 
-        builder: (BuildContext context, AsyncSnapshot<EmergencyModel> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<EmergencyDuringModel> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
@@ -102,7 +106,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                   //   ],
                   // ),
                   SizedBox(
-                    height: 20.0,
+                    height: 25.0,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
@@ -206,24 +210,60 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                       ],
                     ),
                   ),
+                  
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
                     
 
-
+                  
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Zakceptowało: "+ (snapshot.data.accept).toString(), textAlign: TextAlign.center,
+                        (Text("Zakceptowało: "+ (snapshot.data.membersYes.length).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
+                          
 
                       ],
                     ),
                   ),
                   Container(
+                    child: Column(
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: snapshot.data.membersYes.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext contex, index)=>
+                          Container(
+                            child: Card(
+                              child: (Text(snapshot.data.membersYes[index], textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+
+                              ))
+                              ),
+                            ),
+                          ),
+                          )
+                      ],
+                    ),
+                  ),
+                  // ListView.builder(itemBuilder: (BuildContext context, index)=>
+                  
+                  // Container(
+                  //  child: Column(
+                  //     children: <Widget>[
+                  //       Text(snapshot.data.membersYes[index])
+                  //     ],
+
+                  //   ),
+                  // ),
+                  // ),
+                  
+              
+                  Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
                     
@@ -232,15 +272,38 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Odrzóciło: "+ (snapshot.data.noAccept).toString(), textAlign: TextAlign.center,
+                        (Text("Odrzuciło: "+ (snapshot.data.membersNo.length).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
                         
                       ],
                     ),
-                  )
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: snapshot.data.membersNo.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext contex, index)=>
+                          Container(
+                            child: Card(
+                              child: (Text(snapshot.data.membersNo[index], textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+
+                              ))
+                              ),
+                            ),
+                          ),
+                          )
+                      ],
+                    ),
+                  ),
                   
+                 
+                 
                 ]
               )
             ),
@@ -269,7 +332,7 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
+                child: Text('ładowanie...'),
               )
             ];
           }
@@ -498,3 +561,6 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
   //   );
   // }
 }
+
+
+

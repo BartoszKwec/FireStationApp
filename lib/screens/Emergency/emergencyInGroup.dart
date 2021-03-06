@@ -63,7 +63,7 @@ class _EmergencyInGroupState extends State<EmergencyInGroup> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.amber,
-          title: Text("Aktualny ALARM",
+          title: Text("Aktualny alarm",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,

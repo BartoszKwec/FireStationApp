@@ -7,7 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:dcdg/dcdg.dart';
 import 'models/authModel.dart';
 import 'widgets/messaging_widget.dart';
 

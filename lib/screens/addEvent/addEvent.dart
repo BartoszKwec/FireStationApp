@@ -216,7 +216,7 @@ class _OurAddEventState extends State<OurAddEvent> {
                       child: Text(
                         "Stwórz",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 19.0,
                         ),

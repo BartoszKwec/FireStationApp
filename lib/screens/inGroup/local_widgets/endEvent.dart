@@ -88,7 +88,7 @@ class _DeleteEventState extends State<DeleteEvent> {
                         child: Text(
                           "Tak",
                           style: TextStyle(
-                            color: Colors.redAccent,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
                           ),

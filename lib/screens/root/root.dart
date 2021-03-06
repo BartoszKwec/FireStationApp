@@ -11,6 +11,7 @@ import 'package:fire_station_inz_app/services/dbStream.dart';
 import 'package:fire_station_inz_app/splashScreen/splashScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_responsive_screen/flutter_responsive_screen.dart';
 import 'package:provider/provider.dart';
 
 enum AuthStatus { unknown, notLoggedIn, loggedIn }
@@ -46,6 +47,7 @@ class _OurRootState extends State<OurRoot> {
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        
       },
     );
   }

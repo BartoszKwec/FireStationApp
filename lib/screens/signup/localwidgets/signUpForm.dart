@@ -96,7 +96,7 @@ class _SignUpFormState extends State<SignUpForm> {
               child: Text(
                 "Zarejestruj się", textAlign:TextAlign.center,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),

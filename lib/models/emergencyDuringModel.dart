@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-class EmergencyModel {
+class EmergencyDuringModel {
   String id;
   String place;
   String description;
@@ -13,12 +13,12 @@ class EmergencyModel {
   int noAccept;
   bool sent;
   // Map<String,String> infoMembers;
-  // List<String> membersYes;
-  // List<String> membersNo;
+  List<String> membersYes;
+  List<String> membersNo;
   // List<String> timeYes;
   // List<String> timeNo;
 
-  EmergencyModel({
+  EmergencyDuringModel({
     this.id,
     this.place,
     this.description,
@@ -29,14 +29,14 @@ class EmergencyModel {
     this.accept,
     this.noAccept,
     // this.infoMembers,
-    // this.membersYes,
-    // this.membersNo,
+    this.membersYes,
+    this.membersNo,
     // this.timeYes,
     // this.timeNo,
     this.sent,
   });
 
-  EmergencyModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
+  EmergencyDuringModel.fromDocumentSnapshot({DocumentSnapshot doc}) {
 
     id = doc.documentID;
     place = doc.data["place"];
@@ -49,8 +49,8 @@ class EmergencyModel {
     noAccept = doc.data['noAccept'];
     sent = doc.data['sent'];
     // infoMembers = Map<String,String>.from(doc.data["infoMembers"]);
-    // membersYes= List<String>.from(doc.data["membersYes"]);
-    // membersNo= List<String>.from(doc.data["membersNo"]);
+    membersYes= List<String>.from(doc.data["membersYes"]);
+    membersNo= List<String>.from(doc.data["membersNo"]);
     // timeYes= List<String>.from(doc.data["timeYes"]);
     // timeNo= List<String>.from(doc.data["timeNo"]);
 

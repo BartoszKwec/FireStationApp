@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
+import 'package:fire_station_inz_app/models/emergencyDuringModel.dart';
 import 'package:fire_station_inz_app/models/eventModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/membersModel.dart';
@@ -69,6 +70,7 @@ class DBFuture {
 
       await _firestore.collection("users").document(user.uid).updateData({
         'groupId': _docRef.documentID,
+        'rank': 'Dowódca',
       });
  
       retVal = "success";
@@ -81,30 +83,18 @@ class DBFuture {
 
   Future<String> createGroup(
 
-      //FirebaseUser user
+
       String groupName,
       UserModel userModel,
       EventModel initialEvent) async {
-    //FirebaseUser user,
-    // user.uid = "1bO6JCkcGvfDZwVnWctFxhhiw163";
+
     print("jestem tutaj");
     print(userModel.uid);
     String retVal = "error";
     List<String> members = List();
     List<String> tokens = List();
 
-    //Future <UserModel> vall=getUser(user.uid);
-
-    // user.uid= (await _firestore.collection("users").document(user.uid).get()) as String;
-    //user.notifToken= (await _firestore.collection("user").document(user.notifToken).get()) as String;
-    //var userfullName= (await _firestore.collection("users").document(user.notifToken).get()) as String;
-    // user.email= (await _firestore.collection("user").document(user.email).get()) as String;
-    // user.groupId= (await _firestore.collection("user").document(user.groupId).get()) as String;
-    // final FirebaseUser userr = await auth.currentUser();
-    // final uuid = userr.uid;
-    // print("db db db db");
-    // print(uuid);
-
+  
     try {
       members.add(userModel.uid);
       tokens.add(userModel.notifToken);
@@ -169,7 +159,7 @@ class DBFuture {
 
       retVal = "success";
     } on PlatformException catch (e) {
-      retVal = "Make sure you have the right group ID!";
+      retVal = "Upewnij się, czy wprowadziłeś właściwy identyfikator grupy!";
       print(e);
     } catch (e) {
       print(e);
@@ -193,6 +183,7 @@ class DBFuture {
 
       await _firestore.collection("users").document(userModel.uid).updateData({
         'groupId': null,
+        'rank' : null,
       });
     } catch (e) {
       print(e);
@@ -501,13 +492,19 @@ class DBFuture {
       print(e);
     }
   }
-  Future<String> emergencyAccept(String groupId, String emeId)async {
+  Future<String> emergencyAccept(String groupId, String emeId, String userName)async {
     //String place, String description, String injured
     String retVal = "error";
     //DocumentReference _docRef;
-    
+    List<String> membersYes = List();
+  
+
+ 
+      
+
     
     try {
+      membersYes.add(userName);
       await _firestore
           .collection("groups")
           .document(groupId)
@@ -515,6 +512,8 @@ class DBFuture {
           .document(emeId)
           .updateData({
             "accept": FieldValue.increment(1),
+            'membersYes': FieldValue.arrayUnion(membersYes),
+
          
       });
              
@@ -525,13 +524,15 @@ class DBFuture {
 
     return retVal;
   }
-  Future<String> emergencyReject(String groupId, String emeId)async {
+  Future<String> emergencyReject(String groupId, String emeId, String userName)async {
     //String place, String description, String injured
     String retVal = "error";
     //DocumentReference _docRef;
+    List<String> membersNo = List();
     
     
     try {
+      membersNo.add(userName);
       await _firestore
           .collection("groups")
           .document(groupId)
@@ -539,6 +540,7 @@ class DBFuture {
           .document(emeId)
           .updateData({
             "noAccept": FieldValue.increment(1),
+            'membersNo': FieldValue.arrayUnion(membersNo),
          
       });
              
@@ -557,6 +559,9 @@ class DBFuture {
     //DocumentReference _docRef;
     List<String> members = List();
     List<String> tokens = List();
+    List<String> membersYes = List();
+    List<String> membersNo = List();
+    
     
       await _firestore.collection("groups").document(groupId).updateData({
         'members': FieldValue.arrayUnion(members),
@@ -577,6 +582,8 @@ class DBFuture {
         'duringEmergency': emergencyModel.view,
         'accept' : 0,
         'noAccept': 0,
+        'membersYes' : membersYes,
+        'membersNo' : membersNo,
         
         //'dataCreated': emergencyModel.dateCreated,
         
@@ -691,8 +698,8 @@ class DBFuture {
 
     return emergencyModel;
   }
-Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
-    EmergencyModel emergencyModel;
+Future<EmergencyDuringModel> getAlert1(String groupId, String alertId) async {
+    EmergencyDuringModel emergencyModel;
 
     try {
       DocumentSnapshot _docSnapshot = await _firestore
@@ -702,7 +709,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
           .document(alertId).get();
 
 
-        emergencyModel=(EmergencyModel.fromDocumentSnapshot(doc: _docSnapshot));
+        emergencyModel=(EmergencyDuringModel.fromDocumentSnapshot(doc: _docSnapshot));
 
     } catch (e) {
       print(e);
@@ -711,48 +718,6 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
 
     return emergencyModel;
   }
-  // Future<List<EmergencyModel>>getAlerts(List<String> id)async{
-  //     List<EmergencyModel> retVal = [];
-  //     for(var uid in id){
-  //       retVal.add(await getAlert1(uid));
-  //     }
-  //     return retVal;
-  //   }
-  // Future<TaskModel> getTaskId(String userId) async{
-  //   TaskModel taskModel;
-  //
-  //   try {
-  //     DocumentSnapshot _docSnapshot =
-  //     await _firestore.collection("users").document(userId).collection("tasks").document().get();
-  //     taskModel = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //
-  //   return taskModel;
-  //
-  // }
-  // Future<List> getTasks(String userId) async{
-  //   List<TaskModel> taskList = [];
-  //
-  //   // QuerySnapshot querySnapshot = await Firestore.instance.collection("users").document(userId).collection("tasks").getDocuments();
-  //   // taskList = querySnapshot.documents.cast<TaskModel>();
-  //
-  //
-  //
-  //   try {
-  //     DocumentSnapshot _docSnapshot =
-  //     await _firestore.collection("users").document(userId).collection("tasks").document().get();
-  //     //taskList = TaskModel.fromDocumentSnapshot(doc: _docSnapshot);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //
-  //
-  //
-  //   return taskList;
-  //
-  // }
 
   Future<String> finishedEvent(
     String groupId,
@@ -813,7 +778,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
         'notifToken': user.notifToken,
         'uid': user.uid,
         'photoUrl': user.photoUrl,
-        'rank': user.rank,
+        'rank': "Strażak",
       });
       retVal = "success";
     } catch (e) {
@@ -852,23 +817,32 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
     return retVal;
   }
 
-  // Future<List<UserModel>> getUserList(List<String>members)async{
-  //   List<UserModel> retVal;
-  //   int index=0;
-  //   String uid;
-  //   for (var id in members) retVal.add(await getUser(uid));
-  //     uid=members[index];
-  //
-  //     retVal=getUser(uid) as List<UserModel>;
-  //     index++;
-  //
-  //   return retVal;
-  // }
+ 
   Future<List<UserModel>> getUsers(List<String> members) async {
     List<UserModel> retVal = [];
     for (var uid in members) {
       retVal.add(await getUser(uid));
     }
+    return retVal;
+  }
+  //  Future<List<EmergencyDuringModel>> getMembersYes(List<String> members) async {
+  //   List<EmergencyDuringModel> retVal = [];
+  //   for (var uid in members) {
+  //     retVal.add(await getMember(uid));
+  //   }
+  //   return retVal;
+  // }
+  Future<EmergencyDuringModel> getMember(String groupId, String emeId) async {
+    EmergencyDuringModel retVal;
+
+    try {
+      DocumentSnapshot _docSnapshot =
+          await _firestore.collection("groups").document(groupId).collection("emergencies").document(emeId).get();
+      retVal = EmergencyDuringModel.fromDocumentSnapshot(doc: _docSnapshot);
+    } catch (e) {
+      print(e);
+    }
+
     return retVal;
   }
 
@@ -944,66 +918,7 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
 
     return retVal;
   }
-  
-
-  // Future<List<GroupModel>> getGroup2(String groupId)async{
-  //   List<GroupModel> retVal = List();
-  //
-  //   try {
-  //     DocumentSnapshot _docSnapshot =  (await _firestore
-  //         .collection("groups")
-  //
-  //         .document(groupId)
-  //
-  //         .get());
-  //
-  //
-  //   //retVal = GroupModel.fromDocumentSnapshot(doc: _docSnapshot);
-  //   } catch (e) {
-  //   print(e);
-  //   }
-  //   return retVal;
-  // }
-  // Future<List<String>> getMembersId(String groupId)async{
-  //   List<String> retVal = List();
-  //
-  //   try {
-  //     QuerySnapshot query = await _firestore
-  //         .collection("groups")
-  //         .document(groupId)
-  //         .collection("members")
-  //         .getDocuments();
-  //
-  //     query.documents.forEach((element) {
-  //       retVal.add(List<String>.fromDocumentSnapshot(doc: element));
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //
-  //   return retVal;
-  // }
-  // //
-  // Future <UserModel> getUserInfo(String uid) async{
-  //   UserModel retVal = UserModel();
-  //   try{
-  //     DocumentSnapshot _docSnapshot = await _firestore.collection("users").document(uid).get();
-  //     retVal.uid=uid;
-  //     retVal.fullName=_docSnapshot.data["fullName"];
-  //     retVal.email=_docSnapshot.data["email"];
-  //     retVal.accountCreated=_docSnapshot.data["accountCreated"];
-  //     retVal.groupId= _docSnapshot.data["groupId"];
-  //   }catch(e){
-  //     print(e);
-  //   }
-  //   return retVal;
-  // }
-  // saveUserInfoToFireStore() async {
-  //   currentUser = UserModel(); //initialize
-  //   preferences = await SharedPreferences.getInstance();
-  //   DocumentSnapshot documentSnapshot = await usersReference.document(
-  //       currentUser.id).get();
-  // }
+ 
   Future<String> createNotifications(
       List<String> tokens, String eventName, String author) async {
     String retVal = "error";
@@ -1064,24 +979,6 @@ Future<EmergencyModel> getAlert1(String groupId, String alertId) async {
     return retVal;
   }
 
-// Future<List<MembersModel>> getMembers5(String groupId)async {
-//   List<MembersModel> retVal = List();
-//
-//   try {
-//     QuerySnapshot query = await _firestore
-//         .collection("groups")
-//         .document(groupId)
-//         .getDocuments();
-//
-//     query.documents.forEach((element) {
-//       retVal.add(MembersModel.fromDocumentSnapshot(doc: element));
-//     });
-//   } catch (e) {
-//     print(e);
-//   }
-//
-//   return retVal;
-// }
   Future<void> saveTokenToDatabase(String token) async {
    
 

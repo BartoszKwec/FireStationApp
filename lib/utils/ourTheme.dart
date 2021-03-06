@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class OurTheme {
   
-  Color _backGround = Color.fromARGB(255, 253, 225, 169);
+  Color _backGround = Color.fromARGB(255, 251, 247, 248);
   Color _litters = Color.fromARGB(255, 66, 66, 66);
-  Color _backButtons = Color.fromARGB(255, 227, 234, 243);
+  Color _backButtons = Color.fromARGB(255, 202, 17, 0);
   // Color _lightGrey = Color.fromARGB(255, 164, 164, 164);
   // Color _darkerGrey = Color.fromARGB(255, 119, 124, 135);
 

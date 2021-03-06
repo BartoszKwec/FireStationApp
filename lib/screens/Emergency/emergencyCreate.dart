@@ -1,8 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
 import 'package:fire_station_inz_app/models/authModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
+import 'package:fire_station_inz_app/screens/Emergency/EmergencyAlert.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyAlertHistory.dart';
 import 'package:fire_station_inz_app/screens/root/root.dart';
 import 'package:fire_station_inz_app/services/dbFuture.dart';
@@ -92,7 +94,7 @@ EmergencyModel emergencyModel;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       key: emergencyKey,
-      body: ListView(
+      body: Column(
         
         children: <Widget>[
           Padding(
@@ -195,6 +197,7 @@ EmergencyModel emergencyModel;
                           color: Theme.of(context).accentColor,
                         ),
                         onChanged: (String newValue) {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
                             _dropdownValue = newValue;
                           });
@@ -218,7 +221,7 @@ EmergencyModel emergencyModel;
                       child: Text(
                         "Utwórz",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),
@@ -245,48 +248,52 @@ EmergencyModel emergencyModel;
                         emergency.view=true;
                         _emergencyCreate(emergency, widget.groupId, widget.userName);
                         _showNotification();
-                      }
-                    },
-                  ),
-                  
-                  // RaisedButton(
-                  //   child: Padding(
-                  //     padding: EdgeInsets.symmetric(horizontal: 80),
-                  //     child: Text(
-                  //       "Testt2",
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: 20.0,
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   onPressed: () {
-                  //     if (_dropdownValue != null) {
-                  //
-                  //       Navigator.pushAndRemoveUntil(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => EmergencyWait(
-                  //             groupId: widget.groupId,
-                  //           ),
-                  //         ),
-                  //             (route) => false,
-                  //       );
-                  //     } else {
-                  //       emergencyKey.currentState.showSnackBar(SnackBar(
-                  //         content: Text("Musisz uzupełnic informację"),
-                  //       ));
-                  //     }
-                  //   },
-                  // ),
-                ],
-              ),
-            ),
-          ),
-          Spacer(),
-        ],
-      ),
-    );
-  }
-}
+                        
+                                             }
+                                           },
+                                         ),
+                                         
+                                         // RaisedButton(
+                                         //   child: Padding(
+                                         //     padding: EdgeInsets.symmetric(horizontal: 80),
+                                         //     child: Text(
+                                         //       "Testt2",
+                                         //       style: TextStyle(
+                                         //         color: Colors.white,
+                                         //         fontWeight: FontWeight.bold,
+                                         //         fontSize: 20.0,
+                                         //       ),
+                                         //     ),
+                                         //   ),
+                                         //   onPressed: () {
+                                         //     if (_dropdownValue != null) {
+                                         //
+                                         //       Navigator.pushAndRemoveUntil(
+                                         //         context,
+                                         //         MaterialPageRoute(
+                                         //           builder: (context) => EmergencyWait(
+                                         //             groupId: widget.groupId,
+                                         //           ),
+                                         //         ),
+                                         //             (route) => false,
+                                         //       );
+                                         //     } else {
+                                         //       emergencyKey.currentState.showSnackBar(SnackBar(
+                                         //         content: Text("Musisz uzupełnic informację"),
+                                         //       ));
+                                         //     }
+                                         //   },
+                                         // ),
+                                       ],
+                                     ),
+                                   ),
+                                 ),
+                                 Spacer(),
+                               ],
+                             ),
+                           );
+                         }
+                       }
+                       
+                       
+                       

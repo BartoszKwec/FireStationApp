@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire_station_inz_app/models/emergencyDuringModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emegencyScren.dart';
@@ -38,21 +39,43 @@ class InGroup extends StatefulWidget {
 
 class InGroupState extends State<InGroup> {
 Future<GroupModel> groupModel1;
-bool _isButtonDisabled=false;
+
+bool _isButtonDisabled;
+
 GroupModel groupModel2;
 bool view;
 
+
 Firestore _firestore = Firestore.instance;
 
+
   final key = new GlobalKey<ScaffoldState>();
+  bool boolRank;
   @override
   void didChangeDependencies() async{
+    //checkRank(button);
+    
     super.didChangeDependencies();
+    
     final FirebaseUser userr = await auth.currentUser();
     //groupModel1=DBFuture().getGroup(widget.groupId);
     //_checkEvent();
     
 
+  }
+    bool checkRank(bool button){
+      
+      UserModel user = Provider.of<UserModel>(context, listen: false);
+    print(user.rank+button.toString()+"            jestem tu już PPrzed");
+    if(user.rank=="Dowódca"){
+      button=false;
+      
+
+    }else{
+      button=true;
+    }
+    print(user.rank+button.toString()+"            jestem tu już PO");
+    return button;
   }
  
 
@@ -103,31 +126,37 @@ Firestore _firestore = Firestore.instance;
       ),
     );
   }
-  void _UserList(){
+  void _userList(bool boolRank){
     GroupModel group = Provider.of<GroupModel>(context, listen: false);
+    UserModel user = Provider.of<UserModel>(context, listen: false);
+    boolRank=checkRank(boolRank);
+    print("jestem w srodku wchodzenia do listy"+user.rank+" "+ boolRank.toString());
     Navigator.push(
       context,
       MaterialPageRoute(
 
         builder: (context) => UserList(
           groupId: group.id,
+          userRank: boolRank,
         ),
       ),
     );
   }
-  void _TaskList(){
+  void _taskList(bool boolRank){
     UserModel user = Provider.of<UserModel>(context, listen: false);
+   boolRank=checkRank(boolRank);
     Navigator.push(
       context,
       MaterialPageRoute(
 
         builder: (context) => TaskList(
           userId: user.uid,
+          userRank: boolRank,
         ),
       ),
     );
   }
-  void _Emergency(){
+  void _emergency(){
     GroupModel group = Provider.of<GroupModel>(context, listen: false);
     UserModel user = Provider.of<UserModel>(context, listen: false);
     Navigator.push(
@@ -176,7 +205,7 @@ Firestore _firestore = Firestore.instance;
       ),
     );
   }
-  void _goToAddEvent(BuildContext context) {
+  void goToAddEvent(BuildContext context) {
     UserModel _currentUser = Provider.of<UserModel>(context, listen: false);
     Navigator.push(
       context,
@@ -189,6 +218,7 @@ Firestore _firestore = Firestore.instance;
       ),
     );
   }
+ 
   // bool DuringEvent(){
   //   GroupModel group = Provider.of<GroupModel>(context, listen: false);
   //   if (group.duringEmergency=="false") {
@@ -249,11 +279,15 @@ Firestore _firestore = Firestore.instance;
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            
             child: RaisedButton(
+              
               child: Text(
-                "System Alarmów",
-                style: TextStyle(color: Colors.black),
+                "System alarmów",
+                style: TextStyle(color: Colors.white),
+                
               ),
+             
               onPressed: () => _emergencyScreen(),
             ),
           ),
@@ -262,9 +296,9 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Stwórz nowe wydarzenie",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () => _goToAddEvent(context)
+              onPressed: () => goToAddEvent(context)
             ),
           ),
           
@@ -273,7 +307,7 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Historia wydarzeń",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.white),
               ),
               onPressed: () => _goToEventHistory(),
             ),
@@ -282,10 +316,10 @@ Firestore _firestore = Firestore.instance;
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: RaisedButton(
               child: Text(
-                "Lista",
-                style: TextStyle(color: Colors.black),
+                "Lista osób",
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () => _UserList(),
+              onPressed: () => _userList(boolRank),
             ),
           ),
           Padding(
@@ -293,9 +327,9 @@ Firestore _firestore = Firestore.instance;
             child: RaisedButton(
               child: Text(
                 "Zadania",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () => _TaskList(),
+              onPressed: () => _taskList(boolRank),
             ),
           ),
           Padding(
@@ -329,5 +363,9 @@ Firestore _firestore = Firestore.instance;
       ),
     );
   }
+  
+
 
 }
+   
+

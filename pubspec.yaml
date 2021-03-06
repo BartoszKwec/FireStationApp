@@ -45,6 +45,7 @@ dependencies:
   firebase_analytics: 5.0.0
   flutter_local_notifications: ^1.4.4+2  
   audioplayers: ^0.15.1
+  dcdg: ^2.0.1
   
 
 dev_dependencies:

@@ -99,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             child: Text(
-              "Zaloguj sie",
+              "Zaloguj się",
               style: TextStyle(
                 color: Theme.of(context).accentColor,
                 fontSize: 25.0,
@@ -132,9 +132,9 @@ class _LoginFormState extends State<LoginForm> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 80),
               child: Text(
-                "Zaloguj sie",
+                "Zaloguj się",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 15.0,
                 ),

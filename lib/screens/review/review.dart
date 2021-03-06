@@ -92,7 +92,7 @@ class _ReviewState extends State<Review> {
                       child: Text(
                         "Dodaj recenzję",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0,
                         ),

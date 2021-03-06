@@ -56,7 +56,7 @@ class _EmergencyEndState extends State<EmergencyEnd> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 213, 84, 75),
+          backgroundColor: Color.fromARGB(255, 202, 17, 0),
           title: Text("",
               style: new TextStyle(
                 fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class _EmergencyEndState extends State<EmergencyEnd> {
                         child: Text(
                           "Tak",
                           style: TextStyle(
-                            color: Colors.redAccent,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
                           ),

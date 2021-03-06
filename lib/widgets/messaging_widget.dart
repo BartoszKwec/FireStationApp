@@ -26,7 +26,7 @@ class _MessagingWidgetState extends State<MessagingWidget> {
         final notification = message['notification'];
         setState(() {
           messages.add(Message(
-              title: notification['title'], body: notification['body']));
+              title: notification['title'], body: notification['body'], description: null, injured: null, place: null));
         });
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -36,7 +36,7 @@ class _MessagingWidgetState extends State<MessagingWidget> {
         setState(() {
           messages.add(Message(
             title: '${notification['title']}',
-            body: '${notification['body']}',
+            body: '${notification['body']}', description: null, injured: null, place: null,
              
           ));
         
@@ -44,6 +44,7 @@ class _MessagingWidgetState extends State<MessagingWidget> {
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        
       },
     );
     _firebaseMessaging.requestNotificationPermissions(

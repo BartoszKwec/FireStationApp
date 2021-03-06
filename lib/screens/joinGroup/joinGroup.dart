@@ -73,7 +73,7 @@ class _JoinGroupState extends State<JoinGroup> {
                       child: Text(
                         "Dołącz",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),

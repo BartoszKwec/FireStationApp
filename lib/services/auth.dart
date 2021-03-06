@@ -38,6 +38,7 @@ class Auth {
       String email, String password, String fullName) async {
     String retVal = "error";
     try {
+      
       AuthResult _authResult = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password);
       UserModel _user = UserModel(

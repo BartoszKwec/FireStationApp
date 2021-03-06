@@ -118,7 +118,7 @@ class NoGroup extends StatelessWidget {
                 RaisedButton(
                   child: Text(
                     "Dołącz",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () => _goToJoin(context),
                 ),

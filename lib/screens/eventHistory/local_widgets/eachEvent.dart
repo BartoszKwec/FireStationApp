@@ -67,6 +67,7 @@ class EachEvent extends StatelessWidget {
           // ),
           RaisedButton(
             child: Text("Wszystkie recenzje"),
+            textColor: Colors.white,
             onPressed: () => _goToReviewHistory(context),
           )
         ],

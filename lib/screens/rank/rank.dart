@@ -14,8 +14,9 @@ import 'package:provider/provider.dart';
 class Rank extends StatefulWidget {
 
   final UserModel userRank;
+  final bool boolRank;
 
-  Rank({@required this.userRank,});
+  Rank({@required this.userRank, this.boolRank});
   @override
   _RankState createState() => _RankState();
 
@@ -112,7 +113,7 @@ class _RankState extends State<Rank> {
                       child: Text(
                         "Dodaj",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),
@@ -133,8 +134,8 @@ class _RankState extends State<Rank> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserList(
-                              groupId: widget.userRank.groupId,
+                            builder: (context) => OurRoot(
+                              
                             ),
                           ),
                               (route) => false,

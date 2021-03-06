@@ -221,7 +221,7 @@ class _TopCardState extends State<TopCard> {
           RaisedButton(
             child: Text(
               "Zakończ wydarzenie",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white),
             ),
             
             onPressed: _endEvent, 
@@ -229,7 +229,7 @@ class _TopCardState extends State<TopCard> {
           RaisedButton(
             child: Text(
               "Dodaj recenzje",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white),
             ),
             
             onPressed: _goToReview, 

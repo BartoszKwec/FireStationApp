@@ -19,7 +19,7 @@ exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (c
 
   function sendNotification(snapshot) {
       var tokens = snapshot.data()['tokens'];
-      let title = "Alarm!";
+      let title = "Alarm! Drugi";
       let body = "Twój zespół Cię potrzebuje!";
     tokens.forEach(async eachToken =>{
         const message = {
@@ -39,5 +39,24 @@ exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (c
 }
   return console.log('Koniec funkcji');
 });
+exports.sendNotificationAfterClick = functions.firestore.document('emergencies/{emergenciesId}').onCreate(async(snapshot,context)=>{
+    var tokens = snapshot.data()['tokens'];
+    let title = "Alarm! Pierwszy";
+    let body = "Twój zespół Cię potrzebuje! ";
+    tokens.forEach(async eachToken =>{
+        const message = {
+          notification: { title: title, body: body },
+          token: eachToken,
+          data: { click_action: 'FLUTTER_NOTIFICATION_CLICK' },
+      }
+            admin.messaging().send(message).then((response) => {
+            return console.log('Successfully sent message:', response);
+        }).catch((error) => {
+            return console.log('Error sending message:', error);
+        });
+    })
+    return console.log("Koniec funkcji after click");
+})
+
 
 

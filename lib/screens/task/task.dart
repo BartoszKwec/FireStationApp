@@ -12,9 +12,10 @@ import 'package:provider/provider.dart';
 FirebaseAuth auth = FirebaseAuth.instance;
 class Task extends StatefulWidget {
   final UserModel userModel;
+  final bool userRank;
 
 
-  Task({@required this.userModel});
+  Task({@required this.userModel, this.userRank});
   @override
   _TaskState createState() => _TaskState();
 }
@@ -107,7 +108,7 @@ class _TaskState extends State<Task> {
                       child: Text(
                         "Dodaj Zadanie",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0,
                         ),
@@ -121,6 +122,7 @@ class _TaskState extends State<Task> {
                           MaterialPageRoute(
                             builder: (context) => UserList(
                               groupId: widget.userModel.groupId,
+                              userRank: widget.userRank,
                             ),
                           ),
                               (route) => false,

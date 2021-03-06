@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_station_inz_app/models/EmergencyModel.dart';
+import 'package:fire_station_inz_app/models/emergencyDuringModel.dart';
 import 'package:fire_station_inz_app/models/groupModel.dart';
 import 'package:fire_station_inz_app/models/userModel.dart';
 import 'package:fire_station_inz_app/screens/Emergency/emergencyCreate.dart';
@@ -47,16 +48,24 @@ bool _isButtonDisabledEnd;
 bool _isButtonDisabledAlert;
 GroupModel groupModel2;
 bool view;
+List<String> membersYes = List();
 // Future<EmergencyModel> emergencyModel;
 
 Firestore _firestore = Firestore.instance;
 // Future<EmergencyModel> getData()async{
 //     return await DBFuture().getAlert(widget.groupId);
 //   }
+// Future<EmergencyDuringModel> _emergencyModel;
+//   Future<EmergencyDuringModel> getData()async{
+//     return await DBFuture().getAlert1(widget.groupId, widget.groupAlertId);
+    
+//   }
   final key = new GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() async{
     super.didChangeDependencies();
+
+    
     final FirebaseUser userr = await auth.currentUser();
     // print("asdas");
     // print(widget.groupAlertId);
@@ -66,6 +75,7 @@ Firestore _firestore = Firestore.instance;
     
 
   }
+  
   
   
   void _checkEvent(BuildContext context)async{
@@ -117,6 +127,7 @@ Firestore _firestore = Firestore.instance;
           builder: (context) => EmergencyAlert(
             groupId: widget.groupId,
             alertId: widget.groupAlertId,
+            userName: widget.userName,
           ),
         ),
             (route) => false,
@@ -167,9 +178,10 @@ Firestore _firestore = Firestore.instance;
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 213, 84, 75),
-          title: Text("System Alarmów",
+          backgroundColor: Color.fromARGB(255, 202, 17, 0),
+          title: Text("System alarmów",
               style: new TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,
               )),
@@ -177,7 +189,7 @@ Firestore _firestore = Firestore.instance;
           //     color: Colors.black
           // ),
           leading: new IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.black),
+            icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) => OurRoot())),
           ),
@@ -230,7 +242,10 @@ Firestore _firestore = Firestore.instance;
               
               child: RaisedButton(
               child: Text(
-                "Historia alarmów",
+                "Historia alarmów",style: new TextStyle(
+                color: Colors.white,
+                
+              )
                 
               ),
               
@@ -247,6 +262,7 @@ Firestore _firestore = Firestore.instance;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: RaisedButton(
+        textColor: Colors.white,
       child: new Text(
         _isButtonDisabled ? "Aktualnie trwa zdarzenie" : "Utwórz alarm"
       ),
@@ -258,6 +274,7 @@ Firestore _firestore = Firestore.instance;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: RaisedButton(
+      textColor: Colors.white,
       child: new Text(
         _isButtonDisabledAlert ? "Aktualnie nie ma alarmu" : "Dołącz do alarmu"
       ),
@@ -269,11 +286,12 @@ Firestore _firestore = Firestore.instance;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: RaisedButton(
-      
+      textColor: Colors.white,
       
       child: new Text(
         _isButtonDisabledEnd ? "Nie ma alarmu do zakończenia" : "Zakończ alarm"
       ),
+      
       onPressed: _isButtonDisabledEnd  ? null : _EmergencyEnd,
       ), 
     );
@@ -282,7 +300,9 @@ Firestore _firestore = Firestore.instance;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: RaisedButton(
-      
+      textColor: Colors.white,
+   
+    
       
       child: new Text(
         _isButtonDisabledEnd ? "Aktualnie nie trwa alarm" : "Informacje ogólne o aktualnym  alarmie"

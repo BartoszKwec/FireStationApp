@@ -1,3 +1,5 @@
+
+
 class TimeLeft {
   String timeLeft(DateTime due) {
     String retVal;
@@ -22,7 +24,8 @@ class TimeLeft {
     } else if (_minUntil == 0) {
       retVal = "prawie koniec ";
     } else {
-      retVal = "error";
+      retVal = "Trwa";
+    
     }
 
     return retVal;
