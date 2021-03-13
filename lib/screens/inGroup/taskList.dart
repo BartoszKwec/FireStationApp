@@ -242,9 +242,9 @@ class _TaskListState extends State<TaskList> {
                                               //   icon: Icon(Icons.check),
                                               //   //alignment: Alignment.centerRight,
                                               // ),
-                                              AbsorbPointer(
-                                                absorbing: widget.userRank,
-                                                child: IconButton(
+                                             
+                                               
+                                                IconButton(
                                                 iconSize: 35,
                                                 onPressed: () {
                                                   return Alert(context: context,
@@ -280,7 +280,7 @@ class _TaskListState extends State<TaskList> {
                                                 icon: Icon(Icons.check),
                                                 //alignment: Alignment.centerRight,
                                               ),
-                                              ),
+                                              
                                               
                                               // IconButton(
                                               //   iconSize: 35,
@@ -294,45 +294,45 @@ class _TaskListState extends State<TaskList> {
                                               //   icon: Icon(Icons.clear),
                                               //   //alignment: Alignment.centerRight,
                                               // ),
-                                              AbsorbPointer(
-                                                absorbing: widget.userRank,
-                                                child: IconButton(
-                                                iconSize: 35,
-                                                onPressed: () {
-                                                  return Alert(context: context,
-                                                      title: "Usuwanie zadania",
-                                                      desc:"Czy napewno chcesz usunąć zadanie?",
-                                                      buttons: [
-                                                        DialogButton(
-                                                          color: Color.fromARGB(255, 202, 17, 0),
-                                                          child: Text("Tak",
-                                                              style: new TextStyle(
-                                                                  fontWeight: FontWeight.normal,
-                                                                  fontSize: 20.0,
-                                                              color: Colors.white)),
-                                                          onPressed: (){
-                                                            DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
-                                                            Navigator.pushAndRemoveUntil(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) => TaskList(
-                                                                  userId: snapshot.data[index].userUid,
-                                                                  userRank: widget.userRank,
-                                                                ),
-                                                              ),
-                                                                  (route) => false,
-                                                            );
-                                                          },
-                                                        )
-                                                      ]
-                                                  )
-                                                      .show();
-                                                },
-                                                color: Colors.red,
-                                                icon: Icon(Icons.clear),
-                                                //alignment: Alignment.centerRight,
-                                              ),
-                                              ),
+                                              // AbsorbPointer(
+                                              //   absorbing: widget.userRank,
+                                              //   child: IconButton(
+                                              //   iconSize: 35,
+                                              //   onPressed: () {
+                                              //     return Alert(context: context,
+                                              //         title: "Usuwanie zadania",
+                                              //         desc:"Czy napewno chcesz usunąć zadanie?",
+                                              //         buttons: [
+                                              //           DialogButton(
+                                              //             color: Color.fromARGB(255, 202, 17, 0),
+                                              //             child: Text("Tak",
+                                              //                 style: new TextStyle(
+                                              //                     fontWeight: FontWeight.normal,
+                                              //                     fontSize: 20.0,
+                                              //                 color: Colors.white)),
+                                              //             onPressed: (){
+                                              //               DBFuture().deleteTask(snapshot.data[index].userUid,snapshot.data[index].id);
+                                              //               Navigator.pushAndRemoveUntil(
+                                              //                 context,
+                                              //                 MaterialPageRoute(
+                                              //                   builder: (context) => TaskList(
+                                              //                     userId: snapshot.data[index].userUid,
+                                              //                     userRank: widget.userRank,
+                                              //                   ),
+                                              //                 ),
+                                              //                     (route) => false,
+                                              //               );
+                                              //             },
+                                              //           )
+                                              //         ]
+                                              //     )
+                                              //         .show();
+                                              //   },
+                                              //   color: Colors.red,
+                                              //   icon: Icon(Icons.clear),
+                                              //   //alignment: Alignment.centerRight,
+                                              // ),
+                                              // ),
                                               
                                             ],
                                           ),

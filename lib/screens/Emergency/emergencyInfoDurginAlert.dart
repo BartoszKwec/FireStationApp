@@ -59,34 +59,26 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 202, 17, 0),
           title: Text("Informacje o trwającym alarmie",
-
-              style: new TextStyle(
+            style: new TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
               )),
-          // leading: BackButton(
-          //     color: Colors.black
-          // ),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) => OurRoot())),
           ),
         ),
-     
-      
-      body: FutureBuilder<EmergencyDuringModel>(
+     body: FutureBuilder<EmergencyDuringModel>(
         future: _emergencyModel, 
         builder: (BuildContext context, AsyncSnapshot<EmergencyDuringModel> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            
+            padding: const EdgeInsets.all(5.0), 
           ),
-          //Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
@@ -94,29 +86,14 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: <Widget>[
-                  //     Text("Informacje o trwającym alarmie", style: TextStyle(
-                  //       color: Colors.black,
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: 35.0,
-                  //     ),
-                  //     ),
-                  //   ],
-                  // ),
-                  SizedBox(
+                SizedBox(
                     height: 25.0,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                    
-
-
-                    child: Column(
-                      
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         (Text("Miejsce zdarzenia: ",textAlign: TextAlign.center,
                       style: new TextStyle(
@@ -125,15 +102,9 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                         Container(
                           padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                          width:
-                          (MediaQuery
-                              .of(context)
-                              .size
-                              .width) /
-                              3,
+                          width:(MediaQuery.of(context).size.width) /3,
                           child: Text(
                             snapshot.data.place,textAlign: TextAlign.center,
-                            //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
                           color: Colors.black,
@@ -141,7 +112,6 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                           fontSize: 15.0,
                         ),
                         ),
-                        
                           ),
                       ],
                     ),
@@ -160,14 +130,9 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                           padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
                           width:
-                          (MediaQuery
-                              .of(context)
-                              .size
-                              .width) /
-                              3,
+                          (MediaQuery.of(context).size.width) /3,
                           child: Text(
                             snapshot.data.description,textAlign: TextAlign.center,
-                            //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
                           color: Colors.black,
@@ -199,7 +164,6 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                               2,
                           child: Text(
                             snapshot.data.injured,textAlign: TextAlign.center,
-                            //overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           style: TextStyle(
                           color: Colors.black,
@@ -210,22 +174,16 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                       ],
                     ),
                   ),
-                  
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                    
-
-                  
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        (Text("Zakceptowało: "+ (snapshot.data.membersYes.length).toString(), textAlign: TextAlign.center,
+                        (Text("Zaakceptowało: "+ (snapshot.data.membersYes.length).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0))),
-                          
-
                       ],
                     ),
                   ),
@@ -249,34 +207,17 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                           )
                       ],
                     ),
-                  ),
-                  // ListView.builder(itemBuilder: (BuildContext context, index)=>
-                  
-                  // Container(
-                  //  child: Column(
-                  //     children: <Widget>[
-                  //       Text(snapshot.data.membersYes[index])
-                  //     ],
-
-                  //   ),
-                  // ),
-                  // ),
-                  
-              
+                  ),                        
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10.0),
-                    
-
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         (Text("Odrzuciło: "+ (snapshot.data.membersNo.length).toString(), textAlign: TextAlign.center,
                       style: new TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20.0))),
-                        
+                          fontSize: 20.0))), 
                       ],
                     ),
                   ),
@@ -292,7 +233,6 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                               child: (Text(snapshot.data.membersNo[index], textAlign: TextAlign.center,
                               style: new TextStyle(
                                 fontWeight: FontWeight.bold,
-
                               ))
                               ),
                             ),
@@ -301,9 +241,6 @@ class _EmergencyAlertInfoState extends State<EmergencyAlertInfo> {
                       ],
                     ),
                   ),
-                  
-                 
-                 
                 ]
               )
             ),
